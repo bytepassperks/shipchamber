@@ -19,7 +19,7 @@ let cachedDetectedPm = null;
 function getSpawnSyncBaseOptions() {
   return process.platform === 'win32' ? { windowsHide: true } : {};
 }
-const UPDATE_CHECK_URL = process.env.SHIPCHAMBER_UPDATE_API_URL || 'https://api.shipchamber.com/v1/update/check';
+const UPDATE_CHECK_URL = process.env.SHIPCHAMBER_UPDATE_API_URL || 'https://shipchamber-api.getlaunchpod.workers.dev/v1/update/check';
 
 function getShipChamberConfigDir() {
   if (process.platform === 'win32') {

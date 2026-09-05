@@ -68,7 +68,7 @@ describe('createLicenseService', () => {
     const status = await service.activate(KEY.toLowerCase());
     expect(status.tier).toBe('lifetime');
     expect(status.maskedKey).toBe('SC-••••-••••-••••-GH78');
-    expect(calls[0].url).toBe('https://api.shipchamber.com/v1/license/activate');
+    expect(calls[0].url).toBe('https://shipchamber-api.getlaunchpod.workers.dev/v1/license/activate');
     expect(calls[0].body).toEqual({ key: KEY, installId: 'install-1' });
     expect(getSettings().license.key).toBe(KEY);
     expect(await service.isLifetime()).toBe(true);

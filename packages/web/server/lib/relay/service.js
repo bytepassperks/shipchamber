@@ -16,7 +16,7 @@ import express from 'express';
 import { createRelayIdentityRuntime } from './identity.js';
 import { startRelayHost } from './host-client.js';
 
-export const DEFAULT_RELAY_URL = 'wss://relay.shipchamber.com/ws';
+export const DEFAULT_RELAY_URL = 'wss://shipchamber-relay.getlaunchpod.workers.dev/ws';
 
 const isValidRelayUrl = (value) => {
   if (typeof value !== 'string') return false;

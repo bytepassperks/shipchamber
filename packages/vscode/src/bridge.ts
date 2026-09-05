@@ -56,7 +56,7 @@ export interface BridgeContext {
 
 const CLIENT_RELOAD_DELAY_MS = 800;
 
-const UPDATE_CHECK_URL = process.env.SHIPCHAMBER_UPDATE_API_URL || 'https://api.shipchamber.com/v1/update/check';
+const UPDATE_CHECK_URL = process.env.SHIPCHAMBER_UPDATE_API_URL || 'https://shipchamber-api.getlaunchpod.workers.dev/v1/update/check';
 const GITHUB_BACKEND_DISABLED_ERROR = 'ShipChamber VS Code backend GitHub integration is disabled. Use native VS Code GitHub integrations.';
 
 

@@ -1,0 +1,15 @@
+name = "shipchamber-api"
+main = "src/index.js"
+compatibility_date = "2025-06-01"
+account_id = "ed43fb9aedda947029c20ca03959f8da"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "shipchamber-licenses"
+database_id = "bc64c5ff-3195-41b7-8fd1-92952c4ace49"
+
+[vars]
+GITHUB_REPO = "bytepassperks/shipchamber"
+MAX_INSTALLS_PER_LICENSE = "5"
+# Secrets (set with `wrangler secret put`): DODO_WEBHOOK_SECRET, DODO_API_KEY, ADMIN_TOKEN

@@ -20,7 +20,7 @@ const APNS_HOST_SANDBOX = 'https://api.sandbox.push.apple.com';
 // APNs rejects auth tokens older than 1h; refresh well inside that window.
 const JWT_TTL_MS = 50 * 60 * 1000;
 const DEFAULT_BUNDLE_ID = 'com.shipchamber.app';
-const DEFAULT_RELAY_URL = 'https://api.shipchamber.com/v1/push/send';
+const DEFAULT_RELAY_URL = 'https://shipchamber-api.getlaunchpod.workers.dev/v1/push/send';
 const MAX_TOKENS_PER_SESSION = 10;
 // APNs reasons that mean the token is permanently invalid → drop it.
 const DEAD_TOKEN_REASONS = new Set(['BadDeviceToken', 'Unregistered', 'DeviceTokenNotForTopic']);
