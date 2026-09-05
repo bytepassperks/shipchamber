@@ -52,8 +52,17 @@ jobs:
         env:
           VERSION: ${{ steps.get_version.outputs.version }}
         run: |
-          title=$(node scripts/changelog/release-notes.mjs "$VERSION" artifacts/release-notes.md)
-          echo "name=ShipChamber v$VERSION: $title" >> "$GITHUB_OUTPUT"
+          if [ -f "changelog/$VERSION.md" ]; then
+            title=$(node scripts/changelog/release-notes.mjs "$VERSION" artifacts/release-notes.md)
+            echo "name=ShipChamber v$VERSION: $title" >> "$GITHUB_OUTPUT"
+            echo "generate=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changelog/$VERSION.md not found; using GitHub generated release notes."
+            mkdir -p artifacts
+            : > artifacts/release-notes.md
+            echo "name=ShipChamber v$VERSION" >> "$GITHUB_OUTPUT"
+            echo "generate=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Create GitHub Release
         id: create_release
@@ -61,8 +70,8 @@ jobs:
         with:
           tag_name: v${{ steps.get_version.outputs.version }}
           draft: true
-          generate_release_notes: false
-          body_path: artifacts/release-notes.md
+          generate_release_notes: ${{ steps.release_notes.outputs.generate == 'true' }}
+          body_path: ${{ steps.release_notes.outputs.generate == 'true' && '' || 'artifacts/release-notes.md' }}
           name: ${{ steps.release_notes.outputs.name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
