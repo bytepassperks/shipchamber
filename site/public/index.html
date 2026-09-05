@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ShipChamber – Run your coding agents from anywhere</title>
+  <meta name="description" content="ShipChamber is a desktop, web and mobile control room for OpenCode agents. Start work on one machine, pick it up from your phone. Free forever, Lifetime unlock for power features." />
+  <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+  <meta property="og:title" content="ShipChamber" />
+  <meta property="og:description" content="Run your coding agents from anywhere. Free forever, one-time Lifetime upgrade." />
+  <meta property="og:type" content="website" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/logo.svg" alt="" /> ShipChamber</a>
+    <nav class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/bytepassperks/shipchamber" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <span class="spacer"></span>
+    <a class="btn btn-primary btn-sm" href="https://github.com/bytepassperks/shipchamber/releases/latest">Download</a>
+  </div>
+</header>
+
+<section class="hero" style="border-top:0">
+  <div class="wrap">
+    <span class="pill"><b>Open source</b> · MIT · works with the models you already pay for</span>
+    <h1>Ship from <span class="grad">anywhere.</span><br />Your agents, your machines.</h1>
+    <p class="lede">ShipChamber is the control room for OpenCode coding agents. Start a task on your Mac or a server, then pick up the same session from your laptop, a browser, or your phone. No open ports, end-to-end encrypted.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/bytepassperks/shipchamber/releases/latest">Download for desktop</a>
+      <a class="btn" href="#install">Install with one command</a>
+    </div>
+    <p class="fine">macOS · Windows · Linux · VS Code, Cursor, Windsurf · iOS/Android (PWA)</p>
+
+    <div class="frame" aria-hidden="true">
+      <div class="frame-bar"><i></i><i></i><i></i></div>
+      <div class="frame-body">
+        <div class="frame-side">
+          <div class="row active">▸ api-gateway · fix rate limiter</div>
+          <div class="row">▸ mobile · onboarding polish</div>
+          <div class="row">▸ infra · migrate to D1</div>
+          <div class="row" style="margin-top:14px;color:var(--fg-3)">Goal: all checks green</div>
+        </div>
+        <div class="frame-main">
+          <div class="bubble user">Fix the flaky rate-limiter test and open a PR when CI passes.</div>
+          <div class="bubble">Found the race in <span class="mono">limiter.spec.ts</span>: the fake clock is not advanced before the second burst. Patched, tests pass locally. Pushing and opening the PR…</div>
+          <div class="bubble">PR #412 open. CI: 3/4 checks green, waiting on <span class="mono">e2e</span>.</div>
+        </div>
+        <div class="frame-right">
+          <h4>Checks</h4>
+          <div class="check">lint</div>
+          <div class="check">unit</div>
+          <div class="check">typecheck</div>
+          <div class="check pending">e2e</div>
+          <h4 style="margin-top:18px">Session</h4>
+          <div class="muted">claude-sonnet · $0.41 · 2 devices</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <p class="eyebrow">Where it runs</p>
+    <h2 class="h2">One instance. Every screen.</h2>
+    <p class="sub">A ShipChamber instance runs on a machine you control. The desktop app runs one for you and connects to others. Your phone and browser reach any of them through Private Relay.</p>
+
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="tag">Instance</span>
+        <h3>Mac, Linux box, or server</h3>
+        <ul>
+          <li>Runs the agents and keeps every session, even after you close the app</li>
+          <li>Listens on localhost by default; one flag opens it to your network</li>
+          <li>One command to install, one command to pair a device</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">Local and remote</span>
+        <h3>Desktop app</h3>
+        <ul>
+          <li>Runs its own instance and connects to remote ones. Switch from the app</li>
+          <li>Terminal, file browser, notes, todos and reusable actions next to the chat</li>
+          <li>Provider limits, token usage and cost per session</li>
+          <li>Also an extension for VS Code, Cursor, Windsurf and Trae</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">Remote</span>
+        <h3>Phone and browser</h3>
+        <ul>
+          <li>Installable PWA and hosted mobile surface</li>
+          <li>Private Relay carries an end-to-end encrypted connection without an open port</li>
+          <li>Pair once with a QR code, revoke from the app whenever you like</li>
+          <li>A tunnel with a UI password also works for plain browser access</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="term" id="install" style="margin-top:32px">
+      <div><span class="p">~ ❯</span> <span class="k">npm i -g @shipchamber/cli</span> <span class="c"># or: bun add -g @shipchamber/cli</span></div>
+      <div><span class="p">~ ❯</span> <span class="k">shipchamber</span></div>
+      <div class="c">◆ ShipChamber listening on http://localhost:3000</div>
+      <div><span class="p">~ ❯</span> <span class="k">shipchamber connect-url --relay</span></div>
+      <div class="c">┌ ShipChamber pairing link</div>
+      <div class="c">│ ● shipchamber://connect?v=2&amp;p=eyJ2IjoyLCJwYWlyaW5n…</div>
+      <div class="c">│ ● Relay: wss://shipchamber-relay.getlaunchpod.workers.dev/ws</div>
+      <div class="c">│ ● Fingerprint: 7A2C-91EF</div>
+      <div class="c">└ pairing link generated</div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <p class="eyebrow">Start, run, review</p>
+    <h2 class="h2">Every task goes through three stages.</h2>
+    <p class="sub">This is what ShipChamber adds at each one. Items marked <span class="tag lifetime" style="margin:0">Lifetime</span> are part of the one-time upgrade; everything else is free.</p>
+
+    <div class="steps">
+      <div>
+        <div class="step-num">01</div>
+        <h3>Start</h3>
+        <div class="feature"><b>From GitHub or Linear</b><span>Start from an issue or pull request, or a Linear ticket. The agent gets the thread and the diff with it.</span></div>
+        <div class="feature"><b>Session Goals <span class="tag lifetime">Lifetime</span></b><span>Set the outcome. After every turn ShipChamber checks progress and continues until the goal is done, blocked, or over the limit you set.</span></div>
+        <div class="feature"><b>Scheduled work</b><span>Run a task once at a set time or on a recurring schedule.</span></div>
+      </div>
+      <div>
+        <div class="step-num">02</div>
+        <h3>Run</h3>
+        <div class="feature"><b>Multi-run <span class="tag lifetime">Lifetime</span></b><span>One task across up to five models in parallel, each in its own worktree.</span></div>
+        <div class="feature"><b>Fusion <span class="tag lifetime">Lifetime</span></b><span>Keep the best result, or fuse the strongest parts of several into one.</span></div>
+        <div class="feature"><b>Browser Use</b><span>Your running app in the built-in browser. The agent clicks through it too, sees the errors and checks its own work.</span></div>
+      </div>
+      <div>
+        <div class="step-num">03</div>
+        <h3>Review</h3>
+        <div class="feature"><b>Changes Walkthrough <span class="tag lifetime">Lifetime</span></b><span>A large diff, grouped into ordered steps that explain how the change fits together.</span></div>
+        <div class="feature"><b>Failed checks go back</b><span>Send a red CI run to the agent that wrote the code. It comes back with the fix.</span></div>
+        <div class="feature"><b>Merge without leaving</b><span>Commit, push, open the PR, answer review comments and merge from the same window.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap">
+    <p class="eyebrow">Privacy &amp; data</p>
+    <h2 class="h2">Your code never leaves your machine.</h2>
+    <p class="sub">ShipChamber collects nothing about your work. Prompts, code, diffs and sessions stay where the instance runs. The only thing our servers ever see is a license key check.</p>
+    <div class="grid grid-2">
+      <div class="card"><h3>Code and sessions stay with you</h3><p>No project names, paths, prompts, code or session content are ever sent to us.</p></div>
+      <div class="card"><h3>Remote access is gated</h3><p>A UI password gates browser access. Rotate or revoke tunnel links and paired devices the moment they should stop working.</p></div>
+      <div class="card"><h3>Private Relay, no open ports</h3><p>The relay only forwards ciphertext. Keys are exchanged between your devices when you pair; the relay never holds them.</p></div>
+      <div class="card"><h3>Open source, so you can check</h3><p>MIT licensed. The privacy model is in the code, and anyone can read it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <p class="eyebrow">Pricing</p>
+    <h2 class="h2">Free forever. Pay once for the rest.</h2>
+    <p class="sub">No subscription, no seats, no telemetry. You bring your own model keys either way.</p>
+
+    <div class="plans">
+      <div class="plan">
+        <div class="name">Free</div>
+        <div class="price">$0</div>
+        <p class="desc">Everything you need to run agents from your desk.</p>
+        <ul>
+          <li>Desktop app, CLI, web UI and editor extensions</li>
+          <li>Unlimited sessions, projects and providers</li>
+          <li>GitHub &amp; Linear start, Browser Use, scheduled work</li>
+          <li>LAN access and password-gated tunnels</li>
+          <li class="x">Private Relay (phone &amp; browser, no open ports)</li>
+          <li class="x">Multi-run &amp; Fusion</li>
+          <li class="x">Session Goals</li>
+          <li class="x">Changes Walkthrough</li>
+        </ul>
+        <a class="btn" href="https://github.com/bytepassperks/shipchamber/releases/latest">Download free</a>
+      </div>
+      <div class="plan featured">
+        <span class="badge">One-time payment</span>
+        <div class="name">Lifetime</div>
+        <div class="price">$79 <small>once</small></div>
+        <p class="desc">Every power feature, on up to 5 machines, forever. Includes all future updates.</p>
+        <ul>
+          <li>Everything in Free</li>
+          <li>Private Relay: reach your agents from your phone anywhere</li>
+          <li>Multi-run across up to five models, with Fusion</li>
+          <li>Session Goals that keep working until done</li>
+          <li>Changes Walkthrough for large diffs</li>
+          <li>Up to 5 activated machines, move keys any time</li>
+          <li>14-day refund if it is not for you</li>
+        </ul>
+        <a class="btn btn-primary" href="https://checkout.dodopayments.com/buy/pdt_0NmyGWsKQqQPP01hhyyvJ?quantity=1&redirect_url=https%3A%2F%2Fshipchamber.pages.dev%2Fthanks">Get Lifetime</a>
+      </div>
+    </div>
+    <p class="fine muted" style="margin-top:18px;font-size:13px">Payments handled by Dodo Payments. Your key is shown right after checkout and emailed to you. Activate it in Settings → General → License.</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap" style="max-width:820px">
+    <p class="eyebrow">FAQ</p>
+    <h2 class="h2">Questions</h2>
+    <details><summary>What do I need to run it?</summary><p>A machine you control with OpenCode installed. ShipChamber runs on the OpenCode SDK. Install it with <span class="mono">curl -fsSL https://opencode.ai/install | bash</span>, then start ShipChamber.</p></details>
+    <details><summary>Where does ShipChamber run?</summary><p>On your Mac, your Linux box, or a server you own. The desktop app runs an instance locally and connects to remote ones too. Your phone and a browser reach any of them through Private Relay.</p></details>
+    <details><summary>What does the Lifetime license actually check?</summary><p>Once a day the app asks our license server whether your key is still valid. That request contains the key and an anonymous install id, nothing else. If you are offline, your features keep working for 14 days.</p></details>
+    <details><summary>Can I use one key on several machines?</summary><p>Yes, up to five at a time. Deactivate from Settings on a machine you no longer use to free a slot.</p></details>
+    <details><summary>Is ShipChamber open source?</summary><p>Yes. ShipChamber is MIT-licensed and builds on the MIT-licensed OpenChamber project. The code is on GitHub.</p></details>
+    <details><summary>Refunds?</summary><p>Write to us within 14 days of purchase and we refund in full. The key is revoked when the refund goes through.</p></details>
+  </div>
+</section>
+
+<div class="cta-block">
+  <div class="wrap">
+    <h2 class="h2">Install it on the machine you already have.</h2>
+    <p class="sub" style="margin:0 auto 28px">One command on a Mac, a Linux box, or a server. Then open it from wherever you are.</p>
+    <a class="btn btn-primary" href="https://github.com/bytepassperks/shipchamber/releases/latest">Download</a>
+    <a class="btn btn-ghost" href="https://github.com/bytepassperks/shipchamber#readme">Read the docs →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a class="brand" href="/" style="margin-bottom:10px"><img src="/logo.svg" alt="" /> ShipChamber</a>
+        <p>Run your coding agents from anywhere.</p>
+      </div>
+      <div><h4>Product</h4><a href="https://github.com/bytepassperks/shipchamber/releases/latest">Download</a><a href="#install">Install guide</a><a href="#pricing">Pricing</a></div>
+      <div><h4>Resources</h4><a href="https://github.com/bytepassperks/shipchamber#readme">Documentation</a><a href="https://github.com/bytepassperks/shipchamber/releases">Changelog</a><a href="/thanks">Find my key</a></div>
+      <div><h4>Connect</h4><a href="https://github.com/bytepassperks/shipchamber">GitHub</a><a href="https://github.com/bytepassperks/shipchamber/issues">Support</a></div>
+    </div>
+    <p>© 2026 ShipChamber by BytePassPerks. MIT licensed, based on OpenChamber. Independent project, not affiliated with the OpenCode team.</p>
+  </div>
+</footer>
+
+</body>
+</html>

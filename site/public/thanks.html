@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your ShipChamber Lifetime key</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/logo.svg" alt="" /> ShipChamber</a>
+    <span class="spacer"></span>
+    <a class="btn btn-sm" href="https://github.com/bytepassperks/shipchamber/releases/latest">Download</a>
+  </div>
+</header>
+
+<section class="hero" style="border-top:0;padding-bottom:120px">
+  <div class="wrap" style="max-width:760px">
+    <p class="eyebrow">Lifetime</p>
+    <h2 class="h2" id="title">Thank you.</h2>
+    <p class="sub" id="lead">Fetching your license key…</p>
+    <div id="keywrap" hidden>
+      <div class="key-box" id="key"></div>
+      <div class="notice">Keep this somewhere safe. We also emailed it to <b id="email"></b>. Activate it in ShipChamber under <b>Settings → General → License</b> on up to five machines.</div>
+    </div>
+    <div id="lookup" hidden style="margin-top:22px">
+      <p class="muted">Paste the <span class="mono">payment_id</span> from your Dodo Payments receipt to look your key up again:</p>
+      <form id="form" style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+        <input id="pid" class="mono" placeholder="pay_…" style="flex:1;min-width:240px;padding:11px 14px;border-radius:10px;border:1px solid var(--line-strong);background:var(--bg-2);color:var(--fg)" />
+        <button class="btn btn-primary" type="submit">Find key</button>
+      </form>
+    </div>
+    <p class="fine muted" style="margin-top:28px;font-size:13px">Problems? Open an issue on <a href="https://github.com/bytepassperks/shipchamber/issues" style="text-decoration:underline">GitHub</a> with your payment id (never your key).</p>
+  </div>
+</section>
+
+<script>
+  const API = 'https://shipchamber-api.getlaunchpod.workers.dev';
+  const $ = (id) => document.getElementById(id);
+  const params = new URLSearchParams(location.search);
+
+  async function lookup(paymentId, attempt = 0) {
+    $('lead').textContent = 'Fetching your license key…';
+    const res = await fetch(`${API}/v1/license/claim?payment_id=${encodeURIComponent(paymentId)}`);
+    if (res.status === 404 && attempt < 10) {
+      $('lead').textContent = 'Waiting for the payment to settle… this usually takes a few seconds.';
+      return setTimeout(() => lookup(paymentId, attempt + 1), 3000);
+    }
+    if (!res.ok) {
+      $('title').textContent = 'We could not find that payment.';
+      $('lead').textContent = 'Check the payment id on your receipt, or try again in a minute.';
+      $('lookup').hidden = false;
+      return;
+    }
+    const data = await res.json();
+    $('title').textContent = 'Your Lifetime key is ready.';
+    $('lead').textContent = data.status === 'active' ? 'Copy it now:' : 'This license has been revoked.';
+    $('key').textContent = data.key;
+    $('email').textContent = data.email || 'your checkout email';
+    $('keywrap').hidden = false;
+    $('lookup').hidden = false;
+  }
+
+  $('form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const id = $('pid').value.trim();
+    if (id) lookup(id);
+  });
+
+  const paymentId = params.get('payment_id');
+  if (paymentId) lookup(paymentId);
+  else {
+    $('title').textContent = 'Find your key';
+    $('lead').textContent = '';
+    $('lookup').hidden = false;
+  }
+</script>
+</body>
+</html>
