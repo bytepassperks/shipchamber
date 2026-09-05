@@ -113,6 +113,13 @@ const SETTINGS_SEARCH_ITEMS: readonly SettingsSearchItem[] = [
     keywords: ['terminal', 'font', 'text size'],
   },
   {
+    id: 'general.license',
+    page: 'general',
+    titleKey: 'settings.license.title',
+    descriptionKey: 'settings.license.info',
+    keywords: ['license', 'lifetime', 'free', 'key', 'activate', 'upgrade', 'purchase', 'pro'],
+  },
+  {
     id: 'appearance.terminal-shell',
     page: 'general',
     titleKey: 'settings.shipchamber.visual.field.terminalShell',

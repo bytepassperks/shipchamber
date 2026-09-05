@@ -5,9 +5,13 @@ import { deleteObjective, readObjective, writeObjective } from './objectives.js'
 // writes the objective file before stamping the goal metadata (which only
 // carries an `objectiveFile: true` flag), reads it back for display, and
 // deletes it when the goal is removed.
-export function registerSessionGoalRoutes(app) {
+export function registerSessionGoalRoutes(app, { canCreate = async () => true } = {}) {
   app.put('/api/goals/objective/:sessionId', async (req, res) => {
     try {
+      if (!(await canCreate())) {
+        res.status(402).json({ code: 'license_required', feature: 'sessionGoals', error: 'Session goals require a ShipChamber Lifetime license' });
+        return;
+      }
       const { content } = req.body || {};
       await writeObjective(req.params.sessionId, content);
       res.json({ ok: true });

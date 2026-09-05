@@ -4,7 +4,7 @@
 // client is still there.
 const clientIsGone = (res) => res.writableEnded || res.destroyed;
 
-export function registerWalkthroughRoutes(app, { getWalkthroughService }) {
+export function registerWalkthroughRoutes(app, { getWalkthroughService, canGenerate = async () => true }) {
   const respondWithError = (res, error, fallback) => {
     const statusCode = Number(error?.statusCode) || 500;
     if (statusCode >= 500) {
@@ -57,6 +57,10 @@ export function registerWalkthroughRoutes(app, { getWalkthroughService }) {
   // request below.
   app.post('/api/walkthrough/generate', async (req, res) => {
     try {
+      if (!(await canGenerate())) {
+        res.status(402).json({ code: 'license_required', feature: 'walkthrough', error: 'Walkthroughs require a ShipChamber Lifetime license' });
+        return;
+      }
       const { generateWalkthrough, getPullRequestDiff } = await getWalkthroughService();
       const { directory, source, force, model, language } = req.body || {};
       if (!directory || typeof directory !== 'string') {

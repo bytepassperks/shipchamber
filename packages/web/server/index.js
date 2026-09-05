@@ -105,6 +105,8 @@ import { createClientPairingRuntime } from './lib/client-auth/pairing.js';
 import { attachRealtimeProxy } from './lib/realtime-proxy.js';
 import { createRelayService } from './lib/relay/service.js';
 import { createRelayHostLock } from './lib/relay/host-lock.js';
+import { createLicenseService } from './lib/license/service.js';
+import { getOrCreateInstallId } from './lib/package-manager.js';
 import { createAgentToolRuntime } from './lib/agent-tool/runtime.js';
 import { createBrowserControlBroker } from './lib/browser-control/broker.js';
 import { createDevServerScanner } from './lib/dev-servers/routes.js';
@@ -1531,7 +1533,7 @@ async function main(options = {}) {
     if (address.startsWith('127.')) return null;
     return address;
   };
-  const resolvePairingTransports = (req) => {
+  const resolvePairingTransports = async (req) => {
     const activePort = tunnelRuntimeContext.getActivePort() || port;
     const local = `http://127.0.0.1:${activePort}`;
     let lanHost = null;
@@ -1560,7 +1562,7 @@ async function main(options = {}) {
       if (h && h !== '127.0.0.1' && h !== 'localhost' && h !== '::1') lanHost = effectiveBindHost;
     }
     const lan = lanHost ? `http://${lanHost.includes(':') ? `[${lanHost}]` : lanHost}:${activePort}` : null;
-    return { local, lan, relayAvailable: true };
+    return { local, lan, relayAvailable: await licenseService.isLifetime() };
   };
   // ALL direct LAN URLs this server is currently reachable on, for the
   // candidates-refresh endpoint: the address the requesting client already
@@ -1702,6 +1704,15 @@ async function main(options = {}) {
   // relay candidate lazily at request time, so a late-bound holder is enough.
   let relayServiceInstance = null;
 
+  // Free / Lifetime entitlement for this instance. Lifetime-only capabilities
+  // (private relay pairing) consult it server-side; shared UI mirrors it.
+  const licenseService = createLicenseService({
+    readSettingsFromDiskMigrated,
+    writeSettingsToDisk,
+    getInstallId: () => getOrCreateInstallId('web'),
+  });
+  licenseService.registerRoutes(app);
+
   // Same pattern for the tunnel runtime: created after the base routes so
   // /api/system/info resolves port + tunnel URL lazily at request time.
   let tunnelRuntimeContextHolder = null;
@@ -1759,8 +1770,11 @@ async function main(options = {}) {
     tunnelAuthController,
     remoteClientAuthRuntime,
     clientPairingRuntime,
-    getRelayPairingCandidate: (options) => {
+    getRelayPairingCandidate: async (options) => {
       if (!relayServiceInstance) return null;
+      // Private relay is a Lifetime capability: a free instance advertises only
+      // direct transports, and a plain link never enables the relay.
+      if (options?.ensureEnabled && !(await licenseService.isLifetime())) return null;
       // A relay pairing link enables the relay on demand; a plain link only
       // advertises relay when it is already on.
       return options?.ensureEnabled
@@ -1837,6 +1851,7 @@ async function main(options = {}) {
   const relayService = createRelayService({
     crypto,
     os,
+    canHost: () => licenseService.isLifetime(),
     readSettingsFromDiskMigrated,
     writeSettingsToDisk,
     readSettingsStrict: readSettingsFromDiskStrict,
@@ -1898,6 +1913,7 @@ async function main(options = {}) {
   });
 
   await featureRoutesRuntime.registerRoutes(app, {
+    isLifetimeLicensed: () => licenseService.isLifetime(),
     crypto,
     fs,
     os,

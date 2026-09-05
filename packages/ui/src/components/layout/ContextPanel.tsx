@@ -50,6 +50,7 @@ import {
   type EmbeddedSessionRuntimeBootstrap,
 } from './contextPanelEmbeddedChat';
 import { getContextSurfaceWidthFraction } from '@/lib/surfaces/registry';
+import { LifetimeGate } from '@/components/license/LifetimeGate';
 import { isTerminalEventTarget } from '@/lib/terminalFocus';
 
 const CONTEXT_PANEL_MIN_WIDTH = 380;
@@ -1291,7 +1292,9 @@ export const ContextPanel: React.FC = () => {
         {hasWalkthroughTab ? (
           <div className={cn('absolute inset-0', activeTab?.mode === 'walkthrough' ? 'block' : 'hidden')}>
             <React.Suspense fallback={null}>
-              <WalkthroughView directory={effectiveDirectory} visible={activeTab?.mode === 'walkthrough'} />
+              <LifetimeGate feature="walkthrough">
+                <WalkthroughView directory={effectiveDirectory} visible={activeTab?.mode === 'walkthrough'} />
+              </LifetimeGate>
             </React.Suspense>
           </div>
         ) : null}

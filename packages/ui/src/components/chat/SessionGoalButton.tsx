@@ -6,6 +6,7 @@ import { useSessionGoalArmStore } from '@/stores/useSessionGoalArmStore';
 import { SESSION_GOAL_OBJECTIVE_CHAR_LIMIT } from '@/lib/sessionGoalMetadata';
 import { sessionGoalStatusColor } from '@/lib/sessionGoalPresentation';
 import { SessionGoalDialog } from '@/components/chat/SessionGoalDialog';
+import { requireLifetimeFeature } from '@/lib/license/gate';
 import { isVSCodeRuntime } from '@/lib/desktop';
 import { useI18n } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
@@ -70,6 +71,7 @@ export const SessionGoalButton: React.FC<SessionGoalButtonProps> = React.memo(({
       setDialogOpen(true);
       return;
     }
+    if (!armed && !requireLifetimeFeature('sessionGoals', t)) return;
     setArmed(!armed);
   };
 

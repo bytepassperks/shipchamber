@@ -35,7 +35,7 @@ function sanitizeInstallScope(scope) {
   return 'web';
 }
 
-function getOrCreateInstallId(scope = 'web') {
+export function getOrCreateInstallId(scope = 'web') {
   const configDir = getShipChamberConfigDir();
   const normalizedScope = sanitizeInstallScope(scope);
   const idPath = path.join(configDir, `install-id-${normalizedScope}`);

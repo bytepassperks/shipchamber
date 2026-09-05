@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShipChamberVisualSettings } from './ShipChamberVisualSettings';
 import { AboutSettings } from './AboutSettings';
+import { LicenseSettings } from './LicenseSettings';
 import { SessionRetentionSettings } from './SessionRetentionSettings';
 import { PasskeySettings } from './PasskeySettings';
 import { AppLinkSecuritySettings } from './AppLinkSecuritySettings';
@@ -142,6 +143,7 @@ const GeneralSectionContent: React.FC = () => {
     const showPasskeySettings = isWebRuntime() && !isDesktopShell() && !isVSCode && !isCapacitorApp();
     return (
         <>
+            <LicenseSettings />
             {showDesktopNetworkSettings && <DesktopNetworkSettings />}
             {showPasskeySettings && <PasskeySettings />}
             <AppLinkSecuritySettings />

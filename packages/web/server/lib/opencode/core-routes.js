@@ -860,7 +860,7 @@ export const registerAuthAndAccessRoutes = (app, dependencies) => {
   app.get('/api/client-auth/pairing/transports', async (req, res, next) => {
     await runWithClientCreateAuth(req, res, next, async () => {
       res.setHeader('Cache-Control', 'no-store');
-      res.json(getPairingTransports(req));
+      res.json(await getPairingTransports(req));
     });
   });
 

@@ -75,6 +75,10 @@ export const createRelayService = ({
   // (enable, pairing) force-claims. Dev/debug instances set this so they do not
   // capture paired devices from the production instance sharing the data dir.
   allowPassiveHost = true,
+  // Entitlement gate: the private relay is a Lifetime capability. Explicit
+  // enable/pairing on an unlicensed instance is refused with 402; devices that
+  // were paired while licensed keep working through the demand lifecycle.
+  canHost = async () => true,
   logger = console,
 }) => {
   const identityRuntime = createRelayIdentityRuntime({ crypto, readSettingsFromDiskMigrated, writeSettingsToDisk, readSettingsStrict });
@@ -302,6 +306,7 @@ export const createRelayService = ({
   // rather than requiring a separate manual toggle. Idempotent: a no-op when the
   // relay is already enabled and running.
   const ensureEnabledForPairing = async () => {
+    if (!(await canHost())) return null;
     const config = await readConfig();
     if (!config.enabled) {
       await writeConfig({ enabled: true, relayUrl: config.relayUrl });
@@ -328,6 +333,10 @@ export const createRelayService = ({
 
     app.post('/api/shipchamber/relay/enable', express.json({ limit: '16kb' }), async (req, res) => {
       try {
+        if (!(await canHost())) {
+          res.status(402).json({ code: 'license_required', feature: 'relay', error: 'Private relay requires a ShipChamber Lifetime license' });
+          return;
+        }
         const current = await readConfig();
         const relayUrl = typeof req.body?.relayUrl === 'string' ? normalizeRelayUrl(req.body.relayUrl) : current.relayUrl;
         await writeConfig({ enabled: true, relayUrl });

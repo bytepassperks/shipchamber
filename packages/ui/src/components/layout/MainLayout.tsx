@@ -17,6 +17,7 @@ import { ArchiveView } from '@/components/views/ArchiveView';
 import { WorktreesView } from '@/components/views/WorktreesView';
 import { DiffWorkerProvider } from '@/contexts/DiffWorkerProvider';
 import { MultiRunLauncher } from '@/components/multirun';
+import { LifetimeGate } from '@/components/license/LifetimeGate';
 
 import { useUIStore } from '@/stores/useUIStore';
 import { useSessionUIStore } from '@/sync/session-ui-store';
@@ -146,12 +147,14 @@ export const MainLayout: React.FC = () => {
                                                     <ErrorBoundary>
                                                         {/* isWindowed: the app Header already shows the surface
                                                             title, so skip the launcher's own title bar. */}
-                                                        <MultiRunLauncher
-                                                            isWindowed
-                                                            initialPrompt={multiRunLauncherPrefillPrompt}
-                                                            onCreated={() => setMultiRunLauncherOpen(false)}
-                                                            onCancel={() => setMultiRunLauncherOpen(false)}
-                                                        />
+                                                        <LifetimeGate feature="multiRun">
+                                                            <MultiRunLauncher
+                                                                isWindowed
+                                                                initialPrompt={multiRunLauncherPrefillPrompt}
+                                                                onCreated={() => setMultiRunLauncherOpen(false)}
+                                                                onCancel={() => setMultiRunLauncherOpen(false)}
+                                                            />
+                                                        </LifetimeGate>
                                                     </ErrorBoundary>
                                                 </div>
                                             )}

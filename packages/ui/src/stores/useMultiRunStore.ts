@@ -15,6 +15,7 @@ import { useProjectsStore } from './useProjectsStore';
 import { useSnippetsStore } from './useSnippetsStore';
 import { useGlobalSessionsStore } from './useGlobalSessionsStore';
 import { getMultiRunSessionTitle } from '@/lib/multirun/title';
+import { selectHasFeature, useLicenseStore } from './useLicenseStore';
 import { getSyncChildStores, registerSessionDirectory } from '@/sync/sync-refs';
 
 const toGitSafeSlug = (value: string): string => {
@@ -118,6 +119,11 @@ export const useMultiRunStore = create<MultiRunStore>()(
       createMultiRun: async (params: CreateMultiRunParams) => {
         const groupName = params.name.trim();
         const { groups, agent, files, setupCommands } = params;
+
+        if (!selectHasFeature('multiRun')(useLicenseStore.getState())) {
+          set({ error: 'Multi-run requires a ShipChamber Lifetime license' });
+          return null;
+        }
 
         if (!groupName) {
           set({ error: 'Group name is required' });

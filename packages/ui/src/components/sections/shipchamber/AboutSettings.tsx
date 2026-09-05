@@ -10,6 +10,7 @@ import { ShipChamberLogo } from '@/components/ui/ShipChamberLogo';
 import { useI18n } from '@/lib/i18n';
 import { runtimeFetch } from '@/lib/runtime-fetch';
 import { InstanceServiceUrls } from './InstanceServiceUrls';
+import { LicenseSettings } from './LicenseSettings';
 import {
   SettingsSection,
   SETTINGS_BRAND_TITLE_CLASS,
@@ -196,6 +197,8 @@ export const AboutSettings: React.FC<AboutSettingsProps> = ({ initialUpdateDialo
             </a>
           </div>
         </div>
+
+        <LicenseSettings divider />
 
         <p className="text-center typography-ui text-muted-foreground/60">
           {t('aboutDialog.footerNote')}

@@ -88,6 +88,7 @@ export const createFeatureRoutesRuntime = (dependencies) => {
 
   const registerRoutes = async (app, routeDependencies) => {
     const {
+      isLifetimeLicensed = async () => true,
       crypto,
       fs,
       os,
@@ -302,8 +303,8 @@ export const createFeatureRoutesRuntime = (dependencies) => {
 
     registerQuotaRoutes(app, { getQuotaProviders });
     registerSmallModelRoutes(app, { getSmallModelService });
-    registerWalkthroughRoutes(app, { getWalkthroughService });
-    registerSessionGoalRoutes(app);
+    registerWalkthroughRoutes(app, { getWalkthroughService, canGenerate: isLifetimeLicensed });
+    registerSessionGoalRoutes(app, { canCreate: isLifetimeLicensed });
     registerGitHubRoutes(app);
     registerLinearRoutes(app);
     registerGitRoutes(app);
