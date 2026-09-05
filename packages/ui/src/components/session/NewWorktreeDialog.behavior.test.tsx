@@ -110,7 +110,7 @@ mock.module('@/lib/worktrees/worktreeManager', () => ({
 }));
 mock.module('@/lib/worktrees/worktreeCreate', () => ({ createWorktreeWithDefaults: async () => null }));
 mock.module('@/lib/worktrees/worktreeBootstrap', () => ({ waitForWorktreeBootstrap: async () => undefined }));
-mock.module('@/lib/openchamberConfig', () => ({
+mock.module('@/lib/shipchamberConfig', () => ({
   getWorktreeSetupCommands: async () => [],
   getWorktreeSetupWaitEnabled: async () => false,
 }));

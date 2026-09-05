@@ -11,7 +11,7 @@ describe('request security runtime', () => {
 
     expect(await runtime.isRequestOriginAllowed({
       headers: {
-        origin: 'openchamber-ui://app',
+        origin: 'shipchamber-ui://app',
         host: '192.168.1.130:1202',
       },
       socket: {},

@@ -13,8 +13,8 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "paths": {
-      "@openchamber/ui/*": ["./packages/ui/src/*"],
-      "@openchamber/web/*": ["./packages/web/src/*"]
+      "@shipchamber/ui/*": ["./packages/ui/src/*"],
+      "@shipchamber/web/*": ["./packages/web/src/*"]
     }
   }
 }

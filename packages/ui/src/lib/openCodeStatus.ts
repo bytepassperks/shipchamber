@@ -16,7 +16,7 @@ type ProbeResult = {
   summary: string;
 };
 
-type OpenChamberHealthSnapshot = {
+type ShipChamberHealthSnapshot = {
   openCodePort?: unknown;
   openCodeRunning?: unknown;
   openCodeSecureConnection?: unknown;
@@ -35,7 +35,7 @@ type OpenChamberHealthSnapshot = {
   bunBinaryResolved?: unknown;
 };
 
-type OpenChamberOpencodeResolution = {
+type ShipChamberOpencodeResolution = {
   configured?: unknown;
   resolved?: unknown;
   resolvedDir?: unknown;
@@ -173,7 +173,7 @@ export const buildOpenCodeStatusReport = async (): Promise<string> => {
   const apiBase = urls.api('/api/');
 
 
-  const openChamberHealth: OpenChamberHealthSnapshot | null = await (async () => {
+  const shipChamberHealth: ShipChamberHealthSnapshot | null = await (async () => {
     if (!healthUrl) return null;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 5000);
@@ -186,7 +186,7 @@ export const buildOpenCodeStatusReport = async (): Promise<string> => {
       if (!resp.ok) return null;
       const json = (await resp.json().catch(() => null)) as unknown;
       if (!json || typeof json !== 'object' || Array.isArray(json)) return null;
-      return json as OpenChamberHealthSnapshot;
+      return json as ShipChamberHealthSnapshot;
     } catch {
       return null;
     } finally {
@@ -194,8 +194,8 @@ export const buildOpenCodeStatusReport = async (): Promise<string> => {
     }
   })();
 
-  const openChamberOpencodeResolutionResult: {
-    data: OpenChamberOpencodeResolution | null;
+  const shipChamberOpencodeResolutionResult: {
+    data: ShipChamberOpencodeResolution | null;
     status: number | null;
     error: string | null;
   } = await (async () => {
@@ -227,7 +227,7 @@ export const buildOpenCodeStatusReport = async (): Promise<string> => {
       if (!json || typeof json !== 'object' || Array.isArray(json)) {
         return { data: null, status: resp.status, error: `invalid json-shape content-type=${contentType}` };
       }
-      return { data: json as OpenChamberOpencodeResolution, status: resp.status, error: null };
+      return { data: json as ShipChamberOpencodeResolution, status: resp.status, error: null };
     } catch (error) {
       return {
         data: null,
@@ -294,31 +294,31 @@ export const buildOpenCodeStatusReport = async (): Promise<string> => {
 
   const lines: string[] = [];
   lines.push(`Time: ${now.toISOString()}`);
-  lines.push(`OpenChamber version: ${appVersion}`);
+  lines.push(`ShipChamber version: ${appVersion}`);
   lines.push(`Runtime: ${origin || '(unknown)'} (api=${apiBase || '(unknown)'})`);
   lines.push(`OpenCode SDK base: ${opencodeClient.getBaseUrl()}`);
   lines.push(`Event stream: ${eventStreamStatus}`);
   lines.push(`Directory: ${directory || '(none)'}`);
   lines.push(`Platform: ${platform}`);
 
-  const runtimeOpenCodePort = normalizePort(openChamberHealth?.openCodePort);
+  const runtimeOpenCodePort = normalizePort(shipChamberHealth?.openCodePort);
   lines.push(`OpenCode runtime port: ${runtimeOpenCodePort ?? '(unknown)'}`);
-  if (typeof openChamberHealth?.openCodeRunning === 'boolean') {
-    lines.push(`OpenCode runtime running: ${openChamberHealth.openCodeRunning ? 'yes' : 'no'}`);
+  if (typeof shipChamberHealth?.openCodeRunning === 'boolean') {
+    lines.push(`OpenCode runtime running: ${shipChamberHealth.openCodeRunning ? 'yes' : 'no'}`);
   }
-  if (typeof openChamberHealth?.openCodeSecureConnection === 'boolean') {
-    lines.push(`Secure OpenCode connection: ${openChamberHealth.openCodeSecureConnection ? 'true' : 'false'}`);
+  if (typeof shipChamberHealth?.openCodeSecureConnection === 'boolean') {
+    lines.push(`Secure OpenCode connection: ${shipChamberHealth.openCodeSecureConnection ? 'true' : 'false'}`);
   }
-  if (typeof openChamberHealth?.openCodeAuthSource === 'string' && openChamberHealth.openCodeAuthSource.trim()) {
-    lines.push(`OpenCode auth source: ${openChamberHealth.openCodeAuthSource}`);
+  if (typeof shipChamberHealth?.openCodeAuthSource === 'string' && shipChamberHealth.openCodeAuthSource.trim()) {
+    lines.push(`OpenCode auth source: ${shipChamberHealth.openCodeAuthSource}`);
   }
 
   // What the managed OpenCode process last said for itself. A turn that stops
   // with nothing on screen usually left its reason here or in the session
   // errors below, not in the UI.
-  const lastOpenCodeError = formatUnknown(openChamberHealth?.lastOpenCodeError, '');
-  const managedProcess = isRecord(openChamberHealth?.lastManagedOpenCodeProcess)
-    ? openChamberHealth.lastManagedOpenCodeProcess
+  const lastOpenCodeError = formatUnknown(shipChamberHealth?.lastOpenCodeError, '');
+  const managedProcess = isRecord(shipChamberHealth?.lastManagedOpenCodeProcess)
+    ? shipChamberHealth.lastManagedOpenCodeProcess
     : null;
   const stderrTail = managedProcess && typeof managedProcess.stderrTail === 'string'
     ? managedProcess.stderrTail.trim()
@@ -358,21 +358,21 @@ export const buildOpenCodeStatusReport = async (): Promise<string> => {
   // including OpenCode lifecycle lines, through electron-log.
   const opencodeHome = typeof pathInfo?.home === 'string' ? pathInfo.home : '';
   const isWindows = /Windows NT/.test(platform);
-  const isDesktop = origin.startsWith('openchamber-ui://');
+  const isDesktop = origin.startsWith('shipchamber-ui://');
   lines.push('');
   lines.push('Log files:');
   lines.push(`- OpenCode: ${opencodeHome ? joinPath(opencodeHome, '.local/share/opencode/log', isWindows) : '<home>/.local/share/opencode/log'} (or $XDG_DATA_HOME/opencode/log when set)`);
   if (isDesktop) {
     const isMacDesktop = /Mac OS X|Macintosh/.test(platform);
-    lines.push(`- OpenChamber desktop: ${isWindows
-      ? '%APPDATA%\\OpenChamber\\logs\\main.log'
+    lines.push(`- ShipChamber desktop: ${isWindows
+      ? '%APPDATA%\\ShipChamber\\logs\\main.log'
       : isMacDesktop
-        ? '~/Library/Logs/OpenChamber/main.log'
-        : '~/.config/OpenChamber/logs/main.log'}`);
+        ? '~/Library/Logs/ShipChamber/main.log'
+        : '~/.config/ShipChamber/logs/main.log'}`);
   }
 
   if (typeof window !== 'undefined') {
-    const injected = (window as unknown as { __OPENCHAMBER_MACOS_MAJOR__?: unknown }).__OPENCHAMBER_MACOS_MAJOR__;
+    const injected = (window as unknown as { __SHIPCHAMBER_MACOS_MAJOR__?: unknown }).__SHIPCHAMBER_MACOS_MAJOR__;
     if (typeof injected === 'number' && Number.isFinite(injected) && injected > 0) {
       lines.push(`macOS major: ${injected}`);
     }
@@ -383,58 +383,58 @@ export const buildOpenCodeStatusReport = async (): Promise<string> => {
     lines.push('');
     lines.push('OpenCode CLI resolution:');
 
-    const launchDiagnostics = isRecord(openChamberHealth?.lastOpenCodeLaunchDiagnostics)
-      ? openChamberHealth.lastOpenCodeLaunchDiagnostics
+    const launchDiagnostics = isRecord(shipChamberHealth?.lastOpenCodeLaunchDiagnostics)
+      ? shipChamberHealth.lastOpenCodeLaunchDiagnostics
       : null;
     const actualLaunchArgs = launchDiagnostics && Array.isArray(launchDiagnostics.args)
       ? launchDiagnostics.args.filter((value): value is string => typeof value === 'string')
       : [];
-    const openChamberOpencodeResolution = openChamberOpencodeResolutionResult.data;
+    const shipChamberOpencodeResolution = shipChamberOpencodeResolutionResult.data;
     const configured =
-      openChamberOpencodeResolution && typeof openChamberOpencodeResolution.configured === 'string'
-        ? openChamberOpencodeResolution.configured
+      shipChamberOpencodeResolution && typeof shipChamberOpencodeResolution.configured === 'string'
+        ? shipChamberOpencodeResolution.configured
         : null;
     const resolved =
-      openChamberOpencodeResolution && typeof openChamberOpencodeResolution.resolved === 'string'
-        ? openChamberOpencodeResolution.resolved
-        : (openChamberHealth && typeof openChamberHealth.opencodeBinaryResolved === 'string' ? openChamberHealth.opencodeBinaryResolved : '');
+      shipChamberOpencodeResolution && typeof shipChamberOpencodeResolution.resolved === 'string'
+        ? shipChamberOpencodeResolution.resolved
+        : (shipChamberHealth && typeof shipChamberHealth.opencodeBinaryResolved === 'string' ? shipChamberHealth.opencodeBinaryResolved : '');
     const resolvedDir =
-      openChamberOpencodeResolution && typeof openChamberOpencodeResolution.resolvedDir === 'string'
-        ? openChamberOpencodeResolution.resolvedDir
+      shipChamberOpencodeResolution && typeof shipChamberOpencodeResolution.resolvedDir === 'string'
+        ? shipChamberOpencodeResolution.resolvedDir
         : '';
     const source =
-      openChamberOpencodeResolution && typeof openChamberOpencodeResolution.source === 'string'
-        ? openChamberOpencodeResolution.source
-        : (openChamberHealth && typeof openChamberHealth.opencodeBinarySource === 'string' ? openChamberHealth.opencodeBinarySource : '');
+      shipChamberOpencodeResolution && typeof shipChamberOpencodeResolution.source === 'string'
+        ? shipChamberOpencodeResolution.source
+        : (shipChamberHealth && typeof shipChamberHealth.opencodeBinarySource === 'string' ? shipChamberHealth.opencodeBinarySource : '');
     const configuredLaunchBinary =
-      openChamberOpencodeResolution && typeof openChamberOpencodeResolution.launchBinary === 'string'
-        ? openChamberOpencodeResolution.launchBinary
-        : (openChamberHealth && typeof openChamberHealth.opencodeLaunchBinary === 'string' ? openChamberHealth.opencodeLaunchBinary : '');
+      shipChamberOpencodeResolution && typeof shipChamberOpencodeResolution.launchBinary === 'string'
+        ? shipChamberOpencodeResolution.launchBinary
+        : (shipChamberHealth && typeof shipChamberHealth.opencodeLaunchBinary === 'string' ? shipChamberHealth.opencodeLaunchBinary : '');
     const configuredLaunchWrapperType =
-      openChamberOpencodeResolution && typeof openChamberOpencodeResolution.launchWrapperType === 'string'
-        ? openChamberOpencodeResolution.launchWrapperType
-        : (openChamberHealth && typeof openChamberHealth.opencodeLaunchWrapperType === 'string' ? openChamberHealth.opencodeLaunchWrapperType : '');
+      shipChamberOpencodeResolution && typeof shipChamberOpencodeResolution.launchWrapperType === 'string'
+        ? shipChamberOpencodeResolution.launchWrapperType
+        : (shipChamberHealth && typeof shipChamberHealth.opencodeLaunchWrapperType === 'string' ? shipChamberHealth.opencodeLaunchWrapperType : '');
     const configuredLaunchArgs =
-      openChamberOpencodeResolution && Array.isArray(openChamberOpencodeResolution.launchArgs)
-        ? openChamberOpencodeResolution.launchArgs.filter((value): value is string => typeof value === 'string')
-        : (openChamberHealth && Array.isArray(openChamberHealth.opencodeLaunchArgs)
-          ? openChamberHealth.opencodeLaunchArgs.filter((value): value is string => typeof value === 'string')
+      shipChamberOpencodeResolution && Array.isArray(shipChamberOpencodeResolution.launchArgs)
+        ? shipChamberOpencodeResolution.launchArgs.filter((value): value is string => typeof value === 'string')
+        : (shipChamberHealth && Array.isArray(shipChamberHealth.opencodeLaunchArgs)
+          ? shipChamberHealth.opencodeLaunchArgs.filter((value): value is string => typeof value === 'string')
           : []);
     const node =
-      openChamberOpencodeResolution && typeof openChamberOpencodeResolution.node === 'string'
-        ? openChamberOpencodeResolution.node
-        : (openChamberHealth && typeof openChamberHealth.nodeBinaryResolved === 'string' ? openChamberHealth.nodeBinaryResolved : '');
+      shipChamberOpencodeResolution && typeof shipChamberOpencodeResolution.node === 'string'
+        ? shipChamberOpencodeResolution.node
+        : (shipChamberHealth && typeof shipChamberHealth.nodeBinaryResolved === 'string' ? shipChamberHealth.nodeBinaryResolved : '');
     const bun =
-      openChamberOpencodeResolution && typeof openChamberOpencodeResolution.bun === 'string'
-        ? openChamberOpencodeResolution.bun
-        : (openChamberHealth && typeof openChamberHealth.bunBinaryResolved === 'string' ? openChamberHealth.bunBinaryResolved : '');
+      shipChamberOpencodeResolution && typeof shipChamberOpencodeResolution.bun === 'string'
+        ? shipChamberOpencodeResolution.bun
+        : (shipChamberHealth && typeof shipChamberHealth.bunBinaryResolved === 'string' ? shipChamberHealth.bunBinaryResolved : '');
     const detectedNow =
-      openChamberOpencodeResolution && typeof openChamberOpencodeResolution.detectedNow === 'string'
-        ? openChamberOpencodeResolution.detectedNow
+      shipChamberOpencodeResolution && typeof shipChamberOpencodeResolution.detectedNow === 'string'
+        ? shipChamberOpencodeResolution.detectedNow
         : '';
     const detectedSourceNow =
-      openChamberOpencodeResolution && typeof openChamberOpencodeResolution.detectedSourceNow === 'string'
-        ? openChamberOpencodeResolution.detectedSourceNow
+      shipChamberOpencodeResolution && typeof shipChamberOpencodeResolution.detectedSourceNow === 'string'
+        ? shipChamberOpencodeResolution.detectedSourceNow
         : '';
 
     if (configured !== null) {
@@ -467,8 +467,8 @@ export const buildOpenCodeStatusReport = async (): Promise<string> => {
       lines.push(`- launch-args: ${configuredLaunchArgs.length ? configuredLaunchArgs.join(' ') : '(none)'}`);
       lines.push(`- runtime: ${formatLaunchRuntime(configuredLaunchWrapperType || '', node, bun)}`);
     }
-    if (!openChamberOpencodeResolution && openChamberOpencodeResolutionResult.error) {
-      lines.push(`- resolution-endpoint: ${openChamberOpencodeResolutionResult.error}`);
+    if (!shipChamberOpencodeResolution && shipChamberOpencodeResolutionResult.error) {
+      lines.push(`- resolution-endpoint: ${shipChamberOpencodeResolutionResult.error}`);
     }
   }
 

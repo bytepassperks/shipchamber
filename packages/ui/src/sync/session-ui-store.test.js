@@ -469,7 +469,7 @@ describe('openNewSessionDraft project binding', () => {
     // A chat session leaves its managed scratch directory current; the project
     // to reopen on can only come from the recorded target.
     useDirectoryStore.getState().setDirectory(
-      '/Users/tester/.config/openchamber/chats/ses_chat',
+      '/Users/tester/.config/shipchamber/chats/ses_chat',
       { showOverlay: false },
     );
 
@@ -507,7 +507,7 @@ describe('openNewSessionDraft project binding', () => {
     // session's directory even when that session is a chat; its scratch
     // directory names no project.
     useSessionUIStore.getState().openNewSessionDraft({
-      directoryOverride: '/Users/tester/.config/openchamber/chats/ses_chat',
+      directoryOverride: '/Users/tester/.config/shipchamber/chats/ses_chat',
     });
     const draft = useSessionUIStore.getState().newSessionDraft;
 
@@ -522,7 +522,7 @@ describe('openNewSessionDraft project binding', () => {
     );
 
     useSessionUIStore.getState().openNewSessionDraft({
-      directoryOverride: '/Users/tester/.config/openchamber/chats/ses_chat',
+      directoryOverride: '/Users/tester/.config/shipchamber/chats/ses_chat',
     });
 
     expect(useSessionUIStore.getState().newSessionDraft.target).toBe('chat');
@@ -1017,7 +1017,7 @@ describe('routeMessage skill invocation', () => {
     expect(sendCommandCalls).toHaveLength(0);
     expect(sendMessageCalls).toHaveLength(1);
     expect(sendMessageCalls[0].text).toBe('Inspect auth flow carefully.');
-    expect(sendMessageCalls[0].additionalParts[0].metadata.openchamberContext.kind).toBe('code-comment');
+    expect(sendMessageCalls[0].additionalParts[0].metadata.shipchamberContext.kind).toBe('code-comment');
   });
 
   test('keeps session.command when the only extra part is pinned knowledge', async () => {
@@ -1396,7 +1396,7 @@ describe('missing session directory recovery', () => {
   });
 
   test('never probes a session that lives in its project root or in a managed chat directory', async () => {
-    const chatDirectory = '/Users/tester/.config/openchamber/chats/2026-09-05/session-abc';
+    const chatDirectory = '/Users/tester/.config/shipchamber/chats/2026-09-05/session-abc';
     useGlobalSessionsStore.setState({
       activeSessions: [worktreeSession('in-root', projectDirectory), worktreeSession('chat', chatDirectory)],
       archivedSessions: [],

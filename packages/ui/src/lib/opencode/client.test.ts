@@ -105,7 +105,7 @@ describe('opencodeClient directory availability', () => {
     headers: { 'Content-Type': 'application/json' },
   });
 
-  test('stats the directory through the OpenChamber filesystem route, never through OpenCode path resolution', async () => {
+  test('stats the directory through the ShipChamber filesystem route, never through OpenCode path resolution', async () => {
     runtimeFetchResults.push(json(200, { entries: [] }));
     expect(await opencodeClient.getDirectoryAvailability('/private/deleted-worktree')).toBe('available');
     expect(runtimeFetchCalls).toEqual([{ path: '/api/fs/list', query: { path: '/private/deleted-worktree' } }]);
@@ -137,8 +137,8 @@ describe('opencodeClient getFilesystemHomeInfo', () => {
   });
 
   test('returns the server-provided chats root', async () => {
-    fsHomeResponses.push(fsHomeResponse({ home: '/Users/tester', chatsRoot: '/srv/openchamber-chats' }));
-    expect(await opencodeClient.getFilesystemHomeInfo()).toEqual({ home: '/Users/tester', chatsRoot: '/srv/openchamber-chats' });
+    fsHomeResponses.push(fsHomeResponse({ home: '/Users/tester', chatsRoot: '/srv/shipchamber-chats' }));
+    expect(await opencodeClient.getFilesystemHomeInfo()).toEqual({ home: '/Users/tester', chatsRoot: '/srv/shipchamber-chats' });
   });
 
   test('returns the home for an older server that answers without chatsRoot', async () => {

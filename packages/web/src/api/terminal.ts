@@ -10,7 +10,7 @@ import {
   listTerminalShells,
   listTerminalSessions,
   touchTerminalSessions,
-} from '@openchamber/ui/lib/terminalApi';
+} from '@shipchamber/ui/lib/terminalApi';
 import type {
   TerminalAPI,
   TerminalHandlers,
@@ -18,7 +18,7 @@ import type {
   ResizeTerminalPayload,
   TerminalSession,
   ForceKillOptions,
-} from '@openchamber/ui/lib/api/types';
+} from '@shipchamber/ui/lib/api/types';
 
 export const createWebTerminalAPI = (): TerminalAPI => ({
   async listShells() {

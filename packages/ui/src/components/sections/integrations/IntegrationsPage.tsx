@@ -9,7 +9,7 @@ import { LinearSettings } from './LinearSettings';
 
 export const IntegrationsPage: React.FC = () => {
   const { t } = useI18n();
-  // GitHub sign-in is an OpenChamber server feature; the VS Code extension
+  // GitHub sign-in is an ShipChamber server feature; the VS Code extension
   // uses the editor's own GitHub session instead.
   const hasGitHub = !isVSCodeRuntime();
   const hasLinear = Boolean(getRegisteredRuntimeAPIs()?.linear);

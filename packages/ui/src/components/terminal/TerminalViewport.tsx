@@ -37,7 +37,7 @@ const loadGhostty = (): Promise<GhosttyRuntime> =>
 // once the fonts arrive. Runtimes without the Nerd Font hook resolve it at once.
 const TERMINAL_FONT_WAIT_MS = 2000;
 const loadNerdFonts = (): Promise<void> =>
-  Promise.resolve(window.__openchamberEnsureNerdFonts?.()).catch(() => undefined);
+  Promise.resolve(window.__shipchamberEnsureNerdFonts?.()).catch(() => undefined);
 
 const waitForTerminalFonts = (font: MonoFontOption) => {
   const loaded = Promise.all([loadMonoFont(font), loadNerdFonts()]).then(() => undefined);

@@ -3,7 +3,7 @@ import type { ProjectEntry } from '@/lib/api/types';
 import { useProjectsStore } from '@/stores/useProjectsStore';
 import { useSessionUIStore } from '@/sync/session-ui-store';
 import { useSession } from '@/sync/sync-context';
-import type { ProjectRef } from '@/lib/openchamberConfig';
+import type { ProjectRef } from '@/lib/shipchamberConfig';
 import { resolveProjectForSessionDirectory } from '@/lib/projectResolution';
 import type { WorktreeMetadata } from '@/types/worktree';
 

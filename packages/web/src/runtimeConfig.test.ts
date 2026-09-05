@@ -1,6 +1,6 @@
 import { afterAll, beforeEach, describe, expect, test, vi } from 'vitest';
 
-vi.mock('@openchamber/ui/lib/runtime-auth', () => ({
+vi.mock('@shipchamber/ui/lib/runtime-auth', () => ({
   getRuntimeBearerTokenSync: vi.fn(() => ''),
   getRuntimeExtraHeadersSync: vi.fn(() => ({})),
   refreshLocalRuntimeUrlAuthToken: vi.fn(() => Promise.resolve()),
@@ -8,22 +8,22 @@ vi.mock('@openchamber/ui/lib/runtime-auth', () => ({
   setRuntimeBearerToken: vi.fn(),
   setRuntimeExtraHeaders: vi.fn(),
 }));
-vi.mock('@openchamber/ui/lib/runtime-fetch', () => ({ installRuntimeFetchBridge: vi.fn() }));
-vi.mock('@openchamber/ui/lib/runtime-switch', () => ({
+vi.mock('@shipchamber/ui/lib/runtime-fetch', () => ({ installRuntimeFetchBridge: vi.fn() }));
+vi.mock('@shipchamber/ui/lib/runtime-switch', () => ({
   getRuntimeApiBaseUrl: vi.fn(() => ''),
   getRuntimeKey: vi.fn(() => 'local'),
   initializeRuntimeEndpoint: vi.fn(),
   switchRuntimeEndpoint: vi.fn(),
 }));
-vi.mock('@openchamber/ui/lib/desktopRelayRestore', () => ({ restoreDesktopRelayRuntime: vi.fn(() => Promise.resolve()) }));
-vi.mock('@openchamber/ui/lib/runtime-url', () => ({ configureRuntimeUrlResolver: vi.fn(() => ({})) }));
-vi.mock('@openchamber/ui/lib/opencode/client', () => ({ opencodeClient: { reconnectToRuntimeBaseUrl: vi.fn() } }));
+vi.mock('@shipchamber/ui/lib/desktopRelayRestore', () => ({ restoreDesktopRelayRuntime: vi.fn(() => Promise.resolve()) }));
+vi.mock('@shipchamber/ui/lib/runtime-url', () => ({ configureRuntimeUrlResolver: vi.fn(() => ({})) }));
+vi.mock('@shipchamber/ui/lib/opencode/client', () => ({ opencodeClient: { reconnectToRuntimeBaseUrl: vi.fn() } }));
 vi.mock('./api', () => ({ createWebAPIs: vi.fn() }));
 
-import { setRuntimeBearerToken, setRuntimeExtraHeaders } from '@openchamber/ui/lib/runtime-auth';
-import { initializeRuntimeEndpoint, switchRuntimeEndpoint } from '@openchamber/ui/lib/runtime-switch';
-import { restoreDesktopRelayRuntime } from '@openchamber/ui/lib/desktopRelayRestore';
-import { opencodeClient } from '@openchamber/ui/lib/opencode/client';
+import { setRuntimeBearerToken, setRuntimeExtraHeaders } from '@shipchamber/ui/lib/runtime-auth';
+import { initializeRuntimeEndpoint, switchRuntimeEndpoint } from '@shipchamber/ui/lib/runtime-switch';
+import { restoreDesktopRelayRuntime } from '@shipchamber/ui/lib/desktopRelayRestore';
+import { opencodeClient } from '@shipchamber/ui/lib/opencode/client';
 import { createConfiguredWebAPIs, readRuntimeBootstrapConfig } from './runtimeConfig';
 
 const originalWindow = globalThis.window;
@@ -37,7 +37,7 @@ const installWindow = (value: Record<string, unknown>) => {
 
 const makeWindow = (search = ''): Record<string, unknown> => {
   const value: Record<string, unknown> = {
-    location: { origin: 'openchamber-ui://app', search },
+    location: { origin: 'shipchamber-ui://app', search },
     setTimeout: vi.fn(() => 1),
   };
   value.parent = value;
@@ -59,26 +59,26 @@ afterAll(() => {
 describe('readRuntimeBootstrapConfig', () => {
   test('reads the runtime injected into the current window', () => {
     const current = makeWindow();
-    current.__OPENCHAMBER_API_BASE_URL__ = ' https://remote.example.com ';
-    current.__OPENCHAMBER_CLIENT_TOKEN__ = ' remote-token ';
-    current.__OPENCHAMBER_LOCAL_ORIGIN__ = ' http://127.0.0.1:3000 ';
-    current.__OPENCHAMBER_RUNTIME_HEADERS__ = { 'x-openchamber-relay': 'relay-value' };
-    current.__OPENCHAMBER_RELAY_HOST_ID__ = ' remote-host ';
+    current.__SHIPCHAMBER_API_BASE_URL__ = ' https://remote.example.com ';
+    current.__SHIPCHAMBER_CLIENT_TOKEN__ = ' remote-token ';
+    current.__SHIPCHAMBER_LOCAL_ORIGIN__ = ' http://127.0.0.1:3000 ';
+    current.__SHIPCHAMBER_RUNTIME_HEADERS__ = { 'x-shipchamber-relay': 'relay-value' };
+    current.__SHIPCHAMBER_RELAY_HOST_ID__ = ' remote-host ';
     installWindow(current);
 
     expect(readRuntimeBootstrapConfig()).toEqual({
       apiBaseUrl: 'https://remote.example.com',
       clientToken: 'remote-token',
       localOrigin: 'http://127.0.0.1:3000',
-      runtimeHeaders: { 'x-openchamber-relay': 'relay-value' },
+      runtimeHeaders: { 'x-shipchamber-relay': 'relay-value' },
       relayHostId: 'remote-host',
     });
   });
 
   test('does not read runtime credentials directly from a parent window', () => {
     const parent = makeWindow();
-    parent.__OPENCHAMBER_API_BASE_URL__ = 'https://remote.example.com';
-    parent.__OPENCHAMBER_CLIENT_TOKEN__ = 'remote-token';
+    parent.__SHIPCHAMBER_API_BASE_URL__ = 'https://remote.example.com';
+    parent.__SHIPCHAMBER_CLIENT_TOKEN__ = 'remote-token';
     const child = makeWindow('?ocPanel=session-chat&sessionId=ses_child');
     child.parent = parent;
     installWindow(child);
@@ -99,7 +99,7 @@ describe('createConfiguredWebAPIs', () => {
     const bootstrap = {
       apiBaseUrl: 'https://remote.example.com',
       clientToken: 'client-token',
-      localOrigin: 'openchamber-ui://app',
+      localOrigin: 'shipchamber-ui://app',
       runtimeHeaders: { 'x-runtime': 'value' },
       relayHostId: 'host-1',
     };
@@ -118,15 +118,15 @@ describe('createConfiguredWebAPIs', () => {
 
   test('uses the configured desktop host id across changing SSH tunnel URLs', () => {
     const current = makeWindow();
-    current.__OPENCHAMBER_DESKTOP_BOOT_OUTCOME__ = {
+    current.__SHIPCHAMBER_DESKTOP_BOOT_OUTCOME__ = {
       target: 'remote',
       status: 'ok',
       hostId: 'ssh-castle',
       url: 'http://127.0.0.1:62545',
       localAvailable: true,
     };
-    current.__OPENCHAMBER_API_BASE_URL__ = 'http://127.0.0.1:62545';
-    current.__OPENCHAMBER_LOCAL_ORIGIN__ = 'http://127.0.0.1:3901';
+    current.__SHIPCHAMBER_API_BASE_URL__ = 'http://127.0.0.1:62545';
+    current.__SHIPCHAMBER_LOCAL_ORIGIN__ = 'http://127.0.0.1:3901';
     installWindow(current);
 
     createConfiguredWebAPIs();
@@ -144,7 +144,7 @@ describe('createConfiguredWebAPIs', () => {
       hostEncPubJwk: { kty: 'EC', crv: 'P-256', x: 'public-x', y: 'public-y' },
     };
     const bootstrap = {
-      apiBaseUrl: 'openchamber-ui://app',
+      apiBaseUrl: 'shipchamber-ui://app',
       clientToken: 'client-token',
       localOrigin: 'http://127.0.0.1:3000',
       relayHostId: 'host-1',

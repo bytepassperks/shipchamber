@@ -1,51 +1,51 @@
 ---
 title: Змінні середовища
-description: Налаштуйте інтеграцію OpenChamber і OpenCode через змінні середовища.
+description: Налаштуйте інтеграцію ShipChamber і OpenCode через змінні середовища.
 ---
 
 # Змінні середовища
 
-OpenChamber читає ці змінні під час запуску. Для startup-сервісів `openchamber startup enable` типово зберігає snapshot поточного середовища, тому після змін перезапустіть цю команду.
+ShipChamber читає ці змінні під час запуску. Для startup-сервісів `shipchamber startup enable` типово зберігає snapshot поточного середовища, тому після змін перезапустіть цю команду.
 
-## Сервер OpenChamber
+## Сервер ShipChamber
 
-### `OPENCHAMBER_HOST`
+### `SHIPCHAMBER_HOST`
 
-Адреса, на якій слухає web-сервер OpenChamber. Використовуйте `0.0.0.0`, щоб відкрити доступ з інших машин.
+Адреса, на якій слухає web-сервер ShipChamber. Використовуйте `0.0.0.0`, щоб відкрити доступ з інших машин.
 
-### `OPENCHAMBER_UI_PASSWORD`
+### `SHIPCHAMBER_UI_PASSWORD`
 
 Пароль для browser UI. Використовуйте його для доступу не лише з localhost, тунелів або reverse proxy.
 
-### `OPENCHAMBER_API_ONLY`
+### `SHIPCHAMBER_API_ONLY`
 
-Запускає OpenChamber у headless mode, якщо встановлено `true` або `1`. API routes залишаються доступними для desktop і mobile clients, але browser UI не віддається.
+Запускає ShipChamber у headless mode, якщо встановлено `true` або `1`. API routes залишаються доступними для desktop і mobile clients, але browser UI не віддається.
 
-### `OPENCHAMBER_DATA_DIR`
+### `SHIPCHAMBER_DATA_DIR`
 
-Перевизначає директорію даних OpenChamber. Типово це `~/.config/openchamber`.
+Перевизначає директорію даних ShipChamber. Типово це `~/.config/shipchamber`.
 
-### `OPENCHAMBER_CHATS_DIR`
+### `SHIPCHAMBER_CHATS_DIR`
 
-Переносить директорії керованих чатів, які OpenChamber створює для чатів без проєкту. Типово це `~/.config/openchamber/chats`. Вкажіть директорію, яку може читати сервер OpenCode, якщо OpenChamber і OpenCode працюють від різних користувачів. Наявні чати не переносяться.
+Переносить директорії керованих чатів, які ShipChamber створює для чатів без проєкту. Типово це `~/.config/shipchamber/chats`. Вкажіть директорію, яку може читати сервер OpenCode, якщо ShipChamber і OpenCode працюють від різних користувачів. Наявні чати не переносяться.
 
-### `OPENCHAMBER_COMPRESS_API`
+### `SHIPCHAMBER_COMPRESS_API`
 
 Керує стисненням API-відповідей. `true` або `1` вмикає, `false` або `0` вимикає.
 
-### `OPENCHAMBER_SKIP_API_COMPRESSION`
+### `SHIPCHAMBER_SKIP_API_COMPRESSION`
 
-Вимикає стиснення API-відповідей, якщо встановлено `true` або `1`. Має пріоритет над `OPENCHAMBER_COMPRESS_API`.
+Вимикає стиснення API-відповідей, якщо встановлено `true` або `1`. Має пріоритет над `SHIPCHAMBER_COMPRESS_API`.
 
-### `OPENCHAMBER_VERBOSE_REQUEST_LOGS`
+### `SHIPCHAMBER_VERBOSE_REQUEST_LOGS`
 
 Вмикає детальні HTTP request logs, якщо встановлено `true` або `1`.
 
-### `OPENCHAMBER_UPDATE_API_URL`
+### `SHIPCHAMBER_UPDATE_API_URL`
 
 Перевизначає endpoint для перевірки оновлень. Більшості користувачів це не потрібно.
 
-### `OPENCHAMBER_PACKAGE_MANAGER`
+### `SHIPCHAMBER_PACKAGE_MANAGER`
 
 Примусово задає package manager для оновлень, якщо auto-detection помилився.
 
@@ -53,23 +53,23 @@ OpenChamber читає ці змінні під час запуску. Для st
 
 ### `OPENCODE_HOST`
 
-Підключає OpenChamber до вже запущеного OpenCode server. Значення має бути `http` або `https` origin з явним портом і без path, query або hash. `OPENCODE_HOST` має пріоритет над `OPENCODE_PORT`.
+Підключає ShipChamber до вже запущеного OpenCode server. Значення має бути `http` або `https` origin з явним портом і без path, query або hash. `OPENCODE_HOST` має пріоритет над `OPENCODE_PORT`.
 
 ### `OPENCODE_PORT`
 
-Задає порт OpenCode server. Для managed OpenCode це бажаний порт; з `OPENCODE_SKIP_START=true` OpenChamber підключається до зовнішнього сервера на цьому порту.
+Задає порт OpenCode server. Для managed OpenCode це бажаний порт; з `OPENCODE_SKIP_START=true` ShipChamber підключається до зовнішнього сервера на цьому порту.
 
 ### `OPENCODE_SKIP_START`
 
-Не дає OpenChamber запускати власний OpenCode server, якщо встановлено `true`.
+Не дає ShipChamber запускати власний OpenCode server, якщо встановлено `true`.
 
-### `OPENCHAMBER_OPENCODE_HOSTNAME`
+### `SHIPCHAMBER_OPENCODE_HOSTNAME`
 
-Hostname для OpenCode server, яким керує OpenChamber. Типово `127.0.0.1`.
+Hostname для OpenCode server, яким керує ShipChamber. Типово `127.0.0.1`.
 
 ### `OPENCODE_BINARY`
 
-Шлях до executable `opencode`, який має запускати OpenChamber.
+Шлях до executable `opencode`, який має запускати ShipChamber.
 
 ### `OPENCODE_CONFIG`
 
@@ -87,9 +87,9 @@ Hostname для OpenCode server, яким керує OpenChamber. Типово `
 
 Вибирає WSL distro для інтеграції OpenCode на Windows.
 
-### `OPENCHAMBER_OPENCODE_WSL_DISTRO`
+### `SHIPCHAMBER_OPENCODE_WSL_DISTRO`
 
-OpenChamber-specific alias для вибору WSL distro. `OPENCODE_WSL_DISTRO` має пріоритет, якщо задані обидві змінні.
+ShipChamber-specific alias для вибору WSL distro. `OPENCODE_WSL_DISTRO` має пріоритет, якщо задані обидві змінні.
 
 ### `OPENCODE_JWT_SECRET`
 
@@ -97,19 +97,19 @@ Secret для підпису UI auth tokens. Для постійних service d
 
 ## Terminal і Git
 
-### `OPENCHAMBER_TERMINAL_SHELL`
+### `SHIPCHAMBER_TERMINAL_SHELL`
 
-Shell executable для terminal sessions в OpenChamber.
+Shell executable для terminal sessions в ShipChamber.
 
-### `OPENCHAMBER_GIT_BINARY`
+### `SHIPCHAMBER_GIT_BINARY`
 
-Git executable для Git-функцій OpenChamber.
+Git executable для Git-функцій ShipChamber.
 
 ### `GIT_BINARY`
 
-Альтернативний override для Git executable. Для OpenChamber-specific налаштувань краще використовуйте `OPENCHAMBER_GIT_BINARY`.
+Альтернативний override для Git executable. Для ShipChamber-specific налаштувань краще використовуйте `SHIPCHAMBER_GIT_BINARY`.
 
-### `OPENCHAMBER_GIT_READ_CACHE_TTL_MS`
+### `SHIPCHAMBER_GIT_READ_CACHE_TTL_MS`
 
 TTL у мілісекундах для cached Git-backed file reads. Встановіть `0`, щоб вимкнути cache під час debugging.
 
@@ -117,25 +117,25 @@ TTL у мілісекундах для cached Git-backed file reads. Встан�
 
 ### `OPENAI_API_KEY`
 
-API key для voice-функцій OpenChamber, які викликають OpenAI-compatible services.
+API key для voice-функцій ShipChamber, які викликають OpenAI-compatible services.
 
-### `OPENCHAMBER_ALLOW_REMOTE_OPENAI_COMPAT_URLS`
+### `SHIPCHAMBER_ALLOW_REMOTE_OPENAI_COMPAT_URLS`
 
 Дозволяє remote OpenAI-compatible base URLs для voice-функцій, якщо встановлено `true` або `1`.
 
 ### `NGROK_AUTHTOKEN`
 
-ngrok auth token для tunnel-команд OpenChamber. Також можна налаштувати ngrok через `ngrok config add-authtoken <token>`.
+ngrok auth token для tunnel-команд ShipChamber. Також можна налаштувати ngrok через `ngrok config add-authtoken <token>`.
 
 ## Runtime helpers
 
 ### `BUN_BINARY`
 
-Bun executable, який OpenChamber має використовувати для запуску daemon processes.
+Bun executable, який ShipChamber має використовувати для запуску daemon processes.
 
 ### `BUN_INSTALL`
 
-Корінь інсталяції Bun. OpenChamber використовує його, щоб знайти `bin/bun` для daemon startup і updates.
+Корінь інсталяції Bun. ShipChamber використовує його, щоб знайти `bin/bun` для daemon startup і updates.
 
 ### `VITE_OPENCODE_URL`
 

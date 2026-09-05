@@ -140,11 +140,11 @@ export const canOpenLinearIssueInContextPanel = (options: {
 );
 
 export const getLinkedIssues = (session: Session | null | undefined): LinkedIssue[] => {
-  const openchamber = getSessionMetadata(session).openchamber;
-  if (!isRecord(openchamber) || !Array.isArray(openchamber.linked_issues)) return [];
+  const shipchamber = getSessionMetadata(session).shipchamber;
+  if (!isRecord(shipchamber) || !Array.isArray(shipchamber.linked_issues)) return [];
   // Malformed entries are dropped rather than rendered: a half-written link
   // has no row worth showing.
-  return openchamber.linked_issues.filter(isLinkedIssue);
+  return shipchamber.linked_issues.filter(isLinkedIssue);
 };
 
 export const withLinkedIssue = (
@@ -152,9 +152,9 @@ export const withLinkedIssue = (
   issue: LinkedIssue,
   linked: boolean,
 ): SessionMetadataRecord => {
-  const openchamber = isRecord(metadata.openchamber) ? metadata.openchamber : {};
-  const current = Array.isArray(openchamber.linked_issues)
-    ? openchamber.linked_issues.filter(isLinkedIssue)
+  const shipchamber = isRecord(metadata.shipchamber) ? metadata.shipchamber : {};
+  const current = Array.isArray(shipchamber.linked_issues)
+    ? shipchamber.linked_issues.filter(isLinkedIssue)
     : [];
   const withoutIssue = current.filter((entry) => entry.id !== issue.id);
   // Re-linking an existing entry replaces it, so a stale title can be refreshed
@@ -163,8 +163,8 @@ export const withLinkedIssue = (
 
   return {
     ...metadata,
-    openchamber: {
-      ...openchamber,
+    shipchamber: {
+      ...shipchamber,
       linked_issues: next,
     },
   };

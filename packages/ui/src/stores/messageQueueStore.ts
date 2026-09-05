@@ -47,7 +47,7 @@ export const normalizeFollowUpBehavior = (
 };
 
 /**
- * Who delivers the queue. Web, desktop, and mobile talk to an OpenChamber
+ * Who delivers the queue. Web, desktop, and mobile talk to an ShipChamber
  * server that owns the queue and sends it whether or not any UI is open. VS
  * Code has no server of its own, so the extension UI keeps the local queue
  * and the foreground auto-send hook.
@@ -822,11 +822,11 @@ const serverUpdatedEventSchema = z.object({
 });
 
 export type MessageQueueUpdatedEvent = {
-    type: 'openchamber:message-queue.updated';
+    type: 'shipchamber:message-queue.updated';
     properties: z.infer<typeof serverUpdatedEventSchema>['properties'];
 };
 
-/** `openchamber:message-queue.updated` broadcast → projection. */
+/** `shipchamber:message-queue.updated` broadcast → projection. */
 export const applyMessageQueueUpdatedEvent = (payload: Event | MessageQueueUpdatedEvent, expectedRuntimeKey: string): void => {
     if (!isServerOwnedMessageQueue()) return;
     const parsed = serverUpdatedEventSchema.safeParse(payload);

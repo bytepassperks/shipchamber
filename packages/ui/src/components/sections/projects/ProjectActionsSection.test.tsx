@@ -11,7 +11,7 @@ mock.module('@/lib/desktop', () => ({ isDesktopShell: () => false }));
 mock.module('@/stores/useDesktopSshStore', () => ({
   useDesktopSshStore: <T,>(selector: (state: typeof desktopSshState) => T): T => selector(desktopSshState),
 }));
-mock.module('@/lib/openchamberConfig', () => ({
+mock.module('@/lib/shipchamberConfig', () => ({
   getProjectActionsState: async () => ({
     actions: [{ id: 'build', name: 'Build', command: 'echo build', icon: 'build' }],
     primaryActionId: null,

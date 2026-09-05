@@ -157,7 +157,7 @@ export async function startLinearIssueSession(args: {
     void sessionActions.updateSessionTitle(sessionId, sessionTitle).catch(() => undefined);
 
     try {
-      useSessionUIStore.getState().initializeNewOpenChamberSession(sessionId, useConfigStore.getState().agents);
+      useSessionUIStore.getState().initializeNewShipChamberSession(sessionId, useConfigStore.getState().agents);
     } catch {
       // ignore
     }

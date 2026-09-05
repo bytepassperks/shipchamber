@@ -6,7 +6,7 @@ on:
 
 jobs:
   help:
-    if: github.event.comment.user.login != 'openchamber-bot[bot]' && (github.event.comment.body == '@openchamber-bot help' || startsWith(github.event.comment.body, '@openchamber-bot help '))
+    if: github.event.comment.user.login != 'shipchamber-bot[bot]' && (github.event.comment.body == '@shipchamber-bot help' || startsWith(github.event.comment.body, '@shipchamber-bot help '))
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -45,7 +45,7 @@ jobs:
           first_line="${COMMENT_BODY%%$'\n'*}"
 
           case "$first_line" in
-            "@openchamber-bot help"|"@openchamber-bot help "*)
+            "@shipchamber-bot help"|"@shipchamber-bot help "*)
               ;;
             *)
               echo "Unsupported help command: $first_line" >&2
@@ -53,22 +53,22 @@ jobs:
               ;;
           esac
 
-          gh issue comment "$ISSUE_NUMBER" --body "<h3>OpenChamber Bot Commands</h3>
+          gh issue comment "$ISSUE_NUMBER" --body "<h3>ShipChamber Bot Commands</h3>
 
           Use one command at the start of a comment. Any text after the command is passed as maintainer focus.
 
-          - <code>@openchamber-bot review [focus]</code> — review a pull request.
-          - <code>@openchamber-bot summarize [focus]</code> — summarize an issue or pull request discussion.
-          - <code>@openchamber-bot triage [focus]</code> — triage an issue.
-          - <code>@openchamber-bot reproduce [focus]</code> — attempt to reproduce an issue.
-          - <code>@openchamber-bot help</code> — show this help message.
+          - <code>@shipchamber-bot review [focus]</code> — review a pull request.
+          - <code>@shipchamber-bot summarize [focus]</code> — summarize an issue or pull request discussion.
+          - <code>@shipchamber-bot triage [focus]</code> — triage an issue.
+          - <code>@shipchamber-bot reproduce [focus]</code> — attempt to reproduce an issue.
+          - <code>@shipchamber-bot help</code> — show this help message.
 
           <h4>Examples</h4>
 
-          - <code>@openchamber-bot review please check the latest fix</code>
-          - <code>@openchamber-bot summarize focus on unresolved blockers</code>
-          - <code>@openchamber-bot triage this looks like a Windows desktop regression</code>
-          - <code>@openchamber-bot reproduce try the steps from the latest reporter comment</code>"
+          - <code>@shipchamber-bot review please check the latest fix</code>
+          - <code>@shipchamber-bot summarize focus on unresolved blockers</code>
+          - <code>@shipchamber-bot triage this looks like a Windows desktop regression</code>
+          - <code>@shipchamber-bot reproduce try the steps from the latest reporter comment</code>"
 
           if [ -n "$EYES_REACTION_ID" ]; then
             gh api \

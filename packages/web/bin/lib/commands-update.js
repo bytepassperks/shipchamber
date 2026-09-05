@@ -32,7 +32,7 @@ function createUpdateCommand({ importFromFilePath, packageManagerPath, serveComm
     const currentVersion = getCurrentVersion();
 
     if (showOutput) {
-      clackIntro('OpenChamber Update');
+      clackIntro('ShipChamber Update');
     }
 
     if (showOutput && !updateSpin) {

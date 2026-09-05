@@ -6,13 +6,13 @@ OpenCode connects each configured MCP server once, when a project directory is
 first used. A server that does not come up then is marked `failed` and never
 retried; a server whose live connection later drops is marked `failed` too and
 stays that way until OpenCode restarts. This module injects a small plugin into
-the OpenCode process OpenChamber launches that reconnects those servers, so a
+the OpenCode process ShipChamber launches that reconnects those servers, so a
 server that was slow to start or crashed mid-session comes back on its own.
 
 ## Runtime flow
 
 1. `prepareManagedOpenCodeEnv(configContent)` materializes the plugin under
-   `<openchamber-data-dir>/mcp-reconnect/` and appends its `file://` URL to
+   `<shipchamber-data-dir>/mcp-reconnect/` and appends its `file://` URL to
    `OPENCODE_CONFIG_CONTENT` through the shared merge in
    `packages/web/server/lib/opencode/managed-plugin-config.js`.
 2. It is always on for managed OpenCode. There is no setting, because it only
@@ -51,5 +51,5 @@ a while after the server is back.
 
 - Web and Desktop managed OpenCode: injected automatically.
 - External OpenCode (`OPENCODE_HOST` or skip-start) and VS Code's separate
-  OpenCode lifecycle: not injected, because OpenChamber does not control that
+  OpenCode lifecycle: not injected, because ShipChamber does not control that
   process environment.

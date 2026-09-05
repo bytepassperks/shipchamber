@@ -1,19 +1,19 @@
 {
-  "name": "@openchamber/web",
+  "name": "@shipchamber/web",
   "version": "1.22.2",
   "private": false,
   "type": "module",
   "main": "./server/index.js",
   "types": "./server/index.d.ts",
   "bin": {
-    "openchamber": "./bin/cli.js"
+    "shipchamber": "./bin/cli.js"
   },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "dev": "bun run build:watch",
-    "dev:server": "OPENCHAMBER_RELAY_HOST=${OPENCHAMBER_RELAY_HOST:-off} bun server/index.js --port ${OPENCHAMBER_PORT:-3001}",
+    "dev:server": "SHIPCHAMBER_RELAY_HOST=${SHIPCHAMBER_RELAY_HOST:-off} bun server/index.js --port ${SHIPCHAMBER_PORT:-3001}",
     "dev:server:watch": "node ./scripts/dev-server-watch.mjs",
     "build": "vite build",
     "build:watch": "vite build --watch",

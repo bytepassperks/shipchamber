@@ -1,11 +1,11 @@
-import type { RuntimeAPIs } from '@openchamber/ui/lib/api/types';
+import type { RuntimeAPIs } from '@shipchamber/ui/lib/api/types';
 import {
   createRuntimeUrlResolver,
   getRuntimeUrlResolver,
   setRuntimeUrlResolver,
   type RuntimeUrlResolver,
-} from '@openchamber/ui/lib/runtime-url';
-import { useDirectoryStore } from '@openchamber/ui/stores/useDirectoryStore';
+} from '@shipchamber/ui/lib/runtime-url';
+import { useDirectoryStore } from '@shipchamber/ui/stores/useDirectoryStore';
 import { createWebTerminalAPI } from './terminal';
 import { createWebGitAPI } from './git';
 import { createWebFilesAPI } from './files';

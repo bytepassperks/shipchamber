@@ -39,12 +39,12 @@ const createRuntime = async () => {
 };
 
 describe('settings runtime', () => {
-  it('uses OpenChamber themes when a new install has no theme preferences', async () => {
+  it('uses ShipChamber themes when a new install has no theme preferences', async () => {
     const { runtime, cleanup } = await createRuntime();
     try {
       await expect(runtime.readSettingsFromDiskMigrated()).resolves.toMatchObject({
-        lightThemeId: 'openchamber-light',
-        darkThemeId: 'openchamber-dark',
+        lightThemeId: 'shipchamber-light',
+        darkThemeId: 'shipchamber-dark',
       });
     } finally {
       await cleanup();

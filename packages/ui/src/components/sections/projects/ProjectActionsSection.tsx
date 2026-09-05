@@ -27,9 +27,9 @@ import { isDesktopShell } from '@/lib/desktop';
 import {
   getProjectActionsState,
   saveProjectActionsState,
-  type OpenChamberProjectAction,
+  type ShipChamberProjectAction,
   type ProjectRef,
-} from '@/lib/openchamberConfig';
+} from '@/lib/shipchamberConfig';
 import {
   buildProjectActionDesktopForwardOptions,
   PROJECT_ACTION_ICON_MAP,
@@ -48,7 +48,7 @@ import { SettingsInfoHint } from '@/components/sections/shared/SettingsInfoHint'
 import { useI18n } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
-type EditableProjectAction = OpenChamberProjectAction;
+type EditableProjectAction = ShipChamberProjectAction;
 
 const AUTO_SAVE_DELAY_MS = 450;
 const PROJECT_RUN_IN_PARENT_VALUE = '__project__';

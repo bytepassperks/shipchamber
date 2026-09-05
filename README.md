@@ -1,17 +1,15 @@
-# <picture><source media="(prefers-color-scheme: dark)" srcset="docs/references/badges/openchamber-logo-dark.svg"><img src="docs/references/badges/openchamber-logo-light.svg" width="32" height="32" align="absmiddle" /></picture> OpenChamber
+# <picture><source media="(prefers-color-scheme: dark)" srcset="docs/references/badges/shipchamber-logo-dark.svg"><img src="docs/references/badges/shipchamber-logo-light.svg" width="32" height="32" align="absmiddle" /></picture> ShipChamber
 
-[![GitHub stars](https://img.shields.io/github/stars/openchamber/openchamber?style=flat&labelColor=100F0F&color=66800B)](https://github.com/openchamber/openchamber/stargazers)
-[![GitHub release](https://img.shields.io/github/v/release/openchamber/openchamber?style=flat&labelColor=100F0F&color=205EA6)](https://github.com/openchamber/openchamber/releases/latest)
-[![Discord](https://img.shields.io/badge/Discord-join.svg?style=flat&labelColor=100F0F&color=8B7EC8&logo=discord&logoColor=FFFCF0)](https://discord.gg/ZYRSdnwwKA)
-[![Support the project](https://img.shields.io/badge/Support-Project-black?style=flat&labelColor=100F0F&color=EC8B49&logo=patreon&logoColor=FFFCF0)](https://www.patreon.com/openchamber)
+[![GitHub stars](https://img.shields.io/github/stars/bytepassperks/shipchamber?style=flat&labelColor=100F0F&color=66800B)](https://github.com/bytepassperks/shipchamber/stargazers)
+[![GitHub release](https://img.shields.io/github/v/release/bytepassperks/shipchamber?style=flat&labelColor=100F0F&color=205EA6)](https://github.com/bytepassperks/shipchamber/releases/latest)
 
 ## Run agent work. Keep control. Ship from anywhere.
 
-**OpenChamber is an open-source workspace for running and reviewing AI coding work on desktop, web, VS Code, and mobile.**
+**ShipChamber is a workspace for running and reviewing AI coding work on desktop, web, VS Code, and mobile.**
 
 Start agent work, see what changed, and take it through review and release. Your projects and sessions remain available when you switch devices or step away.
 
-![OpenChamber Chat](docs/references/chat_example.png)
+![ShipChamber Chat](docs/references/chat_example.png)
 
 <details>
 <summary>More screenshots</summary>
@@ -19,17 +17,17 @@ Start agent work, see what changed, and take it through review and release. Your
 ![VS Code Extension](packages/vscode/extension.jpg)
 
 <p>
-<img src="docs/references/pwa_chat_example.png" width="45%" alt="OpenChamber PWA chat">
-<img src="docs/references/pwa_diff_example.png" width="45%" alt="OpenChamber PWA diff review">
+<img src="docs/references/pwa_chat_example.png" width="45%" alt="ShipChamber PWA chat">
+<img src="docs/references/pwa_diff_example.png" width="45%" alt="ShipChamber PWA diff review">
 </p>
 
 </details>
 
-## What you can do with OpenChamber
+## What you can do with ShipChamber
 
 ### Goals that continue on their own
 
-Give a session a finish line with **Session Goals**. OpenChamber checks the result after every turn and keeps the agent working until it completes the goal, gets blocked, or reaches the limit you set. It can continue after you close the app.
+Give a session a finish line with **Session Goals**. ShipChamber checks the result after every turn and keeps the agent working until it completes the goal, gets blocked, or reaches the limit you set. It can continue after you close the app.
 
 ### Compare and combine runs
 
@@ -45,7 +43,7 @@ Open your app beside the conversation with **Preview**. Point at an element to s
 
 ### GitHub context from issue to pull request
 
-Start a session from a GitHub issue or pull request with its context attached. Send failed checks or review comments back to the agent, then update or merge the pull request from OpenChamber.
+Start a session from a GitHub issue or pull request with its context attached. Send failed checks or review comments back to the agent, then update or merge the pull request from ShipChamber.
 
 ### Continue on another device
 
@@ -71,53 +69,53 @@ Run a prompt once, daily, weekly, or on a cron schedule. Scheduled tasks can use
 | **Web / PWA** | Open your workspace in a browser, install it as an app, and stay up to date through background notifications |
 | **VS Code** | Keep sessions beside your code, send selections to the agent, open results in the editor, and compare parallel runs |
 | **iOS / Android** | Review and steer work away from your desk, receive completion alerts, and use the terminal with touch controls |
-| **CLI / Server** | Run OpenChamber on a workstation or server, schedule work, manage remote access, and keep it available after login |
+| **CLI / Server** | Run ShipChamber on a workstation or server, schedule work, manage remote access, and keep it available after login |
 
 ## Quick start
 
 ### Desktop for macOS, Windows, and Linux
 
-Download the latest release from [GitHub Releases](https://github.com/openchamber/openchamber/releases/latest). Desktop bundles the matching OpenCode CLI, so no separate OpenCode installation is required.
+Download the latest release from [GitHub Releases](https://github.com/bytepassperks/shipchamber/releases/latest). Desktop bundles the matching OpenCode CLI, so no separate OpenCode installation is required.
 
 Linux releases are available as x86_64 and ARM64 AppImages. Make the downloaded AppImage executable and keep it in a writable location for in-app updates:
 
 ```bash
-chmod +x OpenChamber-*.AppImage
-./OpenChamber-*.AppImage
+chmod +x ShipChamber-*.AppImage
+./ShipChamber-*.AppImage
 ```
 
 Linux AppImages require FUSE (`libfuse.so.2`). Without FUSE, run with `APPIMAGE_EXTRACT_AND_RUN=1`.
 
 ### VS Code
 
-Install [OpenChamber from the Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=fedaykindev.openchamber), or search for "OpenChamber" in Extensions.
+Install [ShipChamber from the Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=bytepassperks.shipchamber), or search for "ShipChamber" in Extensions.
 
 ### CLI for Web and PWA
 
 Requires Node.js 22+. CLI/Web and VS Code use your installed [OpenCode CLI](https://opencode.ai).
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/openchamber/openchamber/main/scripts/install.sh | bash
-openchamber --ui-password be-creative-here
+curl -fsSL https://raw.githubusercontent.com/bytepassperks/shipchamber/main/scripts/install.sh | bash
+shipchamber --ui-password be-creative-here
 ```
 
 Common operations:
 
 ```bash
-openchamber status
-openchamber connect-url --qr
-openchamber tunnel start --provider cloudflare --mode quick --qr
-openchamber startup enable
-openchamber logs
-openchamber stop
-openchamber update
+shipchamber status
+shipchamber connect-url --qr
+shipchamber tunnel start --provider cloudflare --mode quick --qr
+shipchamber startup enable
+shipchamber logs
+shipchamber stop
+shipchamber update
 ```
 
-OpenChamber binds to localhost by default. Use `--lan` only on a trusted network and protect browser access with `--ui-password`.
+ShipChamber binds to localhost by default. Use `--lan` only on a trusted network and protect browser access with `--ui-password`.
 
 ## Guides
 
-Go deeper with the OpenChamber guides:
+Go deeper with the ShipChamber guides:
 
 - [Quick start](packages/docs/content/docs/quickstart.mdx)
 - [Installation](packages/docs/content/docs/install.mdx)
@@ -136,11 +134,11 @@ For self-hosting details, see the [reverse proxy guide](docs/REVERSE_PROXY.md). 
 
 ## Why OpenCode?
 
-OpenChamber uses [OpenCode](https://opencode.ai) to run coding agents. We chose it because it is open source, has a solid API, and is easy to extend.
+ShipChamber uses [OpenCode](https://opencode.ai) to run coding agents. We chose it because it is open source, has a solid API, and is easy to extend.
 
-OpenChamber handles the rest of the workflow. You can decide what to try, keep the agent on track, review the result, connect from another device, and ship the change.
+ShipChamber handles the rest of the workflow. You can decide what to try, keep the agent on track, review the result, connect from another device, and ship the change.
 
-OpenChamber is an independent project and is not affiliated with the OpenCode team.
+ShipChamber is an independent project and is not affiliated with the OpenCode team.
 
 ## Contributing
 
@@ -150,7 +148,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup and contribution 
 
 Special thanks to:
 
-- [OpenCode](https://opencode.ai) for the API and open-source architecture OpenChamber builds on
+- [OpenCode](https://opencode.ai) for the API and open-source architecture ShipChamber builds on
 - [Pierre](https://pierrejs-docs.vercel.app/) for the diff viewer and syntax highlighting
 - [Ghostty-web](https://github.com/coder/ghostty-web) for its Ghostty web renderer
 - [Yulia Ivashko](https://github.com/yulia-ivashko), who built the firework celebration that plays on every successful push

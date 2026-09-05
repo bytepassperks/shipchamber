@@ -88,7 +88,7 @@ afterEach(() => {
 
 describe("persisted directory sessions", () => {
   test("keeps one runtime-scoped startup snapshot for managed chats", async () => {
-    const chat = session(1, 2, "Chat", "/home/user/.config/openchamber/chats/2026-08-21/session-a")
+    const chat = session(1, 2, "Chat", "/home/user/.config/shipchamber/chats/2026-08-21/session-a")
     persistManagedChatSessions([session(2, 3), chat])
     await waitForPersistence()
 

@@ -109,7 +109,7 @@ Gathering is complete when every user-visible change has evidence, a known platf
 
 ## VS Code section
 
-An entry belongs here only when the extension actually mounts the surface: trace from `packages/vscode/webview/main.tsx` → `VSCodeApp` → `VSCodeLayout`, which mounts a subset of the shared UI, and read the surface map in `packages/vscode/src/DOCUMENTATION.md`. Server-side changes have no entry here; the extension runs no OpenChamber server. Prefixes drop the `VS Code:` part. Bullets are written separately from the App section rather than tagged, so reachability is a decision made per bullet. When reachability is uncertain, leave the entry out; a false entry becomes a bug report.
+An entry belongs here only when the extension actually mounts the surface: trace from `packages/vscode/webview/main.tsx` → `VSCodeApp` → `VSCodeLayout`, which mounts a subset of the shared UI, and read the surface map in `packages/vscode/src/DOCUMENTATION.md`. Server-side changes have no entry here; the extension runs no ShipChamber server. Prefixes drop the `VS Code:` part. Bullets are written separately from the App section rather than tagged, so reachability is a decision made per bullet. When reachability is uncertain, leave the entry out; a false entry becomes a bug report.
 
 ## Credit
 

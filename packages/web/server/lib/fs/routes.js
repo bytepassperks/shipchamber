@@ -87,7 +87,7 @@ const resolveOutsideFileGrant = async ({ token, targetPath, scope, fsPromises })
 };
 
 const createCommandTimeoutMs = () => {
-  const raw = Number(process.env.OPENCHAMBER_FS_EXEC_TIMEOUT_MS);
+  const raw = Number(process.env.SHIPCHAMBER_FS_EXEC_TIMEOUT_MS);
   if (Number.isFinite(raw) && raw > 0) return raw;
   return 5 * 60 * 1000;
 };
@@ -97,19 +97,19 @@ const createCommandTimeoutMs = () => {
 // absorbs the burst of identical lookups a fresh client (e.g. right after a
 // page reload) fires for every project. Set to 0 to disable caching.
 const createGitReadCacheTtlMs = () => {
-  const raw = Number(process.env.OPENCHAMBER_GIT_READ_CACHE_TTL_MS);
+  const raw = Number(process.env.SHIPCHAMBER_GIT_READ_CACHE_TTL_MS);
   if (Number.isFinite(raw) && raw >= 0) return raw;
   return 30 * 1000;
 };
 
 const createGitCheckIgnoreTimeoutMs = () => {
-  const raw = Number(process.env.OPENCHAMBER_GIT_CHECK_IGNORE_TIMEOUT_MS);
+  const raw = Number(process.env.SHIPCHAMBER_GIT_CHECK_IGNORE_TIMEOUT_MS);
   if (Number.isFinite(raw) && raw >= 0) return raw;
   return 2500;
 };
 
 const createUploadMaxBytes = () => {
-  const raw = Number(process.env.OPENCHAMBER_FS_UPLOAD_MAX_BYTES);
+  const raw = Number(process.env.SHIPCHAMBER_FS_UPLOAD_MAX_BYTES);
   if (Number.isFinite(raw) && raw > 0) return Math.floor(raw);
   return 100 * 1024 * 1024;
 };
@@ -523,15 +523,15 @@ export const registerFsRoutes = (app, dependencies) => {
     resolveProjectDirectory,
     buildAugmentedPath,
     resolveGitBinaryForSpawn,
-    openchamberUserConfigRoot,
+    shipchamberUserConfigRoot,
     managedChatsRoot,
   } = dependencies;
   // Chat worktrees may live outside every project workspace; both managed
   // roots stay valid filesystem targets.
   const chatsRoot = typeof managedChatsRoot === 'string' && managedChatsRoot.trim()
     ? path.resolve(managedChatsRoot.trim())
-    : path.join(openchamberUserConfigRoot, 'chats');
-  const managedRoots = [path.resolve(openchamberUserConfigRoot), chatsRoot];
+    : path.join(shipchamberUserConfigRoot, 'chats');
+  const managedRoots = [path.resolve(shipchamberUserConfigRoot), chatsRoot];
   const realpathCache = createRealpathCache({
     realpath: fsPromises.realpath.bind(fsPromises),
   });

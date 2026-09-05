@@ -18,7 +18,7 @@ import type { AttachedFile } from '@/stores/types/sessionTypes';
  * reviewFlow) so the main chat's `currentSessionId` is never switched; the
  * prompt is routed to the fork with `SendMessageOptions.sessionId`.
  *
- * The parent session's metadata carries `openchamber.btwSessionID` (see
+ * The parent session's metadata carries `shipchamber.btwSessionID` (see
  * `sessionBtwMetadata`), so the panel belongs to the parent session alone,
  * follows the user as they navigate between sessions, and survives reloads.
  */

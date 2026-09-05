@@ -2,17 +2,17 @@ import { describe, expect, it, vi } from 'vitest';
 import { resolveOpenCodeUpgradeCapability } from './upgrade-capability.js';
 
 describe('OpenCode upgrade capability', () => {
-  it('assigns bundled binaries to the OpenChamber updater', () => {
+  it('assigns bundled binaries to the ShipChamber updater', () => {
     const isBundledBinary = vi.fn(() => true);
 
     expect(resolveOpenCodeUpgradeCapability({
       isExternal: false,
       hasManagedProcess: true,
-      activeBinary: '/Applications/OpenChamber.app/Contents/Resources/opencode-cli/opencode',
+      activeBinary: '/Applications/ShipChamber.app/Contents/Resources/opencode-cli/opencode',
       isBundledBinary,
     })).toEqual({
       supported: false,
-      manager: 'openchamber',
+      manager: 'shipchamber',
       reason: 'bundled',
     });
   });

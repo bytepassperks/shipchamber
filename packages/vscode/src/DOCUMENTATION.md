@@ -80,10 +80,10 @@ The webview build emits each worker as one self-contained file. VS Code webviews
 
 - `bridge-permission-auto-accept-runtime.ts`
   - Owns the persisted VS Code permission auto-accept policy and its GET/PUT bridge contract.
-  - Serializes reads and read-modify-write updates, persists a monotonic policy revision, and broadcasts the exact committed snapshot to every active OpenChamber webview. Permission replies remain foreground UI-owned because VS Code does not run the OpenChamber server runtime.
+  - Serializes reads and read-modify-write updates, persists a monotonic policy revision, and broadcasts the exact committed snapshot to every active ShipChamber webview. Permission replies remain foreground UI-owned because VS Code does not run the ShipChamber server runtime.
 
 - `InlineCommentThreads.ts`
-  - Owns the `openchamber.inlineComments` comment controller: the gutter `+` range, the thread opened by `openchamber.addLineComment`, and every thread a submitted comment leaves anchored in the editor until the message goes out.
+  - Owns the `shipchamber.inlineComments` comment controller: the gutter `+` range, the thread opened by `shipchamber.addLineComment`, and every thread a submitted comment leaves anchored in the editor until the message goes out.
   - A thread never owns a draft. It mints the draft id, hands the payload to a chat webview with the same routing as Add to Context (the active session panel when one exists, else the sidebar, revealed if needed), and follows the webview's whole-draft-list `inlineComments:sync` snapshots: present means show, absent after having been seen means dispose. A snapshot is tagged with the surface that produced it (a panel id or `sidebar`) and only decides that surface's own threads, because every webview runs its own draft store.
   - A comment the composer never confirms holding within 30 s is retracted from every surface's pending hold, its thread disposed, and the user told, so a thread cannot promise a send that will never happen.
   - `inlineCommentSelection.ts` holds the pure pieces (line ranges, the diff-side and real-path resolution for `git:` documents, the pending hold, removal broadcast, thread fate) without the `vscode` import so they are unit-tested directly.
@@ -162,7 +162,7 @@ Handlers with no reachable caller in the VS Code webview.
 
 | Handler | Why unreachable |
 |---|---|
-| `api:git/ignore-openchamber` | No reference anywhere in `packages/vscode/webview` |
+| `api:git/ignore-shipchamber` | No reference anywhere in `packages/vscode/webview` |
 | `api:git/commit`, `api:git/commit-files`, `api:git/commit-file-diff` | Only `GitView` and `views/git/*` call them |
 | `api:git/log` (write paths), `api:git/checkout`, `api:git/checkout-commit`, `api:git/reset-to-commit`, `api:git/revert-commit`, `api:git/cherry-pick` | `views/git/HistoryCommitRow.tsx` only |
 | `api:git/merge`, `api:git/merge/abort`, `api:git/merge/continue`, `api:git/rebase`, `api:git/rebase/abort`, `api:git/rebase/continue`, `api:git/conflict-details` | `GitView` only |
@@ -202,9 +202,9 @@ enforces that, and it is the check to run whenever a feature adds a new string.
 
 The pre-bundle loading splash in `webviewHtml.ts` is separate: its strings are
 inlined in the generated HTML because the splash renders before the webview
-bundle loads. It picks them from OpenChamber's own saved locale
-(`openchamber.i18n.v1` in webview localStorage) and, before the user has
+bundle loads. It picks them from ShipChamber's own saved locale
+(`shipchamber.i18n.v1` in webview localStorage) and, before the user has
 chosen one, from VS Code's display language, which the HTML exposes as
-`window.__OPENCHAMBER_HOST_LANGUAGE__`. The UI bundle reads the same value as
+`window.__SHIPCHAMBER_HOST_LANGUAGE__`. The UI bundle reads the same value as
 its default locale (`detectInitialLocale`), so a fresh install in a supported
 language starts in that language on both the splash and the app.

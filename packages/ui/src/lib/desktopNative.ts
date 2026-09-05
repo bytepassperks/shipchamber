@@ -11,12 +11,12 @@ type RelayDevTunnelBridge = {
 
 declare global {
   interface Window {
-    __OPENCHAMBER_DESKTOP__?: RelayDevTunnelBridge;
+    __SHIPCHAMBER_DESKTOP__?: RelayDevTunnelBridge;
   }
 }
 
 const getRelayDevTunnelBridge = (): RelayDevTunnelBridge | null => {
-  return globalThis.window?.__OPENCHAMBER_DESKTOP__ ?? null;
+  return globalThis.window?.__SHIPCHAMBER_DESKTOP__ ?? null;
 };
 
 export const listenForDesktopRelayDevTunnels = (handler: (event: RelayDevTunnelEvent) => void): boolean => {

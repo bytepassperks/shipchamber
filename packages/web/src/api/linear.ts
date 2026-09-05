@@ -27,8 +27,8 @@ import type {
   LinearWorkflowState,
   LinearUserSummary,
   LinearWorkspaceSummary,
-} from '@openchamber/ui/lib/api/types';
-import { runtimeFetch } from '@openchamber/ui/lib/runtime-fetch';
+} from '@shipchamber/ui/lib/api/types';
+import { runtimeFetch } from '@shipchamber/ui/lib/runtime-fetch';
 
 type LinearJson = {
   connected?: boolean;

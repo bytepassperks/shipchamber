@@ -2,12 +2,12 @@ import type { DesktopBootOutcome } from '@/lib/desktopBoot';
 
 declare global {
   interface Window {
-    __OPENCHAMBER_HOME__?: string;
-    __OPENCHAMBER_MACOS_MAJOR__?: number;
-    __OPENCHAMBER_LOCAL_ORIGIN__?: string;
-    __OPENCHAMBER_ELECTRON__?: { runtime?: string; arch?: string; trayEnabled?: boolean };
-    __OPENCHAMBER_PLATFORM__?: string;
-    __OPENCHAMBER_DESKTOP_BOOT_OUTCOME__?: DesktopBootOutcome;
+    __SHIPCHAMBER_HOME__?: string;
+    __SHIPCHAMBER_MACOS_MAJOR__?: number;
+    __SHIPCHAMBER_LOCAL_ORIGIN__?: string;
+    __SHIPCHAMBER_ELECTRON__?: { runtime?: string; arch?: string; trayEnabled?: boolean };
+    __SHIPCHAMBER_PLATFORM__?: string;
+    __SHIPCHAMBER_DESKTOP_BOOT_OUTCOME__?: DesktopBootOutcome;
   }
 
   interface WebviewElement extends HTMLElement {

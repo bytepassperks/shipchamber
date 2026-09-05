@@ -3,7 +3,7 @@ import { parse as parseJsonc } from 'jsonc-parser';
 const isJsonObject = (value) => value !== null && value !== undefined && Object.getPrototypeOf(value) === Object.prototype;
 
 /**
- * Append a managed OpenChamber plugin to the `plugin` list of an
+ * Append a managed ShipChamber plugin to the `plugin` list of an
  * `OPENCODE_CONFIG_CONTENT` value.
  *
  * Existing entries are preserved; an earlier entry for the same URL is dropped
@@ -21,10 +21,10 @@ export const appendManagedPlugin = (rawConfig, pluginUrl, purpose) => {
   const text = (rawConfig ?? '').trim();
   const parsed = text ? parseJsonc(text, errors, { allowTrailingComma: true }) : {};
   if (errors.length > 0 || !isJsonObject(parsed)) {
-    throw new Error(`OPENCODE_CONFIG_CONTENT must contain a valid JSON object before OpenChamber can inject its ${purpose}`);
+    throw new Error(`OPENCODE_CONFIG_CONTENT must contain a valid JSON object before ShipChamber can inject its ${purpose}`);
   }
   if (parsed.plugin !== undefined && !Array.isArray(parsed.plugin)) {
-    throw new Error(`OPENCODE_CONFIG_CONTENT plugin must be an array before OpenChamber can inject its ${purpose}`);
+    throw new Error(`OPENCODE_CONFIG_CONTENT plugin must be an array before ShipChamber can inject its ${purpose}`);
   }
   const configured = Array.isArray(parsed.plugin) ? parsed.plugin : [];
   parsed.plugin = [

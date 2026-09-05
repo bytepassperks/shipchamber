@@ -1,51 +1,51 @@
 ---
 title: 環境変数
-description: 環境変数で OpenChamber と OpenCode 連携を設定します。
+description: 環境変数で ShipChamber と OpenCode 連携を設定します。
 ---
 
 # 環境変数
 
-OpenChamber は起動時にこれらの環境変数を読み取ります。スタートアップサービスでは、`openchamber startup enable` がデフォルトで現在の環境をスナップショットするため、サービスに使わせたい変数を変更した後は再実行してください。
+ShipChamber は起動時にこれらの環境変数を読み取ります。スタートアップサービスでは、`shipchamber startup enable` がデフォルトで現在の環境をスナップショットするため、サービスに使わせたい変数を変更した後は再実行してください。
 
-## OpenChamber サーバー
+## ShipChamber サーバー
 
-### `OPENCHAMBER_HOST`
+### `SHIPCHAMBER_HOST`
 
-OpenChamber Web サーバーのバインドアドレスです。他のマシンからアクセスできるようにするには `0.0.0.0` を使います。
+ShipChamber Web サーバーのバインドアドレスです。他のマシンからアクセスできるようにするには `0.0.0.0` を使います。
 
-### `OPENCHAMBER_UI_PASSWORD`
+### `SHIPCHAMBER_UI_PASSWORD`
 
 ブラウザ UI のパスワードです。localhost 以外にバインドする場合、トンネルを使う場合、またはリバースプロキシの背後で実行する場合に使います。
 
-### `OPENCHAMBER_API_ONLY`
+### `SHIPCHAMBER_API_ONLY`
 
-`true` または `1` に設定すると、OpenChamber をヘッドレスモードで起動します。デスクトップおよびモバイルクライアント向けの API ルートは利用できますが、ブラウザ UI は配信されません。
+`true` または `1` に設定すると、ShipChamber をヘッドレスモードで起動します。デスクトップおよびモバイルクライアント向けの API ルートは利用できますが、ブラウザ UI は配信されません。
 
-### `OPENCHAMBER_DATA_DIR`
+### `SHIPCHAMBER_DATA_DIR`
 
-OpenChamber のデータディレクトリを上書きします。デフォルトは `~/.config/openchamber` です。
+ShipChamber のデータディレクトリを上書きします。デフォルトは `~/.config/shipchamber` です。
 
-### `OPENCHAMBER_CHATS_DIR`
+### `SHIPCHAMBER_CHATS_DIR`
 
-プロジェクトを持たないチャット用に OpenChamber が作成する管理チャットディレクトリの場所を変更します。デフォルトは `~/.config/openchamber/chats` です。OpenChamber と OpenCode を別のユーザーで実行している場合は、OpenCode サーバーが読み取れるディレクトリを指定してください。既存のチャットは移動されません。
+プロジェクトを持たないチャット用に ShipChamber が作成する管理チャットディレクトリの場所を変更します。デフォルトは `~/.config/shipchamber/chats` です。ShipChamber と OpenCode を別のユーザーで実行している場合は、OpenCode サーバーが読み取れるディレクトリを指定してください。既存のチャットは移動されません。
 
-### `OPENCHAMBER_COMPRESS_API`
+### `SHIPCHAMBER_COMPRESS_API`
 
 API レスポンス圧縮を制御します。`true` または `1` で強制的に有効化し、`false` または `0` で強制的に無効化します。
 
-### `OPENCHAMBER_SKIP_API_COMPRESSION`
+### `SHIPCHAMBER_SKIP_API_COMPRESSION`
 
-`true` または `1` に設定すると API レスポンス圧縮を無効化します。これは `OPENCHAMBER_COMPRESS_API` より優先されます。
+`true` または `1` に設定すると API レスポンス圧縮を無効化します。これは `SHIPCHAMBER_COMPRESS_API` より優先されます。
 
-### `OPENCHAMBER_VERBOSE_REQUEST_LOGS`
+### `SHIPCHAMBER_VERBOSE_REQUEST_LOGS`
 
 `true` または `1` に設定すると詳細な HTTP リクエストログを有効にします。
 
-### `OPENCHAMBER_UPDATE_API_URL`
+### `SHIPCHAMBER_UPDATE_API_URL`
 
 更新確認 API エンドポイントを上書きします。ほとんどのユーザーは未設定のままでかまいません。
 
-### `OPENCHAMBER_PACKAGE_MANAGER`
+### `SHIPCHAMBER_PACKAGE_MANAGER`
 
 自動検出が間違っている場合に、更新操作で使うパッケージマネージャーを強制します。
 
@@ -53,7 +53,7 @@ API レスポンス圧縮を制御します。`true` または `1` で強制的�
 
 ### `OPENCODE_HOST`
 
-OpenChamber を既存の OpenCode サーバーに接続します。値は明示的なポートを含み、パス、クエリ、ハッシュを含まない `http` または `https` の origin である必要があります。`OPENCODE_HOST` は `OPENCODE_PORT` より優先されます。
+ShipChamber を既存の OpenCode サーバーに接続します。値は明示的なポートを含み、パス、クエリ、ハッシュを含まない `http` または `https` の origin である必要があります。`OPENCODE_HOST` は `OPENCODE_PORT` より優先されます。
 
 ### `OPENCODE_PORT`
 
@@ -61,15 +61,15 @@ OpenCode サーバーのポートを設定します。管理対象 OpenCode で�
 
 ### `OPENCODE_SKIP_START`
 
-`true` に設定すると、OpenChamber が独自の OpenCode サーバーを起動しません。
+`true` に設定すると、ShipChamber が独自の OpenCode サーバーを起動しません。
 
-### `OPENCHAMBER_OPENCODE_HOSTNAME`
+### `SHIPCHAMBER_OPENCODE_HOSTNAME`
 
-OpenChamber が管理する OpenCode サーバーのバインドホスト名です。デフォルトは `127.0.0.1` です。
+ShipChamber が管理する OpenCode サーバーのバインドホスト名です。デフォルトは `127.0.0.1` です。
 
 ### `OPENCODE_BINARY`
 
-OpenChamber が実行する `opencode` 実行ファイルへのパスです。
+ShipChamber が実行する `opencode` 実行ファイルへのパスです。
 
 ### `OPENCODE_CONFIG`
 
@@ -87,9 +87,9 @@ OpenChamber が実行する `opencode` 実行ファイルへのパスです。
 
 Windows 上の OpenCode 連携に使う WSL ディストリビューションを選びます。
 
-### `OPENCHAMBER_OPENCODE_WSL_DISTRO`
+### `SHIPCHAMBER_OPENCODE_WSL_DISTRO`
 
-WSL ディストリビューション選択用の OpenChamber 固有エイリアスです。両方が設定されている場合は `OPENCODE_WSL_DISTRO` が優先されます。
+WSL ディストリビューション選択用の ShipChamber 固有エイリアスです。両方が設定されている場合は `OPENCODE_WSL_DISTRO` が優先されます。
 
 ### `OPENCODE_JWT_SECRET`
 
@@ -97,19 +97,19 @@ UI 認証トークンの署名に使うシークレットです。永続的な�
 
 ## ターミナルと Git
 
-### `OPENCHAMBER_TERMINAL_SHELL`
+### `SHIPCHAMBER_TERMINAL_SHELL`
 
-OpenChamber のターミナルセッションで使うシェル実行ファイルです。
+ShipChamber のターミナルセッションで使うシェル実行ファイルです。
 
-### `OPENCHAMBER_GIT_BINARY`
+### `SHIPCHAMBER_GIT_BINARY`
 
-OpenChamber の Git 機能で使う Git 実行ファイルです。
+ShipChamber の Git 機能で使う Git 実行ファイルです。
 
 ### `GIT_BINARY`
 
-代替の Git 実行ファイル上書きです。OpenChamber 固有の設定には `OPENCHAMBER_GIT_BINARY` を推奨します。
+代替の Git 実行ファイル上書きです。ShipChamber 固有の設定には `SHIPCHAMBER_GIT_BINARY` を推奨します。
 
-### `OPENCHAMBER_GIT_READ_CACHE_TTL_MS`
+### `SHIPCHAMBER_GIT_READ_CACHE_TTL_MS`
 
 Git に基づくファイル読み取りキャッシュの有効期間（ミリ秒）です。デバッグ中にこのキャッシュを無効化するには `0` を設定します。
 
@@ -117,25 +117,25 @@ Git に基づくファイル読み取りキャッシュの有効期間（ミリ�
 
 ### `OPENAI_API_KEY`
 
-OpenAI 互換サービスを呼び出す OpenChamber の音声機能で使う API キーです。
+OpenAI 互換サービスを呼び出す ShipChamber の音声機能で使う API キーです。
 
-### `OPENCHAMBER_ALLOW_REMOTE_OPENAI_COMPAT_URLS`
+### `SHIPCHAMBER_ALLOW_REMOTE_OPENAI_COMPAT_URLS`
 
 `true` または `1` に設定すると、音声機能でリモートの OpenAI 互換 base URL を許可します。
 
 ### `NGROK_AUTHTOKEN`
 
-OpenChamber のトンネルコマンドで使う ngrok 認証トークンです。`ngrok config add-authtoken <token>` で ngrok 側に設定することもできます。
+ShipChamber のトンネルコマンドで使う ngrok 認証トークンです。`ngrok config add-authtoken <token>` で ngrok 側に設定することもできます。
 
 ## ランタイムヘルパー
 
 ### `BUN_BINARY`
 
-デーモンプロセスを起動するときに OpenChamber が使う Bun 実行ファイルです。
+デーモンプロセスを起動するときに ShipChamber が使う Bun 実行ファイルです。
 
 ### `BUN_INSTALL`
 
-Bun のインストールルートです。OpenChamber はデーモン起動と更新のために `bin/bun` を探す際に使います。
+Bun のインストールルートです。ShipChamber はデーモン起動と更新のために `bin/bun` を探す際に使います。
 
 ### `VITE_OPENCODE_URL`
 

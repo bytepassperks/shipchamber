@@ -37,7 +37,7 @@ import { useConfigStore } from '@/stores/useConfigStore';
 import { validateWorktreeCreate } from '@/lib/worktrees/worktreeManager';
 import { createWorktreeWithDefaults } from '@/lib/worktrees/worktreeCreate';
 import { waitForWorktreeBootstrap } from '@/lib/worktrees/worktreeBootstrap';
-import { getWorktreeSetupCommands, getWorktreeSetupWaitEnabled } from '@/lib/openchamberConfig';
+import { getWorktreeSetupCommands, getWorktreeSetupWaitEnabled } from '@/lib/shipchamberConfig';
 import { getRootBranch } from '@/lib/worktrees/worktreeStatus';
 import { generateBranchSlug } from '@/lib/git/branchNameGenerator';
 import { renderMagicPrompt } from '@/lib/magicPrompts';
@@ -1031,7 +1031,7 @@ export function NewWorktreeDialog({
         void sessionActions.updateSessionTitle(session.id, sessionTitle).catch(() => undefined);
 
         try {
-          useSessionUIStore.getState().initializeNewOpenChamberSession(session.id, useConfigStore.getState().agents);
+          useSessionUIStore.getState().initializeNewShipChamberSession(session.id, useConfigStore.getState().agents);
         } catch {
           // ignore
         }

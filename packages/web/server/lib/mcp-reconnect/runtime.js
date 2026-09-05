@@ -21,7 +21,7 @@ const INITIAL_RETRY_MS = 1000
 const MAX_RETRY_MS = 30000
 const IDLE_CHECK_MS = 30000
 
-export const OpenChamberMcpReconnectPlugin = async ({ client }) => {
+export const ShipChamberMcpReconnectPlugin = async ({ client }) => {
   let disposed = false
   let running = false
   let wakeRequested = false
@@ -108,7 +108,7 @@ export const OpenChamberMcpReconnectPlugin = async ({ client }) => {
 
 export const createMcpReconnectRuntime = ({ fsPromises, path, dataDir }) => {
   const pluginDirectory = path.join(dataDir, 'mcp-reconnect');
-  const pluginPath = path.join(pluginDirectory, 'openchamber-mcp-reconnect-plugin.js');
+  const pluginPath = path.join(pluginDirectory, 'shipchamber-mcp-reconnect-plugin.js');
 
   const prepareManagedOpenCodeEnv = async (rawConfig) => {
     await fsPromises.mkdir(pluginDirectory, { recursive: true });

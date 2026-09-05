@@ -25,7 +25,7 @@ const withDesktopBridge = async <T>(handler: (cmd: string, args: Record<string, 
   Object.defineProperty(globalThis, 'window', {
     configurable: true,
     value: {
-      __OPENCHAMBER_DESKTOP__: {
+      __SHIPCHAMBER_DESKTOP__: {
         invoke: handler,
       },
     },

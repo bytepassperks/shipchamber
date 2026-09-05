@@ -58,8 +58,8 @@ so they do not ride every update; the only way to get them back is a `take`.
 
 ## Persistence
 
-`<data-dir>/message-queue.json` (`OPENCHAMBER_DATA_DIR` or
-`~/.config/openchamber`): `{ version, revision, sessions: { [sessionId]:
+`<data-dir>/message-queue.json` (`SHIPCHAMBER_DATA_DIR` or
+`~/.config/shipchamber`): `{ version, revision, sessions: { [sessionId]:
 { directory, items } } }`, written atomically (temp file + rename) through a
 serialized write chain. A missing file is an empty queue. A malformed file is
 a failure, not an empty queue: it is moved aside as
@@ -124,7 +124,7 @@ minutes while the run continues. Releasing arms a dispatch.
 
 ## Routes (`/api/message-queue`)
 
-Normal authenticated OpenChamber runtime routes; never on browser URL-token
+Normal authenticated ShipChamber runtime routes; never on browser URL-token
 allowlists.
 
 | Route | Purpose |
@@ -138,7 +138,7 @@ allowlists.
 | `DELETE .../sessions/:id` | Clear; the in-flight item stays |
 | `PUT .../sessions/:id/hold` | `{ held, ttlMs? }` |
 
-Every mutation broadcasts `openchamber:message-queue.updated` with
+Every mutation broadcasts `shipchamber:message-queue.updated` with
 `{ revision, session }` to all connected clients (SSE and WS), so several
 devices on one server see one queue. The session in that payload always names
 its `directory`, including the broadcast that removes the last item: the UI
@@ -154,5 +154,5 @@ by the route family's 50 MB JSON limit.
 
 `packages/ui/src/stores/messageQueueStore.ts` is the projection: see its
 section in `packages/ui/src/stores/DOCUMENTATION.md`. VS Code intentionally
-does not use this module; with all OpenChamber webviews closed, queued
+does not use this module; with all ShipChamber webviews closed, queued
 messages there are not delivered.

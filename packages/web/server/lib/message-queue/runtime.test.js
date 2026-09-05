@@ -17,7 +17,7 @@ const item = (overrides = {}) => ({
 
 const tempDirs = [];
 const makeDataDir = () => {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'openchamber-message-queue-'));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'shipchamber-message-queue-'));
   tempDirs.push(dir);
   return dir;
 };
@@ -116,12 +116,12 @@ describe('parseQueuedItemInput', () => {
 
   it('keeps captured context and rejects a malformed part', () => {
     const context = [
-      { kind: 'context', text: 'Comment on `a.ts`', metadata: { openchamberContext: { kind: 'code-comment' } }, instructions: '' },
+      { kind: 'context', text: 'Comment on `a.ts`', metadata: { shipchamberContext: { kind: 'code-comment' } }, instructions: '' },
       { kind: 'instruction', text: 'use the skill' },
       { kind: 'synthetic', text: 'conflict payload' },
     ];
     expect(parseQueuedItemInput(item({ context })).context).toEqual([
-      { kind: 'context', text: 'Comment on `a.ts`', metadata: { openchamberContext: { kind: 'code-comment' } } },
+      { kind: 'context', text: 'Comment on `a.ts`', metadata: { shipchamberContext: { kind: 'code-comment' } } },
       { kind: 'instruction', text: 'use the skill' },
       { kind: 'synthetic', text: 'conflict payload' },
     ]);
@@ -162,7 +162,7 @@ describe('message queue runtime', () => {
     expect(runtime.sessionSnapshot(SESSION).items.map((entry) => entry.content)).toEqual(['second']);
     // Clients learned about the in-flight item and then the removal.
     expect(broadcasts.at(-1)).toMatchObject({
-      type: 'openchamber:message-queue.updated',
+      type: 'shipchamber:message-queue.updated',
       properties: { session: { sessionId: SESSION, sendingId: null } },
     });
 
@@ -368,7 +368,7 @@ describe('message queue runtime', () => {
     };
     const { runtime, openCode, emit } = createRuntime({ knowledge });
     runtime.start();
-    const metadata = { openchamberContext: { kind: 'github-pr', number: 7, title: 'PR', url: 'https://x/pr/7' } };
+    const metadata = { shipchamberContext: { kind: 'github-pr', number: 7, title: 'PR', url: 'https://x/pr/7' } };
     await runtime.enqueue(SESSION, DIRECTORY, item({
       agentMention: 'reviewer',
       attachments: [{ id: 'a', filename: 'f.txt', mimeType: 'text/plain', size: 1, source: 'local', dataUrl: 'data:text/plain,hi' }],
@@ -414,7 +414,7 @@ describe('message queue runtime', () => {
     const { runtime, openCode, emit } = createRuntime();
     runtime.start();
     openCode.state.commands = [{ name: 'review', source: 'command', template: 'Review $1 with focus on $2' }];
-    const metadata = { openchamberContext: { kind: 'chat-quote', quote: 'q', text: 'why?' } };
+    const metadata = { shipchamberContext: { kind: 'chat-quote', quote: 'q', text: 'why?' } };
     await runtime.enqueue(SESSION, DIRECTORY, item({
       content: '/review src "error handling"',
       text: '/review src "error handling"',

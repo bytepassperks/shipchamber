@@ -42,10 +42,10 @@ const deferred = <T>() => {
   return { promise, resolve, reject };
 };
 const chat = (id: string): Session => ({
-  id, slug: id, projectID: 'openchamber:chats', directory: '/srv/chats/day/session-' + id,
+  id, slug: id, projectID: 'shipchamber:chats', directory: '/srv/chats/day/session-' + id,
   title: id, version: '1', time: { created: 1, updated: 2 },
 });
-const scope = 'openchamber:managed-chats';
+const scope = 'shipchamber:managed-chats';
 let runtime = 0;
 const nextRuntime = () => switchRuntimeEndpoint({ apiBaseUrl: 'https://store-chats.test', runtimeKey: `store-chats-${++runtime}` });
 let home = spyOn(opencodeClient, 'getFilesystemHomeInfo');

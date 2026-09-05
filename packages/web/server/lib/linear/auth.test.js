@@ -16,7 +16,7 @@ import {
   DEFAULT_LINEAR_CLIENT_ID_VALUE,
 } from './auth.js';
 
-const makeTempDir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'openchamber-linear-auth-'));
+const makeTempDir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'shipchamber-linear-auth-'));
 
 describe('Linear auth storage', () => {
   let dataDir;
@@ -26,23 +26,23 @@ describe('Linear auth storage', () => {
   let previousRedirect;
 
   beforeEach(() => {
-    previousDataDir = process.env.OPENCHAMBER_DATA_DIR;
-    previousPort = process.env.OPENCHAMBER_PORT;
-    previousClientId = process.env.OPENCHAMBER_LINEAR_CLIENT_ID;
-    previousRedirect = process.env.OPENCHAMBER_LINEAR_REDIRECT_URI;
+    previousDataDir = process.env.SHIPCHAMBER_DATA_DIR;
+    previousPort = process.env.SHIPCHAMBER_PORT;
+    previousClientId = process.env.SHIPCHAMBER_LINEAR_CLIENT_ID;
+    previousRedirect = process.env.SHIPCHAMBER_LINEAR_REDIRECT_URI;
     dataDir = makeTempDir();
-    process.env.OPENCHAMBER_DATA_DIR = dataDir;
-    delete process.env.OPENCHAMBER_LINEAR_CLIENT_ID;
-    delete process.env.OPENCHAMBER_LINEAR_SCOPES;
-    delete process.env.OPENCHAMBER_LINEAR_REDIRECT_URI;
-    delete process.env.OPENCHAMBER_PORT;
+    process.env.SHIPCHAMBER_DATA_DIR = dataDir;
+    delete process.env.SHIPCHAMBER_LINEAR_CLIENT_ID;
+    delete process.env.SHIPCHAMBER_LINEAR_SCOPES;
+    delete process.env.SHIPCHAMBER_LINEAR_REDIRECT_URI;
+    delete process.env.SHIPCHAMBER_PORT;
   });
 
   afterEach(() => {
-    restoreEnv('OPENCHAMBER_DATA_DIR', previousDataDir);
-    restoreEnv('OPENCHAMBER_PORT', previousPort);
-    restoreEnv('OPENCHAMBER_LINEAR_CLIENT_ID', previousClientId);
-    restoreEnv('OPENCHAMBER_LINEAR_REDIRECT_URI', previousRedirect);
+    restoreEnv('SHIPCHAMBER_DATA_DIR', previousDataDir);
+    restoreEnv('SHIPCHAMBER_PORT', previousPort);
+    restoreEnv('SHIPCHAMBER_LINEAR_CLIENT_ID', previousClientId);
+    restoreEnv('SHIPCHAMBER_LINEAR_REDIRECT_URI', previousRedirect);
     fs.rmSync(dataDir, { recursive: true, force: true });
   });
 
@@ -58,7 +58,7 @@ describe('Linear auth storage', () => {
       expiresAt: Date.now() + 60_000,
       scope: 'read,write',
       user: { id: 'user-1', name: 'Ada', displayName: 'Ada Lovelace', email: 'ada@example.com', avatarUrl: 'https://example.com/a.png' },
-      organization: { id: 'org-1', name: 'OpenChamber', urlKey: 'openchamber' },
+      organization: { id: 'org-1', name: 'ShipChamber', urlKey: 'shipchamber' },
     });
 
     const stored = getLinearAuth();
@@ -75,12 +75,12 @@ describe('Linear auth storage', () => {
         email: 'ada@example.com',
         avatarUrl: 'https://example.com/a.png',
       },
-      organization: { id: 'org-1', name: 'OpenChamber', urlKey: 'openchamber' },
+      organization: { id: 'org-1', name: 'ShipChamber', urlKey: 'shipchamber' },
       scope: 'read,write',
       workspaces: [{
         id: 'org-1',
-        name: 'OpenChamber',
-        urlKey: 'openchamber',
+        name: 'ShipChamber',
+        urlKey: 'shipchamber',
         current: true,
         user: {
           id: 'user-1',
@@ -137,14 +137,14 @@ describe('Linear auth storage', () => {
 
   it('uses the baked-in client id unless env or settings override it', () => {
     expect(getLinearClientId()).toBe(DEFAULT_LINEAR_CLIENT_ID_VALUE);
-    process.env.OPENCHAMBER_LINEAR_CLIENT_ID = 'env-client';
+    process.env.SHIPCHAMBER_LINEAR_CLIENT_ID = 'env-client';
     expect(getLinearClientId()).toBe('env-client');
   });
 
   it('uses the stable public broker callback by default', () => {
-    process.env.OPENCHAMBER_PORT = '3001';
-    expect(getLinearRedirectUri()).toBe('https://api.openchamber.dev/v1/oauth/linear/callback');
-    process.env.OPENCHAMBER_LINEAR_REDIRECT_URI = 'http://localhost:3000/linear/oauth/callback';
+    process.env.SHIPCHAMBER_PORT = '3001';
+    expect(getLinearRedirectUri()).toBe('https://api.shipchamber.com/v1/oauth/linear/callback');
+    process.env.SHIPCHAMBER_LINEAR_REDIRECT_URI = 'http://localhost:3000/linear/oauth/callback';
     expect(getLinearRedirectUri()).toBe('http://localhost:3000/linear/oauth/callback');
   });
 
@@ -161,7 +161,7 @@ describe('Linear auth storage', () => {
       accessToken: 'legacy-access',
       refreshToken: 'legacy-refresh',
       user: { id: 'user-1', name: 'Ada' },
-      organization: { id: 'org-1', name: 'OpenChamber', urlKey: 'openchamber' },
+      organization: { id: 'org-1', name: 'ShipChamber', urlKey: 'shipchamber' },
     }), 'utf8');
 
     const stored = getLinearAuth();
@@ -216,7 +216,7 @@ describe('Linear auth storage', () => {
     setLinearAuth({
       accessToken: 'access-1',
       user: { id: 'user-1', name: 'Ada' },
-      organization: { id: 'org-1', name: 'OpenChamber', urlKey: 'openchamber' },
+      organization: { id: 'org-1', name: 'ShipChamber', urlKey: 'shipchamber' },
     });
     const file = JSON.parse(fs.readFileSync(getLinearAuthFilePath(), 'utf8'));
     file.workspaces[0].authorizedAt = 111;
@@ -225,7 +225,7 @@ describe('Linear auth storage', () => {
     setLinearAuth({
       accessToken: 'access-1',
       user: { id: 'user-1', name: 'Ada' },
-      organization: { id: 'org-1', name: 'OpenChamber', urlKey: 'openchamber' },
+      organization: { id: 'org-1', name: 'ShipChamber', urlKey: 'shipchamber' },
       workspaceId: 'org-1',
     }, { activate: false });
     expect(getLinearAuth().authorizedAt).toBe(111);

@@ -3,7 +3,7 @@ import { normalizePath } from '@/lib/pathNormalization';
 import { runtimeFetch } from '@/lib/runtime-fetch';
 import { getRuntimeKey } from '@/lib/runtime-switch';
 
-export const CHAT_DRAFT_PROJECT_ID = 'openchamber:chats';
+export const CHAT_DRAFT_PROJECT_ID = 'shipchamber:chats';
 type ChatRoots = { configured: string; legacy: string };
 const chatsRootByRuntime = new Map<string, Promise<ChatRoots>>();
 const chatsRootCacheByRuntime = new Map<string, ChatRoots>();
@@ -13,7 +13,7 @@ const joinPath = (base: string, ...parts: string[]): string =>
 
 function legacyRootForHome(home: string | null | undefined): string | null {
   const normalized = normalizePath(home);
-  return normalized ? joinPath(normalized, '.config', 'openchamber', 'chats') : null;
+  return normalized ? joinPath(normalized, '.config', 'shipchamber', 'chats') : null;
 }
 
 function isWithinRoot(directory: string, root: string): boolean {

@@ -16,13 +16,13 @@ afterEach(async () => {
 });
 
 const materialize = async (rawConfig = '{}') => {
-  const dataDir = await fs.mkdtemp(path.join(os.tmpdir(), 'openchamber-mcp-reconnect-'));
+  const dataDir = await fs.mkdtemp(path.join(os.tmpdir(), 'shipchamber-mcp-reconnect-'));
   temporaryDirectories.push(dataDir);
   const runtime = createMcpReconnectRuntime({ fsPromises: fs, path, dataDir });
   const prepared = await runtime.prepareManagedOpenCodeEnv(rawConfig);
-  const pluginPath = path.join(dataDir, 'mcp-reconnect', 'openchamber-mcp-reconnect-plugin.js');
+  const pluginPath = path.join(dataDir, 'mcp-reconnect', 'shipchamber-mcp-reconnect-plugin.js');
   const pluginModule = await import(`${pathToFileURL(pluginPath).href}?test=${Date.now()}-${Math.random()}`);
-  return { prepared, pluginPath, plugin: pluginModule.OpenChamberMcpReconnectPlugin };
+  return { prepared, pluginPath, plugin: pluginModule.ShipChamberMcpReconnectPlugin };
 };
 
 /**

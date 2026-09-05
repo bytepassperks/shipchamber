@@ -7,7 +7,7 @@ import { createDevTunnelClient } from './client.js';
 import { createDevTunnelRuntime, isDevTunnelPath } from './runtime.js';
 
 /**
- * These exercise the real socket path end to end: a dev server, an OpenChamber
+ * These exercise the real socket path end to end: a dev server, an ShipChamber
  * host tunnelling to it, and a client binding a local port. Anything less would
  * not prove the thing that matters — that a page loads over the tunnel exactly
  * as it does locally.
@@ -201,7 +201,7 @@ describe('dev tunnel end to end', () => {
     // ignores it), so `new WebSocket(...)` used to throw inside the connection
     // handler and take the whole process down.
     const client = createDevTunnelClient({ logger: { warn: () => {} } });
-    await expect(client.open({ baseUrl: 'openchamber-ui://index', port: 5173 })).rejects.toThrow('must be http(s)');
+    await expect(client.open({ baseUrl: 'shipchamber-ui://index', port: 5173 })).rejects.toThrow('must be http(s)');
     expect(client.list()).toEqual([]);
   });
 

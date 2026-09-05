@@ -1,10 +1,10 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 /**
- * Regression for https://github.com/openchamber/openchamber/issues/2710
+ * Regression for https://github.com/bytepassperks/shipchamber/issues/2710
  * "Scheduled daily task executes twice at the configured time"
  *
- * Root cause: each OpenChamber server process keeps its own timers. Two
+ * Root cause: each ShipChamber server process keeps its own timers. Two
  * instances that share the same on-disk project config (CLI serve on port 3000
  * + Electron on 57123, or a startup login service + desktop) each arm a timer
  * for the same occurrence and both dispatch.

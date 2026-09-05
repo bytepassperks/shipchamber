@@ -44,7 +44,7 @@ mock.module('@/lib/runtime-auth', () => ({
   getRuntimeExtraHeadersSync: () => ({}),
   refreshRuntimeUrlAuthToken: (baseUrl: string) => refreshUrlAuth(baseUrl),
 }));
-mock.module('@/lib/runtime-url', () => ({ getRuntimeUrlResolver: () => ({ websocket: (path: string) => `openchamber-ui://app${path}&oc_url_token=test` }) }));
+mock.module('@/lib/runtime-url', () => ({ getRuntimeUrlResolver: () => ({ websocket: (path: string) => `shipchamber-ui://app${path}&oc_url_token=test` }) }));
 mock.module('@/lib/runtime-switch', () => ({
   getRuntimeApiBaseUrl: () => apiBaseUrl,
   getRuntimeKey: () => relayActive ? 'host:exe' : `url:${apiBaseUrl}`,
@@ -62,7 +62,7 @@ const asDesktop = (value: boolean) => {
   Object.defineProperty(globalThis, 'window', {
     configurable: true,
     value: value
-      ? { __OPENCHAMBER_ELECTRON__: true, location: { href: 'http://127.0.0.1:3901/' } }
+      ? { __SHIPCHAMBER_ELECTRON__: true, location: { href: 'http://127.0.0.1:3901/' } }
       : { location: { href: 'http://127.0.0.1:3901/' } },
   });
 };
@@ -98,7 +98,7 @@ describe('loopback navigations against a remote instance', () => {
   });
 
   test('a public address is not loopback at all', () => {
-    expect(shouldTunnelLoopbackUrl('https://openchamber.dev/docs/')).toBe(false);
+    expect(shouldTunnelLoopbackUrl('https://shipchamber.com/docs/')).toBe(false);
   });
 
   test('an implicit port is the port the scheme means, not nothing', () => {
@@ -124,7 +124,7 @@ describe('loopback navigations against a remote instance', () => {
 
   test('a relay-only runtime asks Electron for a local relay bridge', async () => {
     relayActive = true;
-    apiBaseUrl = 'openchamber-ui://app';
+    apiBaseUrl = 'shipchamber-ui://app';
     const resolved = await resolveBrowsableUrl('http://localhost:4322/docs/');
     expect(resolved).toBe('http://127.0.0.1:52418/docs/');
     expect(desktopArgs?.relay).toBe(true);
@@ -135,14 +135,14 @@ describe('loopback navigations against a remote instance', () => {
     await Promise.resolve();
     await Promise.resolve();
     relaySocket.onopen?.();
-    expect(refreshedBaseUrl).toBe('openchamber-ui://app');
+    expect(refreshedBaseUrl).toBe('shipchamber-ui://app');
     expect(openedRelayUrl).toContain('/api/dev-tunnel?port=4322&oc_url_token=test');
     expect(relayPosts.some((entry) => entry.connectionId === 'connection-1' && entry.message.type === 'ready')).toBe(true);
   });
 
   test('a local disconnect during auth does not leave an orphan relay socket', async () => {
     relayActive = true;
-    apiBaseUrl = 'openchamber-ui://app';
+    apiBaseUrl = 'shipchamber-ui://app';
     let finishAuth = () => {};
     refreshUrlAuth = () => new Promise<string>((resolve) => { finishAuth = () => resolve('url-token'); });
 

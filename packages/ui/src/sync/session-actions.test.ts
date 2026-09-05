@@ -702,7 +702,7 @@ describe("confirmed session removal", () => {
       .toEqual(["session-a", "session-b"])
   })
 
-  const chatDirectory = "/home/user/.config/openchamber/chats/2026-09-05/session-abc"
+  const chatDirectory = "/home/user/.config/shipchamber/chats/2026-09-05/session-abc"
   const chatSession = (id: string, parentID?: string): Session => ({
     id,
     slug: id,
@@ -971,8 +971,8 @@ describe("archiving a batch through the server", () => {
   })
 
   test("keeps review and btw sessions on the per-session path", async () => {
-    const review = liveSession("session-review", { openchamber: { kind: "review", originalSessionID: "session-parent" } })
-    const parentWithFork = liveSession("session-parent", { openchamber: { btwSessionID: "session-fork" } })
+    const review = liveSession("session-review", { shipchamber: { kind: "review", originalSessionID: "session-parent" } })
+    const parentWithFork = liveSession("session-parent", { shipchamber: { btwSessionID: "session-fork" } })
     globalActiveSessions = [liveSession("session-plain"), review, parentWithFork]
     archiveBatchResponse = {
       status: 200,
@@ -3111,7 +3111,7 @@ describe("relocateSessionFromMissingDirectory", () => {
   })
 
   test("never relocates to the filesystem root OpenCode reports for its global project", async () => {
-    const chatDirectory = "/Users/tester/.config/openchamber/chats/2026-09-05/session-gone"
+    const chatDirectory = "/Users/tester/.config/shipchamber/chats/2026-09-05/session-gone"
     const chat = { ...worktreeSession("chat", null, chatDirectory), projectID: "global", project: { worktree: "/" } }
     globalActiveSessions = [chat]
     openCodeProjects.push({ id: "global", worktree: "/", time: { created: 1, updated: 1 }, sandboxes: [] })

@@ -18,8 +18,8 @@ import { registerConfigEntityRoutes } from './config-entity-routes.js';
 import { registerSettingsUtilityRoutes } from './core-routes.js';
 import { registerProjectIconRoutes } from './project-icon-routes.js';
 import { registerScheduledTaskRoutes } from '../scheduled-tasks/routes.js';
-import { registerOpenChamberSessionRoutes } from '../openchamber-sessions/routes.js';
-import { registerOpenChamberControlRoutes } from '../openchamber-control/routes.js';
+import { registerShipChamberSessionRoutes } from '../shipchamber-sessions/routes.js';
+import { registerShipChamberControlRoutes } from '../shipchamber-control/routes.js';
 import { registerMarkdownImageGrantRoutes } from '../markdown-image-grants/routes.js';
 import { registerSkillRoutes } from './skill-routes.js';
 import { registerPluginRoutes } from './plugin-routes.js';
@@ -96,8 +96,8 @@ export const createFeatureRoutesRuntime = (dependencies) => {
       spawn,
       resolveGitBinaryForSpawn,
       createFsSearchRuntime,
-      openchamberDataDir,
-      openchamberUserConfigRoot,
+      shipchamberDataDir,
+      shipchamberUserConfigRoot,
       managedChatsRoot,
       normalizeDirectoryPath,
       resolveProjectDirectory,
@@ -127,10 +127,10 @@ export const createFeatureRoutesRuntime = (dependencies) => {
       sessionKnowledgeRuntime,
       scheduledTasksRuntime,
       scheduledTaskService,
-      openChamberSessionService,
-      openChamberControlService,
+      shipChamberSessionService,
+      shipChamberControlService,
       waitForOpenCodeReady,
-      getOpenChamberEventClients,
+      getShipChamberEventClients,
       writeSseEvent,
       emitSessionCreatedEvent,
       permissionAutoAcceptRuntime,
@@ -170,7 +170,7 @@ export const createFeatureRoutesRuntime = (dependencies) => {
       fsPromises,
       path,
       crypto,
-      openchamberDataDir,
+      shipchamberDataDir,
       sanitizeProjects,
       readSettingsFromDiskMigrated,
       persistSettings,
@@ -185,11 +185,11 @@ export const createFeatureRoutesRuntime = (dependencies) => {
       projectConfigRuntime,
       scheduledTasksRuntime,
       scheduledTaskService,
-      getOpenChamberEventClients,
+      getShipChamberEventClients,
       writeSseEvent,
     });
 
-    registerOpenChamberSessionRoutes(app, {
+    registerShipChamberSessionRoutes(app, {
       readSettingsFromDiskMigrated,
       sanitizeProjects,
       validateDirectoryPath,
@@ -197,10 +197,10 @@ export const createFeatureRoutesRuntime = (dependencies) => {
       getOpenCodeAuthHeaders,
       waitForOpenCodeReady,
       emitSessionCreatedEvent,
-      sessionService: openChamberSessionService,
+      sessionService: shipChamberSessionService,
     });
 
-    registerOpenChamberControlRoutes(app, { controlService: openChamberControlService });
+    registerShipChamberControlRoutes(app, { controlService: shipChamberControlService });
 
     registerMarkdownImageGrantRoutes(app, {
       fsPromises,
@@ -311,7 +311,7 @@ export const createFeatureRoutesRuntime = (dependencies) => {
     registerMagicPromptRoutes(app, {
       fsPromises,
       path,
-      openchamberDataDir,
+      shipchamberDataDir,
     });
     registerProjectContextRoutes(app, { projectContextRuntime });
     registerAgentMemoryRoutes(app, { agentMemoryRuntime, isAgentMemoryEnabled });
@@ -320,7 +320,7 @@ export const createFeatureRoutesRuntime = (dependencies) => {
     registerSessionFoldersRoutes(app, {
       fsPromises,
       path,
-      openchamberDataDir,
+      shipchamberDataDir,
     });
     registerFsRoutes(app, {
       os,
@@ -332,7 +332,7 @@ export const createFeatureRoutesRuntime = (dependencies) => {
       resolveProjectDirectory,
       buildAugmentedPath,
       resolveGitBinaryForSpawn,
-      openchamberUserConfigRoot,
+      shipchamberUserConfigRoot,
       managedChatsRoot,
     });
   };

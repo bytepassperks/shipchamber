@@ -25,9 +25,9 @@ import { openExternalUrl } from '@/lib/url';
 import { useI18n } from '@/lib/i18n';
 import {
   getProjectActionsState,
-  type OpenChamberProjectAction,
+  type ShipChamberProjectAction,
   type ProjectRef,
-} from '@/lib/openchamberConfig';
+} from '@/lib/shipchamberConfig';
 import {
   normalizeProjectActionDirectory,
   PROJECT_ACTION_ICONS,
@@ -69,7 +69,7 @@ interface ProjectActionsButtonProps {
   allowMobile?: boolean;
 }
 
-const AUTO_DISCOVER_ACTION_ID = '__openchamber_auto_discover_preview__';
+const AUTO_DISCOVER_ACTION_ID = '__shipchamber_auto_discover_preview__';
 const AUTO_DISCOVER_PREVIEW_WAIT_TIMEOUT_MS = 15_000;
 /**
  * How long to keep listening after the first server announces itself. A project
@@ -78,7 +78,7 @@ const AUTO_DISCOVER_PREVIEW_WAIT_TIMEOUT_MS = 15_000;
  */
 const AUTO_DISCOVER_SETTLE_MS = 3_000;
 
-const resolveProjectActionIconName = (action: Pick<OpenChamberProjectAction, 'id' | 'icon'>): IconName => {
+const resolveProjectActionIconName = (action: Pick<ShipChamberProjectAction, 'id' | 'icon'>): IconName => {
   if (action.id === AUTO_DISCOVER_ACTION_ID) {
     return 'scan-2';
   }
@@ -142,7 +142,7 @@ export const ProjectActionsButton = ({
   const matchesActionExecution = useTerminalStore((state) => state.matchesActionExecution);
   const captureStartedActionMutationRevisions = useTerminalStore((state) => state.captureStartedActionMutationRevisions);
 
-  const [actions, setActions] = React.useState<OpenChamberProjectAction[]>([]);
+  const [actions, setActions] = React.useState<ShipChamberProjectAction[]>([]);
   const [selectedActionId, setSelectedActionId] = React.useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const urlWatchByRunKeyRef = React.useRef<Record<string, UrlWatchEntry>>({});
@@ -257,7 +257,7 @@ export const ProjectActionsButton = ({
     return directories;
   }, [normalizedDirectory, normalizedProjectDirectory]);
 
-  const executionDirectoryFor = React.useCallback((action: OpenChamberProjectAction): string => {
+  const executionDirectoryFor = React.useCallback((action: ShipChamberProjectAction): string => {
     if (action.id !== AUTO_DISCOVER_ACTION_ID && action.runIn === 'parent') {
       return normalizedProjectDirectory || normalizedDirectory;
     }
@@ -379,7 +379,7 @@ export const ProjectActionsButton = ({
     return actions.find((entry) => entry.id === selectedActionId) ?? null;
   }, [actions, selectedActionId]);
 
-  const autoDiscoverAction = React.useMemo<OpenChamberProjectAction>(() => ({
+  const autoDiscoverAction = React.useMemo<ShipChamberProjectAction>(() => ({
     id: AUTO_DISCOVER_ACTION_ID,
     name: t('projectActions.actions.autoDiscover'),
     command: '',
@@ -674,7 +674,7 @@ export const ProjectActionsButton = ({
     }
   }, [clearExecutionUi, executionKey, matchesActionExecution, terminal, watchedTerminalStates]);
 
-  const getOrCreateActionTab = React.useCallback(async (action: OpenChamberProjectAction) => {
+  const getOrCreateActionTab = React.useCallback(async (action: ShipChamberProjectAction) => {
     const executionDirectory = executionDirectoryFor(action);
     if (!executionDirectory) {
       throw new Error(t('projectActions.error.noActiveDirectory'));
@@ -714,7 +714,7 @@ export const ProjectActionsButton = ({
     t,
   ]);
 
-  const runAction = React.useCallback(async (action: OpenChamberProjectAction) => {
+  const runAction = React.useCallback(async (action: ShipChamberProjectAction) => {
     if (runtime.isVSCode || (!allowMobile && isMobile)) {
       return;
     }
@@ -735,7 +735,7 @@ export const ProjectActionsButton = ({
 
     try {
       const discovered = action.id === AUTO_DISCOVER_ACTION_ID
-        ? await (async (): Promise<OpenChamberProjectAction> => {
+        ? await (async (): Promise<ShipChamberProjectAction> => {
           const [actionsState, scripts] = await Promise.all([
             getProjectActionsState({ id: stableProjectRef?.id ?? '', path: normalizedDirectory }),
             readPackageJsonScripts(normalizedDirectory),
@@ -990,7 +990,7 @@ export const ProjectActionsButton = ({
     terminal,
   ]);
 
-  const stopAction = React.useCallback(async (action: OpenChamberProjectAction) => {
+  const stopAction = React.useCallback(async (action: ShipChamberProjectAction) => {
     const runKey = toProjectActionRunKey(executionDirectoryFor(action), action.id);
     const activeRun = projectActionRuns[runKey];
     if (!activeRun) {
@@ -1035,7 +1035,7 @@ export const ProjectActionsButton = ({
     void runAction(action);
   }, [displayActions, executionDirectoryFor, runAction, projectActionRuns, selectedAction, stopAction]);
 
-  const handleSelectAction = React.useCallback((action: OpenChamberProjectAction, toggleStopIfRunning = false) => {
+  const handleSelectAction = React.useCallback((action: ShipChamberProjectAction, toggleStopIfRunning = false) => {
     setSelectedActionId(action.id);
 
     if (!toggleStopIfRunning) {

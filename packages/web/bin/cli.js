@@ -48,7 +48,7 @@ import { createTunnelCommand, isValidTunnelDoctorResponse, shouldDisplayTunnelQr
 import {
   resolveDoctorPortStatuses,
   discoverRunningInstances,
-  discoverOpenChamberInstanceOnPort,
+  discoverShipChamberInstanceOnPort,
   discoverLifecycleInstances,
   discoverUnconfirmedRegistryInstanceOnPort,
   resolveTunnelProviders,
@@ -61,9 +61,9 @@ import {
   getPidFilePath,
   getInstanceFilePath,
   isProcessRunning,
-  isOpenchamberCmdline,
-  isOpenchamberProcessRunning,
-  getOpenchamberProcessState,
+  isShipchamberCmdline,
+  isShipchamberProcessRunning,
+  getShipchamberProcessState,
 } from './lib/cli-process.js';
 import {
   intro as clackIntro, outro as clackOutro, cancel as clackCancel,
@@ -348,7 +348,7 @@ async function main() {
   await commands[command](options);
 }
 
-const isCliExecution = isModuleCliExecution(process.argv[1], import.meta.url, fs.realpathSync, 'openchamber');
+const isCliExecution = isModuleCliExecution(process.argv[1], import.meta.url, fs.realpathSync, 'shipchamber');
 
 if (isCliExecution) {
   let isHandlingSigint = false;
@@ -441,14 +441,14 @@ export {
   getPidFilePath,
   getInstanceFilePath,
   isProcessRunning,
-  isOpenchamberProcessRunning,
-  isOpenchamberCmdline,
-  getOpenchamberProcessState,
+  isShipchamberProcessRunning,
+  isShipchamberCmdline,
+  getShipchamberProcessState,
   resolveTunnelProviders,
   fetchTunnelProvidersFromPort,
   fetchSystemInfoFromPort,
   discoverRunningInstances,
-  discoverOpenChamberInstanceOnPort,
+  discoverShipChamberInstanceOnPort,
   discoverLifecycleInstances,
   discoverUnconfirmedRegistryInstanceOnPort,
   ensureTunnelProfilesMigrated,

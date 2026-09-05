@@ -406,7 +406,7 @@ const sendPlainMessage = async (
 
 const requestChatForceScrollBottom = (sessionId: string): void => {
   if (typeof window === 'undefined') return;
-  window.dispatchEvent(new CustomEvent('openchamber:chat-force-scroll-bottom', {
+  window.dispatchEvent(new CustomEvent('shipchamber:chat-force-scroll-bottom', {
     detail: { sessionId },
   }));
 };
@@ -444,11 +444,11 @@ const createOrReuseReviewSession = async (originalSessionID: string, directory: 
     if (existing && isReviewSession(existing)) return existing;
     await patchSessionMetadata(originalSessionID, directory, (metadata) => {
       const next = { ...metadata };
-      const openchamber = next.openchamber;
-      if (openchamber && typeof openchamber === 'object' && !Array.isArray(openchamber)) {
-        const rest = { ...(openchamber as Record<string, unknown>) };
+      const shipchamber = next.shipchamber;
+      if (shipchamber && typeof shipchamber === 'object' && !Array.isArray(shipchamber)) {
+        const rest = { ...(shipchamber as Record<string, unknown>) };
         delete rest.reviewSessionID;
-        next.openchamber = rest;
+        next.shipchamber = rest;
       }
       return next;
     });

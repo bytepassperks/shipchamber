@@ -187,22 +187,22 @@ const TOOL_METADATA: Record<string, ToolMetadata> = {
       ]
     },
 
-    openchamber: {
-      displayName: 'OpenChamber',
+    shipchamber: {
+      displayName: 'ShipChamber',
       category: 'system',
       outputLanguage: 'json',
       inputFields: []
     },
 
-    openchamber_web: {
-      displayName: 'OpenChamber Web',
+    shipchamber_web: {
+      displayName: 'ShipChamber Web',
       category: 'system',
       outputLanguage: 'json',
       inputFields: []
     },
 
-    openchamber_memory: {
-      displayName: 'OpenChamber Memory',
+    shipchamber_memory: {
+      displayName: 'ShipChamber Memory',
       category: 'system',
       outputLanguage: 'json',
       inputFields: []

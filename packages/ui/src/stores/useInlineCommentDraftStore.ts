@@ -351,7 +351,7 @@ export const useInlineCommentDraftStore = create<InlineCommentDraftStore>()(
         },
       }),
       {
-        name: 'openchamber-inline-comment-drafts',
+        name: 'shipchamber-inline-comment-drafts',
         storage: createDeferredSafeJSONStorage(),
         version: 3,
         partialize: (state) => ({ drafts: state.drafts, touchedAt: state.touchedAt }),

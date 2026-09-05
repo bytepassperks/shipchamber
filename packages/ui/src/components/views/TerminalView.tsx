@@ -41,7 +41,7 @@ export const TerminalView: React.FC<TerminalViewProps> = ({ visible, directory }
     const { t } = useI18n();
     const { terminal, runtime } = useRuntimeAPIs();
     // The server rejects a working directory that no longer exists (a worktree
-    // deleted outside OpenChamber). The session is what is stranded, not the
+    // deleted outside ShipChamber). The session is what is stranded, not the
     // terminal: relocating it to its project changes the effective directory,
     // and this view then starts a terminal there on its own.
     const recoverCurrentSessionDirectory = React.useCallback(() => {

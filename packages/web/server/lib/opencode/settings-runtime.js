@@ -692,8 +692,8 @@ export const createSettingsRuntime = (deps) => {
       return { settings, changed: false };
     }
 
-    const defaultLight = 'openchamber-light';
-    const defaultDark = 'openchamber-dark';
+    const defaultLight = 'shipchamber-light';
+    const defaultDark = 'shipchamber-dark';
 
     let nextLightThemeId = hasLight ? settings.lightThemeId : undefined;
     let nextDarkThemeId = hasDark ? settings.darkThemeId : undefined;

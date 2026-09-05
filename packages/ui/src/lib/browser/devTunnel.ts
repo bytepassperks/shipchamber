@@ -2,7 +2,7 @@
  * Makes a remote dev server browsable from the desktop app.
  *
  * A URL like `http://localhost:5173` means "this machine" to whoever resolves
- * it. When OpenChamber is running on another host, that is the wrong machine:
+ * it. When ShipChamber is running on another host, that is the wrong machine:
  * the dev server is on the host, the browser is here. The desktop shell binds
  * an equivalent local port and pipes it to the host, so the same page loads
  * from a real local origin with nothing rewritten.
@@ -72,11 +72,11 @@ listenForDesktopRelayDevTunnels(({ connectionId, remotePort, message }) => {
 });
 
 const isDesktopRuntime = (): boolean => (
-  typeof window !== 'undefined' && Boolean(window.__OPENCHAMBER_ELECTRON__)
+  typeof window !== 'undefined' && Boolean(window.__SHIPCHAMBER_ELECTRON__)
 );
 
 /**
- * True when the app is talking to an OpenChamber on another machine. A local
+ * True when the app is talking to an ShipChamber on another machine. A local
  * runtime resolves loopback URLs correctly on its own and must not be tunneled,
  * which would only add a hop.
  */
@@ -84,7 +84,7 @@ const isRemoteRuntime = (baseUrl: string): boolean => {
   if (!baseUrl) return false;
   try {
     const parsed = new URL(baseUrl, typeof window !== 'undefined' ? window.location.href : undefined);
-    const localOrigin = typeof window !== 'undefined' ? window.__OPENCHAMBER_LOCAL_ORIGIN__ : '';
+    const localOrigin = typeof window !== 'undefined' ? window.__SHIPCHAMBER_LOCAL_ORIGIN__ : '';
     if (localOrigin && parsed.origin === localOrigin) return false;
     return !isLoopbackUrl(parsed.toString());
   } catch {
@@ -183,7 +183,7 @@ export const resolveBrowsableUrl = async (url: string): Promise<string> => {
 };
 
 /**
- * True when a loopback URL belongs to the machine OpenChamber runs on rather
+ * True when a loopback URL belongs to the machine ShipChamber runs on rather
  * than to this one.
  *
  * A page served through a tunnel can send the browser to another local port —

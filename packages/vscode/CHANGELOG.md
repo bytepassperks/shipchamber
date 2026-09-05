@@ -2,7 +2,7 @@
 
 ### New
 
-- **Comments on code.** Select lines, click the `+` in the gutter or right-click → OpenChamber → Add Comment, and write your note. It stays pinned to the code and goes out with your next message as a context card. Works in diffs too (thanks to @felipegenef).
+- **Comments on code.** Select lines, click the `+` in the gutter or right-click → ShipChamber → Add Comment, and write your note. It stays pinned to the code and goes out with your next message as a context card. Works in diffs too (thanks to @felipegenef).
 - The extension is available in Turkish (thanks to @fitzgpt).
 - Chat: prompt history. Arrow up and down in the composer bring back your earlier prompts, attachments included, and the history survives a reload. It covers the current session; Settings → Chat can widen it to every project and set how many prompts to keep, 40 by default (thanks to @mattv8).
 - Chat: an "Enter sends" switch in Settings → Chat. On, Enter sends and Shift+Enter adds a line; off, the other way round. Ctrl/Cmd+Enter always sends. Nothing changes until you flip it (thanks to @claymor333).
@@ -64,7 +64,7 @@
 
 ### New
 
-- **Turkish interface:** OpenChamber can be used in Turkish (thanks to @fitzgpt).
+- **Turkish interface:** ShipChamber can be used in Turkish (thanks to @fitzgpt).
 - Composer: pasting a big block of text offers to attach it as a `pasted-context-N.txt` file and leaves a reference at the caret. Settings → Chat can make it always attach or always paste inline (thanks to @makeittech).
 - Multi-Run: a group can hold more than five models (thanks to @tomzx).
 - Chat: a tool card with a file path has a quick-open button that opens the file in the editor (thanks to @robertoberto).
@@ -156,7 +156,7 @@
 - Chat: newly sent messages and highlighted code blocks no longer flicker, and Bash output grows with its content instead of being cut off.
 - Chat: file paths in messages open from the session's workspace, even if you last browsed files in another workspace (thanks to @tomzx).
 - Chat: a long user message can be expanded even when its final layout finishes after it first appears.
-- Sidebar: sessions created outside OpenChamber appear in the sidebar and Recent list without a page refresh (thanks to @tomzx).
+- Sidebar: sessions created outside ShipChamber appear in the sidebar and Recent list without a page refresh (thanks to @tomzx).
 
 ### Misc
 
@@ -265,7 +265,7 @@
 - Chat: queued messages retry after a failed send or an interrupted turn instead of sitting stuck until the next session update.
 - Chat: assistant messages no longer run HTML.
 - Chat: clicking an apply_patch result opens the file you clicked instead of always the first one (thanks to @nabsiddiqui).
-- Settings/Skills: renaming a skill keeps its instructions and supporting files. The rename action only shows for skills OpenChamber can safely move (thanks to @makeittech).
+- Settings/Skills: renaming a skill keeps its instructions and supporting files. The rename action only shows for skills ShipChamber can safely move (thanks to @makeittech).
 - Usage: Kimi for Coding counts usage correctly whether the provider reports what you used or what is left (thanks to @makeittech).
 - Sessions: archiving and unarchiving stays inside the current workspace.
 - Sidebar: a worktree shared by two projects appears once.
@@ -333,7 +333,7 @@
 
 ### New
 
-- **Chat attachments:** attach Office and OpenDocument files (`.docx`, `.pptx`, `.xlsx`, `.odt`, `.odp`, `.ods`). Their text and the embedded images OpenChamber can read are pulled out before the message goes off.
+- **Chat attachments:** attach Office and OpenDocument files (`.docx`, `.pptx`, `.xlsx`, `.odt`, `.odp`, `.ods`). Their text and the embedded images ShipChamber can read are pulled out before the message goes off.
 - Chat attachments: more source-code formats, notebooks, HAR files with credentials and cookies stripped, SVG and Draw.io drawings, and HEIC/HEIF images. The composer warns you when the chosen model may ignore an attachment type.
 
 ### Improvements
@@ -364,7 +364,7 @@
 
 ### Fixes
 
-- Permissions: per-session auto-accept works again, survives an extension restart, and covers subagent sessions while an OpenChamber view is open.
+- Permissions: per-session auto-accept works again, survives an extension restart, and covers subagent sessions while an ShipChamber view is open.
 - Chat: when creating a session fails, the new-session draft stays open with the prompt you submitted.
 
 ## [1.16.1] - 2026-07-14
@@ -388,7 +388,7 @@
 
 ### Improvements
 
-- Chat: a session with an active [goal](https://docs.openchamber.dev/session-goals/), started from the web or desktop app, shows the goal strip and its live status above the composer.
+- Chat: a session with an active [goal](https://docs.shipchamber.com/session-goals/), started from the web or desktop app, shows the goal strip and its live status above the composer.
 - Notifications: subagent completion notifications follow the same settings as the main app.
 
 ### Fixes

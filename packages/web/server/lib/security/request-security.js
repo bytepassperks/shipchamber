@@ -7,7 +7,7 @@ export const createRequestSecurityRuntime = (deps) => {
   // the Android origin 403'd every WebSocket upgrade from the Android app
   // (message stream, terminal, dictation) while SSE kept working.
   const packagedClientOrigins = new Set([
-    'openchamber-ui://app',
+    'shipchamber-ui://app',
     'capacitor://localhost',
     'https://localhost',
   ]);
@@ -127,7 +127,7 @@ export const createRequestSecurityRuntime = (deps) => {
     const host = forwardedHost || (Array.isArray(hostHeader) ? hostHeader[0] : hostHeader || '').trim().toLowerCase();
     if (host && host === origin.host.toLowerCase()) return true;
 
-    // TLS commonly ends at a cloud edge before an HTTP hop to OpenChamber.
+    // TLS commonly ends at a cloud edge before an HTTP hop to ShipChamber.
     // In that setup the browser's Origin is https while a generic reverse
     // proxy reports the upstream request as http. The external host remains
     // authoritative, so compare it directly instead of requiring the proxy to

@@ -43,7 +43,7 @@ const tempDirs = [];
 
 /** Create a temp dir and register it for afterEach cleanup. */
 const createTempDir = () => {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'openchamber-git-service-'));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'shipchamber-git-service-'));
   tempDirs.push(dir);
   return dir;
 };
@@ -649,7 +649,7 @@ describe('createWorktree', () => {
       const created = await createWorktree(repo, {
         mode: 'new',
         worktreeName: 'hook-test',
-        branchName: 'openchamber/hook-test',
+        branchName: 'shipchamber/hook-test',
         returnAfterDirectoryCreated: true,
       });
 
@@ -701,7 +701,7 @@ describe('createWorktree', () => {
       const created = await createWorktree(repo, {
         mode: 'new',
         worktreeName: 'hook-skip-test',
-        branchName: 'openchamber/hook-skip-test',
+        branchName: 'shipchamber/hook-skip-test',
         returnAfterDirectoryCreated: true,
       });
 
@@ -744,7 +744,7 @@ describe('createWorktree', () => {
       const created = await createWorktree(repo, {
         mode: 'new',
         worktreeName: 'hook-fail-test',
-        branchName: 'openchamber/hook-fail-test',
+        branchName: 'shipchamber/hook-fail-test',
         returnAfterDirectoryCreated: true,
       });
 
@@ -894,23 +894,23 @@ describe('createWorktree', () => {
 
       const created = await createWorktree(repository, {
         mode: 'new',
-        branchName: 'openchamber/feature',
+        branchName: 'shipchamber/feature',
         worktreeName: 'feature-wt',
         startRef: 'remotes/origin/main',
         setUpstream: true,
         upstreamRemote: 'origin',
-        upstreamBranch: 'openchamber/feature',
+        upstreamBranch: 'shipchamber/feature',
       });
 
-      expect(created.branch).toBe('openchamber/feature');
+      expect(created.branch).toBe('shipchamber/feature');
 
       await expect.poll(
         () => getWorktreeBootstrapStatus(created.path).then((status) => status.status === 'ready' || status.status === 'failed'),
         { timeout: 5_000 }
       ).toBe(true);
 
-      expect(readBranchConfig(created.path, 'openchamber/feature', 'remote')).toBe('');
-      expect(readBranchConfig(created.path, 'openchamber/feature', 'merge')).toBe('');
+      expect(readBranchConfig(created.path, 'shipchamber/feature', 'remote')).toBe('');
+      expect(readBranchConfig(created.path, 'shipchamber/feature', 'merge')).toBe('');
     } finally {
       if (previousXdgDataHome === undefined) {
         delete process.env.XDG_DATA_HOME;
@@ -932,17 +932,17 @@ describe('createWorktree', () => {
 
       const created = await createWorktree(repository, {
         mode: 'new',
-        branchName: 'openchamber/fallback-wt',
+        branchName: 'shipchamber/fallback-wt',
         worktreeName: 'fallback-wt',
         startRef: 'remotes/origin/main',
         setUpstream: true,
       });
 
       await expect.poll(
-        () => readBranchConfig(created.path, 'openchamber/fallback-wt', 'merge'),
+        () => readBranchConfig(created.path, 'shipchamber/fallback-wt', 'merge'),
         { timeout: 5_000 }
       ).toBe('refs/heads/main');
-      expect(readBranchConfig(created.path, 'openchamber/fallback-wt', 'remote')).toBe('origin');
+      expect(readBranchConfig(created.path, 'shipchamber/fallback-wt', 'remote')).toBe('origin');
     } finally {
       if (previousXdgDataHome === undefined) {
         delete process.env.XDG_DATA_HOME;
@@ -962,16 +962,16 @@ describe('createWorktree', () => {
     try {
       const { repository } = createRepositoryWithRemote({ defaultBranch: 'main' });
       runGit(repository, ['branch', '--set-upstream-to=origin/main', 'next']);
-      runGit(repository, ['remote', 'set-url', 'origin', '/nonexistent/openchamber-unreachable.git']);
+      runGit(repository, ['remote', 'set-url', 'origin', '/nonexistent/shipchamber-unreachable.git']);
 
       const created = await createWorktree(repository, {
         mode: 'new',
-        branchName: 'openchamber/stale-ref-wt',
+        branchName: 'shipchamber/stale-ref-wt',
         worktreeName: 'stale-ref-wt',
         startRef: 'remotes/origin/main',
       });
 
-      expect(created.branch).toBe('openchamber/stale-ref-wt');
+      expect(created.branch).toBe('shipchamber/stale-ref-wt');
       expect(created.sourceFetchFailed).toBe(true);
       const expectedHead = runGit(repository, ['rev-parse', 'next']).trim();
       expect(runGit(created.path, ['rev-parse', 'HEAD']).trim()).toBe(expectedHead);
@@ -994,11 +994,11 @@ describe('createWorktree', () => {
     try {
       const { repository } = createRepositoryWithRemote({ defaultBranch: 'main' });
       runGit(repository, ['update-ref', '-d', 'refs/remotes/origin/main']);
-      runGit(repository, ['remote', 'set-url', 'origin', '/nonexistent/openchamber-unreachable.git']);
+      runGit(repository, ['remote', 'set-url', 'origin', '/nonexistent/shipchamber-unreachable.git']);
 
       await expect(createWorktree(repository, {
         mode: 'new',
-        branchName: 'openchamber/never-fetched-wt',
+        branchName: 'shipchamber/never-fetched-wt',
         worktreeName: 'never-fetched-wt',
         startRef: 'remotes/origin/main',
       })).rejects.toThrow(/does not appear to be a git repository|Could not read from remote repository/i);

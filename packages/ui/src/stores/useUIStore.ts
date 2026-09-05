@@ -880,7 +880,7 @@ interface UIStore {
   linearIssueListAssignee: LinearIssueListAssignee;
   /**
    * Team filter for the instance currently connected. A Linear team belongs to
-   * one workspace, and each OpenChamber instance has its own Linear login, so
+   * one workspace, and each ShipChamber instance has its own Linear login, so
    * this is derived from `linearIssueListTeamIdByRuntime` rather than persisted
    * on its own — a team id carried across a switch filters the new instance's
    * list down to nothing.
@@ -2800,10 +2800,10 @@ export const useUIStore = create<UIStore>()(
               let legacyEnabled = true;
               try {
                 if (typeof localStorage !== 'undefined') {
-                  const legacy = localStorage.getItem('openchamber:files:auto-save-enabled');
+                  const legacy = localStorage.getItem('shipchamber:files:auto-save-enabled');
                   if (legacy !== null) {
                     legacyEnabled = legacy !== 'false';
-                    localStorage.removeItem('openchamber:files:auto-save-enabled');
+                    localStorage.removeItem('shipchamber:files:auto-save-enabled');
                   }
                 }
               } catch {

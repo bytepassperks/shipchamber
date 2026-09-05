@@ -77,7 +77,7 @@ export function getWebviewHtml(options: WebviewHtmlOptions): string {
   // Use VS Code CSS variables for proper theme integration
   // These variables are automatically provided by VS Code to webviews
   // 
-  // Logo geometry matches OpenChamberLogo.tsx:
+  // Logo geometry matches ShipChamberLogo.tsx:
   // edge=48, cos30=0.866, sin30=0.5, centerY=50
   // top=(50, 2), left=(8.432, 26), right=(91.568, 26), center=(50, 50)
   // bottomLeft=(8.432, 74), bottomRight=(91.568, 74), bottom=(50, 98)
@@ -152,10 +152,10 @@ export function getWebviewHtml(options: WebviewHtmlOptions): string {
       max-width: 280px;
     }
   </style>
-  <title>OpenChamber</title>
+  <title>ShipChamber</title>
 </head>
 <body>
-  <!-- Initial loading screen with simplified OpenChamber logo -->
+  <!-- Initial loading screen with simplified ShipChamber logo -->
   <div id="initial-loading">
     <svg class="logo" width="70" height="70" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
       <!-- Left face -->
@@ -194,23 +194,23 @@ export function getWebviewHtml(options: WebviewHtmlOptions): string {
       viewMode: "${viewMode}",
       initialSessionId: ${initialSessionId ? `"${initialSessionId.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"` : 'null'},
     };
-    window.__OPENCHAMBER_HOME__ = "${workspaceFolder.replace(/\\/g, '\\\\')}";
+    window.__SHIPCHAMBER_HOME__ = "${workspaceFolder.replace(/\\/g, '\\\\')}";
     // VS Code's display language. The UI bundle uses it as the default locale
     // until the user picks one; the splash below picks its strings from it too.
-    window.__OPENCHAMBER_HOST_LANGUAGE__ = ${JSON.stringify(vscode.env.language)};
+    window.__SHIPCHAMBER_HOST_LANGUAGE__ = ${JSON.stringify(vscode.env.language)};
 
-    // OpenChamber's own saved locale wins; before one exists, VS Code's display
+    // ShipChamber's own saved locale wins; before one exists, VS Code's display
     // language decides, so a fresh install in a supported language never boots
     // in English.
     function resolveBootstrapLanguage() {
       try {
-        var rawLocale = window.localStorage.getItem('openchamber.i18n.v1');
+        var rawLocale = window.localStorage.getItem('shipchamber.i18n.v1');
         if (rawLocale) {
           var parsedLocale = JSON.parse(rawLocale);
           if (parsedLocale && typeof parsedLocale.locale === 'string') return parsedLocale.locale.toLowerCase();
         }
       } catch {}
-      return String(window.__OPENCHAMBER_HOST_LANGUAGE__ || '').toLowerCase();
+      return String(window.__SHIPCHAMBER_HOST_LANGUAGE__ || '').toLowerCase();
     }
 
     function getBootstrapMessages() {
@@ -395,7 +395,7 @@ export function getWebviewHtml(options: WebviewHtmlOptions): string {
           })
           .catch((error) => {
             attempt += 1;
-            console.warn('[OpenChamber] VS Code webview dev bundle unavailable, retrying...', error);
+            console.warn('[ShipChamber] VS Code webview dev bundle unavailable, retrying...', error);
             setStatus(devMessages.waitingDevServer(hostLabel, attempt));
             window.setTimeout(() => {
               tryLoadDevBundle();

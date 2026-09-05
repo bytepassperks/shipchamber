@@ -1,51 +1,51 @@
 ---
 title: Zmienne środowiskowe
-description: Skonfiguruj integrację OpenChamber i OpenCode za pomocą zmiennych środowiskowych.
+description: Skonfiguruj integrację ShipChamber i OpenCode za pomocą zmiennych środowiskowych.
 ---
 
 # Zmienne środowiskowe
 
-OpenChamber odczytuje te zmienne przy starcie. Dla usług startowych `openchamber startup enable` domyślnie zapisuje snapshot bieżącego środowiska, więc uruchom tę komendę ponownie po zmianie zmiennych, których ma używać usługa.
+ShipChamber odczytuje te zmienne przy starcie. Dla usług startowych `shipchamber startup enable` domyślnie zapisuje snapshot bieżącego środowiska, więc uruchom tę komendę ponownie po zmianie zmiennych, których ma używać usługa.
 
-## Serwer OpenChamber
+## Serwer ShipChamber
 
-### `OPENCHAMBER_HOST`
+### `SHIPCHAMBER_HOST`
 
-Adres, na którym nasłuchuje serwer web OpenChamber. Użyj `0.0.0.0`, aby pozwolić na dostęp z innych maszyn.
+Adres, na którym nasłuchuje serwer web ShipChamber. Użyj `0.0.0.0`, aby pozwolić na dostęp z innych maszyn.
 
-### `OPENCHAMBER_UI_PASSWORD`
+### `SHIPCHAMBER_UI_PASSWORD`
 
 Hasło do interfejsu w przeglądarce. Ustaw je przy dostępie spoza localhost, tunelach albo reverse proxy.
 
-### `OPENCHAMBER_API_ONLY`
+### `SHIPCHAMBER_API_ONLY`
 
-Uruchamia OpenChamber w trybie headless, gdy ustawione na `true` lub `1`. Trasy API pozostają dostępne dla klientów desktopowych i mobilnych, ale UI przeglądarki nie jest serwowane.
+Uruchamia ShipChamber w trybie headless, gdy ustawione na `true` lub `1`. Trasy API pozostają dostępne dla klientów desktopowych i mobilnych, ale UI przeglądarki nie jest serwowane.
 
-### `OPENCHAMBER_DATA_DIR`
+### `SHIPCHAMBER_DATA_DIR`
 
-Nadpisuje katalog danych OpenChamber. Domyślnie jest to `~/.config/openchamber`.
+Nadpisuje katalog danych ShipChamber. Domyślnie jest to `~/.config/shipchamber`.
 
-### `OPENCHAMBER_CHATS_DIR`
+### `SHIPCHAMBER_CHATS_DIR`
 
-Przenosi katalogi zarządzanych czatów, które OpenChamber tworzy dla czatów bez projektu. Domyślnie jest to `~/.config/openchamber/chats`. Ustaw katalog, który serwer OpenCode może odczytać, gdy OpenChamber i OpenCode działają jako różni użytkownicy. Istniejące czaty nie są przenoszone.
+Przenosi katalogi zarządzanych czatów, które ShipChamber tworzy dla czatów bez projektu. Domyślnie jest to `~/.config/shipchamber/chats`. Ustaw katalog, który serwer OpenCode może odczytać, gdy ShipChamber i OpenCode działają jako różni użytkownicy. Istniejące czaty nie są przenoszone.
 
-### `OPENCHAMBER_COMPRESS_API`
+### `SHIPCHAMBER_COMPRESS_API`
 
 Steruje kompresją odpowiedzi API. `true` albo `1` ją włącza, `false` albo `0` wyłącza.
 
-### `OPENCHAMBER_SKIP_API_COMPRESSION`
+### `SHIPCHAMBER_SKIP_API_COMPRESSION`
 
-Wyłącza kompresję odpowiedzi API, gdy ma wartość `true` albo `1`. Ma pierwszeństwo przed `OPENCHAMBER_COMPRESS_API`.
+Wyłącza kompresję odpowiedzi API, gdy ma wartość `true` albo `1`. Ma pierwszeństwo przed `SHIPCHAMBER_COMPRESS_API`.
 
-### `OPENCHAMBER_VERBOSE_REQUEST_LOGS`
+### `SHIPCHAMBER_VERBOSE_REQUEST_LOGS`
 
 Włącza szczegółowe HTTP request logs, gdy ma wartość `true` albo `1`.
 
-### `OPENCHAMBER_UPDATE_API_URL`
+### `SHIPCHAMBER_UPDATE_API_URL`
 
 Nadpisuje endpoint sprawdzania aktualizacji. Większość użytkowników nie powinna tego ustawiać.
 
-### `OPENCHAMBER_PACKAGE_MANAGER`
+### `SHIPCHAMBER_PACKAGE_MANAGER`
 
 Wymusza package manager używany do aktualizacji, gdy automatyczne wykrywanie się pomyli.
 
@@ -53,7 +53,7 @@ Wymusza package manager używany do aktualizacji, gdy automatyczne wykrywanie si
 
 ### `OPENCODE_HOST`
 
-Łączy OpenChamber z istniejącym OpenCode server. Wartość musi być origin `http` albo `https` z jawnym portem i bez path, query ani hash. `OPENCODE_HOST` ma pierwszeństwo przed `OPENCODE_PORT`.
+Łączy ShipChamber z istniejącym OpenCode server. Wartość musi być origin `http` albo `https` z jawnym portem i bez path, query ani hash. `OPENCODE_HOST` ma pierwszeństwo przed `OPENCODE_PORT`.
 
 ### `OPENCODE_PORT`
 
@@ -61,15 +61,15 @@ Ustawia port OpenCode server. Dla managed OpenCode prosi o ten port; z `OPENCODE
 
 ### `OPENCODE_SKIP_START`
 
-Gdy ma wartość `true`, blokuje uruchamianie własnego OpenCode server przez OpenChamber.
+Gdy ma wartość `true`, blokuje uruchamianie własnego OpenCode server przez ShipChamber.
 
-### `OPENCHAMBER_OPENCODE_HOSTNAME`
+### `SHIPCHAMBER_OPENCODE_HOSTNAME`
 
-Hostname dla OpenCode server zarządzanego przez OpenChamber. Domyślnie `127.0.0.1`.
+Hostname dla OpenCode server zarządzanego przez ShipChamber. Domyślnie `127.0.0.1`.
 
 ### `OPENCODE_BINARY`
 
-Ścieżka do executable `opencode`, którego ma używać OpenChamber.
+Ścieżka do executable `opencode`, którego ma używać ShipChamber.
 
 ### `OPENCODE_CONFIG`
 
@@ -87,9 +87,9 @@ Własny katalog danych dla managed OpenCode server.
 
 Wybiera WSL distro używane do integracji OpenCode w Windows.
 
-### `OPENCHAMBER_OPENCODE_WSL_DISTRO`
+### `SHIPCHAMBER_OPENCODE_WSL_DISTRO`
 
-Alias specyficzny dla OpenChamber do wyboru WSL distro. `OPENCODE_WSL_DISTRO` ma pierwszeństwo, gdy ustawione są obie zmienne.
+Alias specyficzny dla ShipChamber do wyboru WSL distro. `OPENCODE_WSL_DISTRO` ma pierwszeństwo, gdy ustawione są obie zmienne.
 
 ### `OPENCODE_JWT_SECRET`
 
@@ -97,19 +97,19 @@ Secret używany do podpisywania UI auth tokens. Dla trwałych usług użyj dług
 
 ## Terminal i Git
 
-### `OPENCHAMBER_TERMINAL_SHELL`
+### `SHIPCHAMBER_TERMINAL_SHELL`
 
-Shell executable używany przez terminal sessions w OpenChamber.
+Shell executable używany przez terminal sessions w ShipChamber.
 
-### `OPENCHAMBER_GIT_BINARY`
+### `SHIPCHAMBER_GIT_BINARY`
 
-Git executable używany przez funkcje Git w OpenChamber.
+Git executable używany przez funkcje Git w ShipChamber.
 
 ### `GIT_BINARY`
 
-Alternatywny override dla Git executable. Dla konfiguracji specyficznej dla OpenChamber preferuj `OPENCHAMBER_GIT_BINARY`.
+Alternatywny override dla Git executable. Dla konfiguracji specyficznej dla ShipChamber preferuj `SHIPCHAMBER_GIT_BINARY`.
 
-### `OPENCHAMBER_GIT_READ_CACHE_TTL_MS`
+### `SHIPCHAMBER_GIT_READ_CACHE_TTL_MS`
 
 TTL w milisekundach dla cached Git-backed file reads. Ustaw `0`, aby wyłączyć cache podczas debugowania.
 
@@ -117,25 +117,25 @@ TTL w milisekundach dla cached Git-backed file reads. Ustaw `0`, aby wyłączyć
 
 ### `OPENAI_API_KEY`
 
-API key używany przez funkcje głosowe OpenChamber, które wywołują OpenAI-compatible services.
+API key używany przez funkcje głosowe ShipChamber, które wywołują OpenAI-compatible services.
 
-### `OPENCHAMBER_ALLOW_REMOTE_OPENAI_COMPAT_URLS`
+### `SHIPCHAMBER_ALLOW_REMOTE_OPENAI_COMPAT_URLS`
 
 Pozwala na zdalne OpenAI-compatible base URLs dla funkcji głosowych, gdy ma wartość `true` albo `1`.
 
 ### `NGROK_AUTHTOKEN`
 
-ngrok auth token używany przez tunnel commands OpenChamber. Możesz też skonfigurować go przez `ngrok config add-authtoken <token>`.
+ngrok auth token używany przez tunnel commands ShipChamber. Możesz też skonfigurować go przez `ngrok config add-authtoken <token>`.
 
 ## Runtime helpers
 
 ### `BUN_BINARY`
 
-Bun executable, którego OpenChamber ma używać do uruchamiania daemon processes.
+Bun executable, którego ShipChamber ma używać do uruchamiania daemon processes.
 
 ### `BUN_INSTALL`
 
-Katalog główny instalacji Bun. OpenChamber używa go, aby znaleźć `bin/bun` dla daemon startup i aktualizacji.
+Katalog główny instalacji Bun. ShipChamber używa go, aby znaleźć `bin/bun` dla daemon startup i aktualizacji.
 
 ### `VITE_OPENCODE_URL`
 

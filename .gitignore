@@ -21,7 +21,7 @@ changelog-*.png
 *.vsix
 /npm
 /tsc
-/openchamber@*
+/shipchamber@*
 local-dev*
 .tmp/
 /tmp/
@@ -69,8 +69,8 @@ workspaces/
 *.pid
 .worktrees/
 
-# OpenChamber app runtime state (sessions db, screenshots)
-.openchamber/
+# ShipChamber app runtime state (sessions db, screenshots)
+.shipchamber/
 
 # Marks a disposable clone dedicated to unattended maintenance tasks.
 .maintenance-clone

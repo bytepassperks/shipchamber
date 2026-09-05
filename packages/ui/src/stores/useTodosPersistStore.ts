@@ -75,7 +75,7 @@ export const useTodosPersistStore = create<TodosPersistState>()(
                 },
             }),
             {
-                name: 'openchamber-session-todos',
+                name: 'shipchamber-session-todos',
                 version: 2,
                 storage: createDeferredSafeJSONStorage(),
                 partialize: (state) => ({ sessions: state.sessions }),

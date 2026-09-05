@@ -12,7 +12,7 @@ import {
   readSessionOrigin,
 } from './status.js';
 
-const makeTempDir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'openchamber-linear-status-'));
+const makeTempDir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'shipchamber-linear-status-'));
 
 const jsonResponse = (payload, status = 200) => new Response(JSON.stringify(payload), {
   status,
@@ -23,7 +23,7 @@ const issueNode = {
   id: 'issue-uuid-1',
   identifier: 'ENG-12',
   title: 'Broken login',
-  url: 'https://linear.app/openchamber/issue/ENG-12',
+  url: 'https://linear.app/shipchamber/issue/ENG-12',
   state: { name: 'In Progress', type: 'started' },
   assignee: null,
   team: { id: 'team-eng', key: 'ENG', name: 'Engineering' },
@@ -59,11 +59,11 @@ describe('Linear session status comments', () => {
   let previousPort;
 
   beforeEach(() => {
-    previousDataDir = process.env.OPENCHAMBER_DATA_DIR;
-    previousPort = process.env.OPENCHAMBER_PORT;
+    previousDataDir = process.env.SHIPCHAMBER_DATA_DIR;
+    previousPort = process.env.SHIPCHAMBER_PORT;
     dataDir = makeTempDir();
-    process.env.OPENCHAMBER_DATA_DIR = dataDir;
-    process.env.OPENCHAMBER_PORT = '3001';
+    process.env.SHIPCHAMBER_DATA_DIR = dataDir;
+    process.env.SHIPCHAMBER_PORT = '3001';
     setLinearAuth({
       accessToken: 'access-1',
       refreshToken: 'refresh-1',
@@ -78,14 +78,14 @@ describe('Linear session status comments', () => {
     vi.unstubAllGlobals();
     clearLinearAuth();
     if (previousDataDir === undefined) {
-      delete process.env.OPENCHAMBER_DATA_DIR;
+      delete process.env.SHIPCHAMBER_DATA_DIR;
     } else {
-      process.env.OPENCHAMBER_DATA_DIR = previousDataDir;
+      process.env.SHIPCHAMBER_DATA_DIR = previousDataDir;
     }
     if (previousPort === undefined) {
-      delete process.env.OPENCHAMBER_PORT;
+      delete process.env.SHIPCHAMBER_PORT;
     } else {
-      process.env.OPENCHAMBER_PORT = previousPort;
+      process.env.SHIPCHAMBER_PORT = previousPort;
     }
     fs.rmSync(dataDir, { recursive: true, force: true });
   });
@@ -95,7 +95,7 @@ describe('Linear session status comments', () => {
     expect(readSessionOrigin('http://127.0.0.1:3001/')).toBe('http://127.0.0.1:3001');
     expect(readSessionOrigin('javascript:alert(1)')).toBe('');
     expect(readSessionOrigin('https://app.example.com/secret')).toBe('');
-    expect(readSessionOrigin('openchamber:')).toBe('');
+    expect(readSessionOrigin('shipchamber:')).toBe('');
     expect(buildLinearSessionOpenUrl('ses_1', 'https://app.example.com'))
       .toBe('https://app.example.com/?session=ses_1');
     expect(buildLinearSessionOpenUrl('ses_1', '')).toBe('');
@@ -117,7 +117,7 @@ describe('Linear session status comments', () => {
     expect(isPublicSessionOrigin('http://macbook.local:3001')).toBe(false);
     expect(isPublicSessionOrigin('http://macbook:3001')).toBe(false);
     expect(isPublicSessionOrigin('http://[fd00::1]:3001')).toBe(false);
-    expect(isPublicSessionOrigin('openchamber:')).toBe(false);
+    expect(isPublicSessionOrigin('shipchamber:')).toBe(false);
     expect(isPublicSessionOrigin('')).toBe(false);
   });
 
@@ -164,15 +164,15 @@ describe('Linear session status comments', () => {
     expect(buildLinearSessionStatusComment({
       kind: 'started',
       sessionUrl: 'https://app.example.com/?session=ses_1',
-    })).toBe('[OpenChamber session started](https://app.example.com/?session=ses_1)');
+    })).toBe('[ShipChamber session started](https://app.example.com/?session=ses_1)');
     expect(buildLinearSessionStatusComment({
       kind: 'completed',
       sessionUrl: 'https://app.example.com/?session=ses_1',
-    })).toBe('[OpenChamber session completed](https://app.example.com/?session=ses_1)');
+    })).toBe('[ShipChamber session completed](https://app.example.com/?session=ses_1)');
     expect(buildLinearSessionStatusComment({
       kind: 'failure',
       sessionUrl: 'https://app.example.com/?session=ses_1',
-    })).toBe('[OpenChamber session failed](https://app.example.com/?session=ses_1)');
+    })).toBe('[ShipChamber session failed](https://app.example.com/?session=ses_1)');
   });
 
   it('cannot be broken by brackets in the issue title', async () => {
@@ -231,7 +231,7 @@ describe('Linear session status comments', () => {
     });
     expect(commentCalls).toHaveLength(1);
     const body = JSON.parse(commentCalls[0][1].body).variables.input.body;
-    expect(body).toBe('[OpenChamber session started](https://app.example.com/?session=ses_1)');
+    expect(body).toBe('[ShipChamber session started](https://app.example.com/?session=ses_1)');
     expect(JSON.stringify(first)).not.toContain('access-1');
   });
 
@@ -266,6 +266,6 @@ describe('Linear session status comments', () => {
     });
     expect(commentCalls).toHaveLength(1);
     const body = JSON.parse(commentCalls[0][1].body).variables.input.body;
-    expect(body).toBe('[OpenChamber session completed](https://app.example.com/?session=ses_1)');
+    expect(body).toBe('[ShipChamber session completed](https://app.example.com/?session=ses_1)');
   });
 });

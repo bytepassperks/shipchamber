@@ -82,7 +82,7 @@ describe('ElectronSshManager', () => {
   });
 
   test('creates a PowerShell-backed askpass helper on Windows', async () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'openchamber-ssh-askpass-test-'));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'shipchamber-ssh-askpass-test-'));
     tempDirs.push(tempDir);
     const manager = new ElectronSshManager({
       settingsFilePath: path.join(tempDir, 'settings.json'),
@@ -96,7 +96,7 @@ describe('ElectronSshManager', () => {
     expect(path.basename(result.askpassPath)).toBe('askpass.cmd');
     expect(result.cleanupPaths.map((filePath) => path.basename(filePath))).toEqual(['askpass.cmd', 'askpass.ps1']);
     expect(await fsp.readFile(path.join(tempDir, 'askpass.cmd'), 'utf8')).toContain('WindowsPowerShell');
-    expect(await fsp.readFile(path.join(tempDir, 'askpass.ps1'), 'utf8')).toContain('OPENCHAMBER_SSH_ASKPASS_VALUE');
+    expect(await fsp.readFile(path.join(tempDir, 'askpass.ps1'), 'utf8')).toContain('SHIPCHAMBER_SSH_ASKPASS_VALUE');
   });
 
   test('runs each Windows port forward as an independent hidden SSH process', async () => {
@@ -113,7 +113,7 @@ describe('ElectronSshManager', () => {
     });
     const parsed = { destination: 'user@example.test', args: [] };
     manager.sshAuth.set(parsed, {
-      askpassPath: 'C:\\OpenChamber\\askpass.cmd',
+      askpassPath: 'C:\\ShipChamber\\askpass.cmd',
       sshPassword: 'secret-value',
       children: new Set(),
     });
@@ -132,8 +132,8 @@ describe('ElectronSshManager', () => {
       expect(call.args).toContain('ControlPath=none');
       expect(call.args).toContain('-N');
       expect(call.options.windowsHide).toBe(true);
-      expect(call.options.env.SSH_ASKPASS).toBe('C:\\OpenChamber\\askpass.cmd');
-      expect(call.options.env.OPENCHAMBER_SSH_ASKPASS_VALUE).toBe('secret-value');
+      expect(call.options.env.SSH_ASKPASS).toBe('C:\\ShipChamber\\askpass.cmd');
+      expect(call.options.env.SHIPCHAMBER_SSH_ASKPASS_VALUE).toBe('secret-value');
     }
     expect(calls[0].args).toContain('-L');
     expect(calls[1].args).toContain('-D');
@@ -192,12 +192,12 @@ describe('ElectronSshManager', () => {
       };
     }
     manager.sshAuth.set(parsed, {
-      askpassPath: 'C:\\OpenChamber\\askpass.cmd',
+      askpassPath: 'C:\\ShipChamber\\askpass.cmd',
       sshPassword: null,
       children: new Set(),
     });
     manager.sessions.set('ssh-1', {
-      instance: { remoteOpenchamber: { mode: 'external', keepRunning: true } },
+      instance: { remoteShipchamber: { mode: 'external', keepRunning: true } },
       parsed,
       controlPath: 'C:\\Temp\\unused.sock',
       askpassCleanupPaths: [],
@@ -257,7 +257,7 @@ describe('ElectronSshManager', () => {
     }
   });
 
-  test('stores a client token for forwarded OpenChamber hosts when UI password is configured', async () => {
+  test('stores a client token for forwarded ShipChamber hosts when UI password is configured', async () => {
     let loginPayload = null;
     const server = http.createServer(async (req, res) => {
       if (req.method === 'POST' && req.url === '/auth/session') {
@@ -269,7 +269,7 @@ describe('ElectronSshManager', () => {
       res.writeHead(404).end();
     });
     const localUrl = await listen(server);
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'openchamber-ssh-manager-test-'));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'shipchamber-ssh-manager-test-'));
     tempDirs.push(tempDir);
     const settingsFilePath = path.join(tempDir, 'settings.json');
     const manager = new ElectronSshManager({
@@ -289,7 +289,7 @@ describe('ElectronSshManager', () => {
     });
     expect(settings.desktopHosts).toEqual([{ id: 'ssh-1', label: 'SSH Host', url: localUrl, apiUrl: localUrl, clientToken: 'ssh-client-token' }]);
   });
-  test('installs OpenChamber into a home-owned npm prefix instead of the root-owned global one', async () => {
+  test('installs ShipChamber into a home-owned npm prefix instead of the root-owned global one', async () => {
     const commands = [];
     const manager = new ElectronSshManager({
       settingsFilePath: path.join(os.tmpdir(), 'unused-settings.json'),
@@ -302,34 +302,34 @@ describe('ElectronSshManager', () => {
       return '';
     };
 
-    await manager.installOpenChamberManaged({ destination: 'user@example.test', args: [] }, '/tmp/control.sock', '1.2.3', 'auto');
+    await manager.installShipChamberManaged({ destination: 'user@example.test', args: [] }, '/tmp/control.sock', '1.2.3', 'auto');
 
     expect(commands).toHaveLength(1);
-    expect(commands[0]).toContain('--prefix "$HOME/.openchamber/npm-global"');
-    expect(commands[0]).not.toMatch(/npm install -g @openchamber/);
+    expect(commands[0]).toContain('--prefix "$HOME/.shipchamber/npm-global"');
+    expect(commands[0]).not.toMatch(/npm install -g @shipchamber/);
   });
 
-  test('lists every remote OpenChamber binary with its reported version', async () => {
+  test('lists every remote ShipChamber binary with its reported version', async () => {
     const manager = new ElectronSshManager({
       settingsFilePath: path.join(os.tmpdir(), 'unused-settings.json'),
       appVersion: '1.2.3',
       emit: () => undefined,
     });
     manager.runRemoteCommand = async () => [
-      '/home/pi/.openchamber/npm-global/bin/openchamber\t1.2.3',
-      '/usr/bin/openchamber\t0.9.0',
+      '/home/pi/.shipchamber/npm-global/bin/shipchamber\t1.2.3',
+      '/usr/bin/shipchamber\t0.9.0',
       '',
     ].join('\n');
 
-    const candidates = await manager.remoteOpenChamberCandidates({ destination: 'user@example.test', args: [] }, '/tmp/control.sock');
+    const candidates = await manager.remoteShipChamberCandidates({ destination: 'user@example.test', args: [] }, '/tmp/control.sock');
 
     expect(candidates).toEqual([
-      { binPath: '/home/pi/.openchamber/npm-global/bin/openchamber', version: '1.2.3' },
-      { binPath: '/usr/bin/openchamber', version: '0.9.0' },
+      { binPath: '/home/pi/.shipchamber/npm-global/bin/shipchamber', version: '1.2.3' },
+      { binPath: '/usr/bin/shipchamber', version: '0.9.0' },
     ]);
   });
 
-  test('starts the resolved OpenChamber binary rather than whatever PATH exposes', async () => {
+  test('starts the resolved ShipChamber binary rather than whatever PATH exposes', async () => {
     let started = '';
     const manager = new ElectronSshManager({
       settingsFilePath: path.join(os.tmpdir(), 'unused-settings.json'),
@@ -342,17 +342,17 @@ describe('ElectronSshManager', () => {
       return '4321\n';
     };
 
-    const instance = { id: 'ssh-1', auth: {}, remoteOpenchamber: { mode: 'managed' } };
+    const instance = { id: 'ssh-1', auth: {}, remoteShipchamber: { mode: 'managed' } };
     const port = await manager.startRemoteServerManaged(
       { destination: 'user@example.test', args: [] },
       '/tmp/control.sock',
       instance,
       4321,
-      '/home/pi/.openchamber/npm-global/bin/openchamber',
+      '/home/pi/.shipchamber/npm-global/bin/shipchamber',
     );
 
     expect(port).toBe(4321);
-    expect(started).toContain("'/home/pi/.openchamber/npm-global/bin/openchamber' serve");
+    expect(started).toContain("'/home/pi/.shipchamber/npm-global/bin/shipchamber' serve");
     expect(started).toContain("OPENCODE_BINARY='/home/pi/.opencode/bin/opencode'");
     expect(started).toContain('$HOME/.opencode/bin:');
   });
@@ -371,9 +371,9 @@ describe('ElectronSshManager', () => {
     await expect(manager.startRemoteServerManaged(
       { destination: 'user@example.test', args: [] },
       '/tmp/control.sock',
-      { id: 'ssh-1', auth: {}, remoteOpenchamber: { mode: 'managed' } },
+      { id: 'ssh-1', auth: {}, remoteShipchamber: { mode: 'managed' } },
       4321,
-      '/home/pi/.bun/bin/openchamber',
+      '/home/pi/.bun/bin/shipchamber',
     )).rejects.toThrow(/opencode CLI is not installed/);
   });
   test('prefers a bun that only exists in the home directory over npm', async () => {
@@ -391,9 +391,9 @@ describe('ElectronSshManager', () => {
       return '';
     };
 
-    await manager.installOpenChamberManaged({ destination: 'user@example.test', args: [] }, '/tmp/control.sock', '1.2.3', 'auto');
+    await manager.installShipChamberManaged({ destination: 'user@example.test', args: [] }, '/tmp/control.sock', '1.2.3', 'auto');
 
-    expect(commands).toEqual(["'/home/pi/.bun/bin/bun' add -g @openchamber/web@1.2.3"]);
+    expect(commands).toEqual(["'/home/pi/.bun/bin/bun' add -g @shipchamber/web@1.2.3"]);
   });
   test('stops a remote server it started through the CLI, not the authenticated HTTP route', async () => {
     const scripts = [];
@@ -411,10 +411,10 @@ describe('ElectronSshManager', () => {
       { destination: 'user@example.test', args: [] },
       '/tmp/control.sock',
       41777,
-      '/home/pi/.bun/bin/openchamber',
+      '/home/pi/.bun/bin/shipchamber',
     );
 
-    expect(scripts).toEqual(["'/home/pi/.bun/bin/openchamber' stop --port 41777"]);
+    expect(scripts).toEqual(["'/home/pi/.bun/bin/shipchamber' stop --port 41777"]);
   });
   test('publishes the remote server to its network only with a UI password', async () => {
     const manager = new ElectronSshManager({
@@ -433,17 +433,17 @@ describe('ElectronSshManager', () => {
     const exposed = {
       id: 'ssh-1',
       auth: {},
-      remoteOpenchamber: { mode: 'managed', bindHost: '0.0.0.0' },
+      remoteShipchamber: { mode: 'managed', bindHost: '0.0.0.0' },
     };
 
-    await expect(manager.startRemoteServerManaged(parsed, '/tmp/control.sock', exposed, 4321, '/bin/openchamber'))
+    await expect(manager.startRemoteServerManaged(parsed, '/tmp/control.sock', exposed, 4321, '/bin/shipchamber'))
       .rejects.toThrow(/requires a UI password/);
 
     const secured = {
       ...exposed,
-      auth: { openchamberPassword: { enabled: true, value: 'remote-secret', store: 'settings' } },
+      auth: { shipchamberPassword: { enabled: true, value: 'remote-secret', store: 'settings' } },
     };
-    await manager.startRemoteServerManaged(parsed, '/tmp/control.sock', secured, 4321, '/bin/openchamber');
+    await manager.startRemoteServerManaged(parsed, '/tmp/control.sock', secured, 4321, '/bin/shipchamber');
     expect(started).toContain('--hostname 0.0.0.0');
   });
 });

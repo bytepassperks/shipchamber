@@ -19,7 +19,7 @@ export const LOCALE_LABEL_KEYS: Record<Locale, 'common.language.english' | 'comm
   tr: 'common.language.turkish',
 };
 
-export const LOCALE_STORAGE_KEY = 'openchamber.i18n.v1';
+export const LOCALE_STORAGE_KEY = 'shipchamber.i18n.v1';
 
 type StoredLocale = {
   locale?: unknown;
@@ -105,7 +105,7 @@ export function writeStoredLocale(locale: Locale): void {
 declare global {
   interface Window {
     /** The host application's display language (VS Code sets it), used before the user picks a locale. */
-    __OPENCHAMBER_HOST_LANGUAGE__?: string;
+    __SHIPCHAMBER_HOST_LANGUAGE__?: string;
   }
 }
 
@@ -115,7 +115,7 @@ export function detectInitialLocale(): Locale {
     return stored;
   }
 
-  const hostLanguage = globalThis.window?.__OPENCHAMBER_HOST_LANGUAGE__;
+  const hostLanguage = globalThis.window?.__SHIPCHAMBER_HOST_LANGUAGE__;
   if (hostLanguage) {
     return normalizeLocale(hostLanguage);
   }

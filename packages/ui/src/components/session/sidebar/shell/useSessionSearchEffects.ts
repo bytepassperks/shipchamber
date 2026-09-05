@@ -37,8 +37,8 @@ export const useSessionSearchEffects = ({
       sessionSearchInputRef.current?.focus();
       sessionSearchInputRef.current?.select();
     };
-    window.addEventListener('openchamber:sidebar-session-search', handleOpenRequest);
-    return () => window.removeEventListener('openchamber:sidebar-session-search', handleOpenRequest);
+    window.addEventListener('shipchamber:sidebar-session-search', handleOpenRequest);
+    return () => window.removeEventListener('shipchamber:sidebar-session-search', handleOpenRequest);
   }, [enabled, setIsSessionSearchOpen, sessionSearchInputRef]);
 
   React.useEffect(() => {

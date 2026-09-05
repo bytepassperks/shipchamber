@@ -319,7 +319,7 @@ export function createMessageQueueRuntime({
 
   const broadcast = (sessionId) => {
     broadcastGlobalUiEvent?.({
-      type: 'openchamber:message-queue.updated',
+      type: 'shipchamber:message-queue.updated',
       properties: { revision, session: sessionSnapshot(sessionId) },
     });
   };

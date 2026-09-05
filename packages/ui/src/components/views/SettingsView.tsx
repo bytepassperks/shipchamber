@@ -40,9 +40,9 @@ import { SnippetsSidebar } from '@/components/sections/snippets/SnippetsSidebar'
 import { SnippetsPage } from '@/components/sections/snippets/SnippetsPage';
 import { GitPage } from '@/components/sections/git-identities/GitPage';
 import { IntegrationsPage } from '@/components/sections/integrations/IntegrationsPage';
-import type { OpenChamberSection } from '@/components/sections/openchamber/types';
-import { OpenChamberPage } from '@/components/sections/openchamber/OpenChamberPage';
-import { AboutSettings } from '@/components/sections/openchamber/AboutSettings';
+import type { ShipChamberSection } from '@/components/sections/shipchamber/types';
+import { ShipChamberPage } from '@/components/sections/shipchamber/ShipChamberPage';
+import { AboutSettings } from '@/components/sections/shipchamber/AboutSettings';
 import { SettingsPageLayout } from '@/components/sections/shared/SettingsPageLayout';
 import {
   SETTINGS_SECTION_TITLE_CLASS,
@@ -72,7 +72,7 @@ import { buildSettingsSearchResults, type SettingsSearchResult } from '@/lib/set
 // UI Kit: fixed settings navigation width
 const SETTINGS_NAV_WIDTH = 256;
 const SETTINGS_SPLIT_SIDEBAR_WIDTH = 280;
-const SETTINGS_DETAIL_HISTORY_KEY = '__openchamberSettingsDetail';
+const SETTINGS_DETAIL_HISTORY_KEY = '__shipchamberSettingsDetail';
 
 type MobileStage = 'nav' | 'page-sidebar' | 'page-content';
 type SettingsDetailHistoryEntry = {
@@ -92,7 +92,7 @@ interface SettingsViewProps {
 }
 
 const pageOrder: SettingsPageSlug[] = [
-  // 'general' group — OpenChamber
+  // 'general' group — ShipChamber
   'general',
   'appearance',
   'chat',
@@ -227,15 +227,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onClose, forceMobile
   }, []);
   const isMac = React.useMemo(() => {
     return isDesktopShell() && typeof window !== 'undefined'
-      && (window as unknown as { __OPENCHAMBER_PLATFORM__?: string }).__OPENCHAMBER_PLATFORM__ === 'darwin';
+      && (window as unknown as { __SHIPCHAMBER_PLATFORM__?: string }).__SHIPCHAMBER_PLATFORM__ === 'darwin';
   }, []);
   const isWindows = React.useMemo(() => {
     return isDesktopShell() && typeof window !== 'undefined'
-      && (window as unknown as { __OPENCHAMBER_PLATFORM__?: string }).__OPENCHAMBER_PLATFORM__ === 'win32';
+      && (window as unknown as { __SHIPCHAMBER_PLATFORM__?: string }).__SHIPCHAMBER_PLATFORM__ === 'win32';
   }, []);
   const isLinux = React.useMemo(() => {
     return isDesktopShell() && typeof window !== 'undefined'
-      && (window as unknown as { __OPENCHAMBER_PLATFORM__?: string }).__OPENCHAMBER_PLATFORM__ === 'linux';
+      && (window as unknown as { __SHIPCHAMBER_PLATFORM__?: string }).__SHIPCHAMBER_PLATFORM__ === 'linux';
   }, []);
   const isWindowsArm64 = React.useMemo(() => isWindowsArm64Platform(), []);
 
@@ -316,7 +316,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onClose, forceMobile
 
   // Nav is always open (collapsed state removed)
 
-  const openChamberSectionBySlug: Partial<Record<SettingsPageSlug, OpenChamberSection>> = React.useMemo(() => ({
+  const shipChamberSectionBySlug: Partial<Record<SettingsPageSlug, ShipChamberSection>> = React.useMemo(() => ({
     general: 'general',
     appearance: 'visual',
     chat: 'chat',
@@ -505,7 +505,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onClose, forceMobile
     }
     if (result.id === 'plugins.create' && typeof window !== 'undefined') {
       window.setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('openchamber:settings-open-plugin-add'));
+        window.dispatchEvent(new CustomEvent('shipchamber:settings-open-plugin-add'));
       }, 50);
     }
   }, [isMobile, openPage, prepareSettingsSearchTarget]);
@@ -670,14 +670,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onClose, forceMobile
       case 'notifications':
       case 'voice':
       case 'tunnel': {
-        const section = openChamberSectionBySlug[slug] ?? 'visual';
-        return <OpenChamberPage section={section} />;
+        const section = shipChamberSectionBySlug[slug] ?? 'visual';
+        return <ShipChamberPage section={section} />;
       }
       case 'home':
       default:
         return null;
     }
-  }, [openChamberSectionBySlug, renderUnavailable, runtimeCtx, t]);
+  }, [shipChamberSectionBySlug, renderUnavailable, runtimeCtx, t]);
 
   // Mobile: if opened via deep-link / palette to a non-home page, jump into it once.
   React.useEffect(() => {

@@ -79,7 +79,7 @@ describe('project icon routes', () => {
       fsPromises,
       path,
       crypto,
-      openchamberDataDir: '/tmp/openchamber-test',
+      shipchamberDataDir: '/tmp/shipchamber-test',
       sanitizeProjects: (projects) => projects,
       readSettingsFromDiskMigrated: async () => ({
         projects: [{

@@ -322,7 +322,7 @@ pickers, and session creation from an issue or PR in `NewWorktreeDialog` and
 thread to the work *is* the act of linking it.
 
 Stored in session metadata as a **snapshot** (`lib/linkedIssues.ts`, namespace
-`openchamber.linked_issues`), riding the same `patchSessionMetadata` channel as
+`shipchamber.linked_issues`), riding the same `patchSessionMetadata` channel as
 pinned messages. Number, title, url, author and avatar only — the body,
 comments and state belong to GitHub, and mirroring them would mean owning their
 staleness. The stored title can drift; that is the price of a store that never
@@ -367,7 +367,7 @@ change.
 ### These readouts belong to the connected instance
 
 Quotas, MCP status, skills, agent memory and the Linear/GitHub logins are all
-served by whichever OpenChamber instance is connected, and each was cached
+served by whichever ShipChamber instance is connected, and each was cached
 globally or by directory alone — which two instances can share. A switch left
 the previous instance's answers on screen, and its Linear login usable against
 a runtime that has no Linear. `apps/runtimeEndpointReset.ts` now drops all of

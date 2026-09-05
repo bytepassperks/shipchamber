@@ -24,7 +24,7 @@ import { getSyncConfig, subscribeToSyncConfigChanges } from "@/sync/sync-refs";
 import { getRuntimeKey } from "@/lib/runtime-switch";
 
 const MODELS_DEV_API_URL = "https://models.dev/api.json";
-const MODELS_DEV_PROXY_URL = "/api/openchamber/models-metadata";
+const MODELS_DEV_PROXY_URL = "/api/shipchamber/models-metadata";
 
 const FALLBACK_PROVIDER_ID = "opencode";
 const FALLBACK_MODEL_ID = "big-pickle";
@@ -51,7 +51,7 @@ const normalizeSttProvider = (value: unknown): 'local' | 'openai-compatible' | u
     return undefined;
 };
 
-interface OpenChamberDefaults {
+interface ShipChamberDefaults {
     defaultModel?: string;
     defaultVariant?: string;
     defaultAgent?: string;
@@ -67,29 +67,29 @@ interface OpenChamberDefaults {
     sttLanguage?: string;
 }
 
-// Directory activation re-reads the OpenChamber defaults, which are global,
+// Directory activation re-reads the ShipChamber defaults, which are global,
 // not per directory: one request serves the switches that land inside this
 // window, and concurrent activations share the in-flight one.
-const OPENCHAMBER_DEFAULTS_FRESH_MS = 15_000;
-let openChamberDefaultsCache: { at: number; request: Promise<OpenChamberDefaults> } | null = null;
+const SHIPCHAMBER_DEFAULTS_FRESH_MS = 15_000;
+let shipChamberDefaultsCache: { at: number; request: Promise<ShipChamberDefaults> } | null = null;
 
-const fetchOpenChamberDefaults = (): Promise<OpenChamberDefaults> => {
+const fetchShipChamberDefaults = (): Promise<ShipChamberDefaults> => {
     const now = Date.now();
-    if (openChamberDefaultsCache && now - openChamberDefaultsCache.at < OPENCHAMBER_DEFAULTS_FRESH_MS) {
-        return openChamberDefaultsCache.request;
+    if (shipChamberDefaultsCache && now - shipChamberDefaultsCache.at < SHIPCHAMBER_DEFAULTS_FRESH_MS) {
+        return shipChamberDefaultsCache.request;
     }
-    const request = requestOpenChamberDefaults();
-    openChamberDefaultsCache = { at: now, request };
+    const request = requestShipChamberDefaults();
+    shipChamberDefaultsCache = { at: now, request };
     request.catch(() => {
-        if (openChamberDefaultsCache?.request === request) openChamberDefaultsCache = null;
+        if (shipChamberDefaultsCache?.request === request) shipChamberDefaultsCache = null;
     });
     return request;
 };
 
-const requestOpenChamberDefaults = async (): Promise<OpenChamberDefaults> => {
+const requestShipChamberDefaults = async (): Promise<ShipChamberDefaults> => {
     markStartupTrace('config.defaults:start');
     const started = typeof performance !== 'undefined' ? performance.now() : Date.now();
-    const finish = (source: string, result: OpenChamberDefaults) => {
+    const finish = (source: string, result: ShipChamberDefaults) => {
         const ended = typeof performance !== 'undefined' ? performance.now() : Date.now();
         markStartupTrace('config.defaults:end', {
             source,
@@ -1059,7 +1059,7 @@ interface ConfigStore {
     lastDisconnectReason: string | null;
     isInitialized: boolean;
     modelsMetadata: Map<string, ModelMetadata>;
-    // OpenChamber settings-based defaults (take precedence over agent preferences)
+    // ShipChamber settings-based defaults (take precedence over agent preferences)
     settingsDefaultModel: string | undefined; // format: "provider/model"
     settingsDefaultVariant: string | undefined;
     settingsDefaultAgent: string | undefined;
@@ -2093,7 +2093,7 @@ export const useConfigStore = create<ConfigStore>()(
 
                     for (let attempt = 0; attempt < 3; attempt++) {
                         try {
-                            // Fetch agents and OpenChamber settings in parallel. OpenCode config
+                            // Fetch agents and ShipChamber settings in parallel. OpenCode config
                             // comes from sync state if it is already available; it must not block
                             // the agent refresh path.
                             const configDirectoryPath = fromDirectoryKey(directoryKey);
@@ -2102,13 +2102,13 @@ export const useConfigStore = create<ConfigStore>()(
                             if (initialSyncedOpencodeConfig) {
                                 markStartupTrace('loadAgents:syncConfigHit', { directoryKey, source });
                             }
-                            const [agents, openChamberDefaults] = await Promise.all([
+                            const [agents, shipChamberDefaults] = await Promise.all([
                                 measureStartupTrace(
                                     'loadAgents:api',
                                     () => opencodeClient.listAgents(configDirectoryPath),
                                     { directoryKey, source, requestedDirectory, effectiveDirectory, attempt: attempt + 1 },
                                 ),
-                                fetchOpenChamberDefaults(),
+                                fetchShipChamberDefaults(),
                             ]);
 
                             const safeAgents = Array.isArray(agents) ? agents : [];
@@ -2135,7 +2135,7 @@ export const useConfigStore = create<ConfigStore>()(
 
                             const existingZenModel = normalizeOptionalString(get().settingsZenModel);
 
-                            const defaultZenModel = normalizeOptionalString(openChamberDefaults.zenModel);
+                            const defaultZenModel = normalizeOptionalString(shipChamberDefaults.zenModel);
 
                             const resolvedExistingGitSelection = resolveGitGenerationModelSelection({
                                 providers,
@@ -2178,19 +2178,19 @@ export const useConfigStore = create<ConfigStore>()(
                                 };
 
                                 const nextState: Partial<ConfigStore> = {
-                                    settingsDefaultModel: openChamberDefaults.defaultModel,
-                                    settingsDefaultVariant: openChamberDefaults.defaultVariant,
-                                    settingsDefaultAgent: openChamberDefaults.defaultAgent,
-                                    settingsAutoCreateWorktree: openChamberDefaults.autoCreateWorktree ?? false,
-                                    settingsGitmojiEnabled: openChamberDefaults.gitmojiEnabled ?? false,
-                                    settingsDefaultFileViewerPreview: openChamberDefaults.defaultFileViewerPreview ?? false,
+                                    settingsDefaultModel: shipChamberDefaults.defaultModel,
+                                    settingsDefaultVariant: shipChamberDefaults.defaultVariant,
+                                    settingsDefaultAgent: shipChamberDefaults.defaultAgent,
+                                    settingsAutoCreateWorktree: shipChamberDefaults.autoCreateWorktree ?? false,
+                                    settingsGitmojiEnabled: shipChamberDefaults.gitmojiEnabled ?? false,
+                                    settingsDefaultFileViewerPreview: shipChamberDefaults.defaultFileViewerPreview ?? false,
                                     settingsZenModel: resolvedZenModel,
-                                    settingsMessageStreamTransport: openChamberDefaults.messageStreamTransport ?? state.settingsMessageStreamTransport ?? 'auto',
-                                    sttProvider: openChamberDefaults.sttProvider ?? state.sttProvider,
-                                    sttServerUrl: openChamberDefaults.sttServerUrl ?? state.sttServerUrl,
-                                    sttModel: openChamberDefaults.sttModel ?? state.sttModel,
-                                    sttLocalModel: openChamberDefaults.sttLocalModel ?? state.sttLocalModel,
-                                    sttLanguage: openChamberDefaults.sttLanguage ?? state.sttLanguage,
+                                    settingsMessageStreamTransport: shipChamberDefaults.messageStreamTransport ?? state.settingsMessageStreamTransport ?? 'auto',
+                                    sttProvider: shipChamberDefaults.sttProvider ?? state.sttProvider,
+                                    sttServerUrl: shipChamberDefaults.sttServerUrl ?? state.sttServerUrl,
+                                    sttModel: shipChamberDefaults.sttModel ?? state.sttModel,
+                                    sttLocalModel: shipChamberDefaults.sttLocalModel ?? state.sttLocalModel,
+                                    sttLanguage: shipChamberDefaults.sttLanguage ?? state.sttLanguage,
                                     directoryScoped: {
                                         ...state.directoryScoped,
                                         [directoryKey]: nextSnapshot,
@@ -2282,23 +2282,23 @@ export const useConfigStore = create<ConfigStore>()(
                                 return provider.models.some((m) => m.id === modelId);
                             };
 
-                            // Detect invalid OpenChamber settings so we can clear them from storage.
+                            // Detect invalid ShipChamber settings so we can clear them from storage.
                             // This is independent of resolution: even though the cascade below falls
                             // back gracefully, stale settings pointing at removed agents/models/variants
                             // should be cleaned up.
                             const invalidSettings: { defaultModel?: string; defaultVariant?: string; defaultAgent?: string } = {};
-                            if (openChamberDefaults.defaultAgent && !safeAgents.some((agent) => agent.name === openChamberDefaults.defaultAgent)) {
+                            if (shipChamberDefaults.defaultAgent && !safeAgents.some((agent) => agent.name === shipChamberDefaults.defaultAgent)) {
                                 invalidSettings.defaultAgent = '';
                             }
-                            if (openChamberDefaults.defaultModel) {
-                                const parsed = parseModelString(openChamberDefaults.defaultModel);
+                            if (shipChamberDefaults.defaultModel) {
+                                const parsed = parseModelString(shipChamberDefaults.defaultModel);
                                 if (!parsed || !validateModel(parsed.providerId, parsed.modelId)) {
                                     invalidSettings.defaultModel = '';
-                                } else if (openChamberDefaults.defaultVariant) {
+                                } else if (shipChamberDefaults.defaultVariant) {
                                     const provider = providers.find((p) => p.id === parsed.providerId);
                                     const model = provider?.models.find((m) => m.id === parsed.modelId) as { variants?: Record<string, unknown> } | undefined;
                                     const variants = model?.variants;
-                                    if (!(variants && Object.prototype.hasOwnProperty.call(variants, openChamberDefaults.defaultVariant))) {
+                                    if (!(variants && Object.prototype.hasOwnProperty.call(variants, shipChamberDefaults.defaultVariant))) {
                                         invalidSettings.defaultVariant = '';
                                     }
                                 }
@@ -2310,9 +2310,9 @@ export const useConfigStore = create<ConfigStore>()(
                             const resolvedDefault = resolveDefaultAgentModelSelection({
                                 agents: safeAgents,
                                 providers,
-                                settingsDefaultAgent: openChamberDefaults.defaultAgent,
-                                settingsDefaultModel: openChamberDefaults.defaultModel,
-                                settingsDefaultVariant: openChamberDefaults.defaultVariant,
+                                settingsDefaultAgent: shipChamberDefaults.defaultAgent,
+                                settingsDefaultModel: shipChamberDefaults.defaultModel,
+                                settingsDefaultVariant: shipChamberDefaults.defaultVariant,
                                 opencodeDefaultAgent,
                                 opencodeDefaultModel,
                             });
@@ -2533,10 +2533,10 @@ export const useConfigStore = create<ConfigStore>()(
                             selState.saveSessionAgentSelection(currentSessionId, agentName);
                         }
 
-                        if (currentSessionId && useSessionUIStore.getState().isOpenChamberCreatedSession(currentSessionId)) {
+                        if (currentSessionId && useSessionUIStore.getState().isShipChamberCreatedSession(currentSessionId)) {
                             const existingAgentModel = selState.getAgentModelForSession(currentSessionId, agentName);
                             if (!existingAgentModel) {
-                                useSessionUIStore.getState().initializeNewOpenChamberSession(currentSessionId, agents);
+                                useSessionUIStore.getState().initializeNewShipChamberSession(currentSessionId, agents);
                             }
                         }
                     }

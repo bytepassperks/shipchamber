@@ -1,4 +1,4 @@
-import { substituteCommandVariables } from '@/lib/openchamberConfig';
+import { substituteCommandVariables } from '@/lib/shipchamberConfig';
 import { toast } from '@/components/ui';
 import { formatMessage, useI18nStore } from '@/lib/i18n';
 import type { WorktreeMetadata } from '@/types/worktree';

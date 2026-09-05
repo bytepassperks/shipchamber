@@ -13,7 +13,7 @@ Companion: each substantive review inside phase 3 applies the `pr-review` skill;
 
 ## Phase 1 — Mechanical sweep (no judgment, no LLM verdicts)
 
-Fetch all open PRs with `gh` (the repo is `openchamber/openchamber`). Two measurement rules learned the hard way:
+Fetch all open PRs with `gh` (the repo is `bytepassperks/shipchamber`). Two measurement rules learned the hard way:
 
 - **Staleness is the last commit date on the branch, never `updatedAt`** — bots bump `updatedAt` with every comment and label. Fetch last-commit dates with batched GraphQL (`commits(last: 1)`), ~50 PRs per query.
 - `gh pr list` silently defaults to 30 rows — always pass `--limit` above the real queue size and print the resulting count.
@@ -46,7 +46,7 @@ Split the clean pool smallest-first (tiny diffs are fast wins and most likely me
 
 **Report format.** The consolidated report is what the maintainer decides from — calibrate each entry so no follow-up question is needed, without ballooning:
 
-- Every PR/issue reference is a clickable link: `[#3177](https://github.com/openchamber/openchamber/pull/3177)` (issues: `/issues/N`) — never a bare number.
+- Every PR/issue reference is a clickable link: `[#3177](https://github.com/bytepassperks/shipchamber/pull/3177)` (issues: `/issues/N`) — never a bare number.
 - One entry per PR, 2–4 sentences: what it does for the user, whether the problem is real, why this verdict, the main risk or the thing the decision turns on. "Closes #N" links included.
 - A "needs your hands" line appears only when the check gates the merge (per the pr-review skill), and lives INSIDE the PR's own entry as its final line — never as a separate section repeating the numbers. A plain MERGE entry carries no checklist.
 - Thread-state line first for pickup-mode entries.
@@ -73,7 +73,7 @@ Canonical texts — reuse verbatim, adjusting only bracketed parts. Tone rules: 
 > Closing this one. It bundles several unrelated concerns — [list] — into a single [size] change across [n] files, which isn't reviewable in this form. If you'd like to pursue [the worthwhile part], please open an issue first to agree on scope, and then a focused PR for that single concern.
 
 **russian-locale** (any PR adding Russian localization — this is a standing decision, apply without re-asking)
-> We’re not accepting Russian localization for OpenChamber.
+> We’re not accepting Russian localization for ShipChamber.
 >
 > This is an intentional maintainership decision due to Russia’s ongoing war against Ukraine. We don’t want to ship or maintain Russian UI support.
 >

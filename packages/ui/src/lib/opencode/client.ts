@@ -601,7 +601,7 @@ class OpencodeService {
    * Offline, permission, and other transport failures stay `unknown` so callers
    * do not treat a temporary outage as proof the path was deleted.
    *
-   * The probe is OpenChamber's own `/api/fs/list`, which stats the path on the
+   * The probe is ShipChamber's own `/api/fs/list`, which stats the path on the
    * server's disk. OpenCode's `/path` cannot answer this question: it echoes
    * the requested directory and resolves its project through Git discovery
    * that swallows errors, so a deleted worktree still comes back as a valid

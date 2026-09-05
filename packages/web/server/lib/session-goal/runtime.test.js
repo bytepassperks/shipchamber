@@ -18,7 +18,7 @@ const goal = {
 const session = {
   id: SESSION_ID,
   directory: DIRECTORY,
-  metadata: { openchamber: { goal } },
+  metadata: { shipchamber: { goal } },
 };
 
 const jsonResponse = (body, status = 200) => new Response(JSON.stringify(body), {
@@ -65,7 +65,7 @@ const createRuntimeHarness = ({ messages, messageFactory, goalOverrides = {}, ma
   let messageFetchCount = 0;
   const activeSession = {
     ...session,
-    metadata: { openchamber: { goal: { ...goal, ...goalOverrides } } },
+    metadata: { shipchamber: { goal: { ...goal, ...goalOverrides } } },
   };
   const service = {
     generateSmallModelText: vi.fn(async () => ({
@@ -115,7 +115,7 @@ const runIdleTick = async (runtime) => {
 const lastPatchedGoal = (requests) => {
   const patches = requests.filter((request) => request.pathname === `/session/${SESSION_ID}` && request.method === 'PATCH');
   expect(patches.length).toBeGreaterThan(0);
-  return JSON.parse(patches.at(-1).body).metadata.openchamber.goal;
+  return JSON.parse(patches.at(-1).body).metadata.shipchamber.goal;
 };
 
 describe('session goal live activity gate', () => {
@@ -242,7 +242,7 @@ describe('session goal live activity gate', () => {
     expect(service.generateSmallModelText).toHaveBeenCalledOnce();
     const patch = requests.find((request) => request.pathname === `/session/${SESSION_ID}` && request.method === 'PATCH');
     expect(patch).toBeDefined();
-    const writtenGoal = JSON.parse(patch.body).metadata.openchamber.goal;
+    const writtenGoal = JSON.parse(patch.body).metadata.shipchamber.goal;
     expect(writtenGoal).toMatchObject({
       status: 'complete',
       evaluationProviderID: 'provider',
@@ -302,7 +302,7 @@ describe('session goal live activity gate', () => {
     // Goal accounting is persisted and turnsUsed incremented
     const patch = requests.find((request) => request.pathname === `/session/${SESSION_ID}` && request.method === 'PATCH');
     expect(patch).toBeDefined();
-    const writtenGoal = JSON.parse(patch.body).metadata.openchamber.goal;
+    const writtenGoal = JSON.parse(patch.body).metadata.shipchamber.goal;
     expect(writtenGoal).toMatchObject({
       status: 'active',
       turnsUsed: 2,
@@ -367,7 +367,7 @@ describe('session goal live activity gate', () => {
     // Goal remains active and turnsUsed incremented
     const patch = requests.find((request) => request.pathname === `/session/${SESSION_ID}` && request.method === 'PATCH');
     expect(patch).toBeDefined();
-    const writtenGoal = JSON.parse(patch.body).metadata.openchamber.goal;
+    const writtenGoal = JSON.parse(patch.body).metadata.shipchamber.goal;
     expect(writtenGoal).toMatchObject({
       status: 'active',
       turnsUsed: 2,
@@ -432,7 +432,7 @@ describe('session goal live activity gate', () => {
       await runIdleTick(runtime);
       expect(lastPatchedGoal(requests).status).toBe('blocked');
       expect(requests.filter((request) => request.pathname.endsWith('/prompt_async'))).toHaveLength(0);
-      Object.assign(activeSession.metadata.openchamber.goal, { status: 'active', statusReason: 'resumed', turnsUsed: 0 });
+      Object.assign(activeSession.metadata.shipchamber.goal, { status: 'active', statusReason: 'resumed', turnsUsed: 0 });
       await runIdleTick(runtime);
       expect(lastPatchedGoal(requests)).toMatchObject({ status: 'active', statusReason: '', turnsUsed: 1 });
       expect(requests.filter((request) => request.pathname.endsWith('/prompt_async'))).toHaveLength(1);

@@ -291,7 +291,7 @@ mock.module("../session-actions", () => ({
     }
     const { useSessionUIStore: store } = await import("../session-ui-store")
     store.getState().setCurrentSession(session.id, sessionDirectory, selectionTransition)
-    store.getState().markSessionAsOpenChamberCreated(session.id)
+    store.getState().markSessionAsShipChamberCreated(session.id)
     return session
   }),
   deleteSession: mock(async () => true),
@@ -319,7 +319,7 @@ mock.module("@/lib/git/branchNameGenerator", () => ({
   generateBranchName: () => "generated-branch",
 }))
 
-mock.module("@/lib/openchamberConfig", () => ({
+mock.module("@/lib/shipchamberConfig", () => ({
   getWorktreeSetupCommands: async () => [],
   getWorktreeSetupWaitEnabled: async () => false,
 }))
@@ -485,7 +485,7 @@ describe("issue 2039 draft auto-accept", () => {
     await materializeOpenDraftSession({ providerID: "provider", modelID: "model" })
 
     expect(createSessionCalls[0]?.metadata).toEqual({
-      openchamber: {
+      shipchamber: {
         project_context_pins: { notes: ["note-a"], plans: ["plan-a"] },
       },
     })

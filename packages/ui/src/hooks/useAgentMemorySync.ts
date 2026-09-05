@@ -13,7 +13,7 @@
 
 import React from 'react';
 
-import { subscribeOpenchamberEvents } from '@/lib/openchamberEvents';
+import { subscribeShipchamberEvents } from '@/lib/shipchamberEvents';
 import { useAgentMemoryStore } from '@/stores/useAgentMemoryStore';
 import { useUIStore } from '@/stores/useUIStore';
 import { useProjectContextOwner } from '@/hooks/useProjectContextOwner';
@@ -50,7 +50,7 @@ export const useAgentMemorySync = (directory: string | null): void => {
     if (!enabled) {
       return;
     }
-    return subscribeOpenchamberEvents((event) => {
+    return subscribeShipchamberEvents((event) => {
       if (event.type === 'agent-memory-changed') {
         void load(projectPath);
       }

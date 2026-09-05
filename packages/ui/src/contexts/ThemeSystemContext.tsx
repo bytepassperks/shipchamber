@@ -154,7 +154,7 @@ export function ThemeSystemProvider({ children, defaultThemeId }: ThemeSystemPro
     if (typeof window === 'undefined' || !isVSCodeRuntime()) {
       return null;
     }
-    const existing = (window as unknown as { __OPENCHAMBER_VSCODE_THEME__?: Theme }).__OPENCHAMBER_VSCODE_THEME__;
+    const existing = (window as unknown as { __SHIPCHAMBER_VSCODE_THEME__?: Theme }).__SHIPCHAMBER_VSCODE_THEME__;
     return existing || null;
   });
   const isVSCode = useMemo(() => isVSCodeRuntime(), []);
@@ -216,8 +216,8 @@ export function ThemeSystemProvider({ children, defaultThemeId }: ThemeSystemPro
       });
     };
 
-    window.addEventListener('openchamber:theme-hmr', handleThemeHmr);
-    return () => window.removeEventListener('openchamber:theme-hmr', handleThemeHmr);
+    window.addEventListener('shipchamber:theme-hmr', handleThemeHmr);
+    return () => window.removeEventListener('shipchamber:theme-hmr', handleThemeHmr);
   }, []);
 
   const getThemeByIdFromAvailable = useCallback(
@@ -324,13 +324,13 @@ export function ThemeSystemProvider({ children, defaultThemeId }: ThemeSystemPro
       }
     };
 
-    const existing = (window as unknown as { __OPENCHAMBER_VSCODE_THEME__?: Theme }).__OPENCHAMBER_VSCODE_THEME__;
+    const existing = (window as unknown as { __SHIPCHAMBER_VSCODE_THEME__?: Theme }).__SHIPCHAMBER_VSCODE_THEME__;
     if (existing) {
       applyVSCodeTheme(existing);
     }
 
-    window.addEventListener('openchamber:vscode-theme', handleThemeEvent as EventListener);
-    return () => window.removeEventListener('openchamber:vscode-theme', handleThemeEvent as EventListener);
+    window.addEventListener('shipchamber:vscode-theme', handleThemeEvent as EventListener);
+    return () => window.removeEventListener('shipchamber:vscode-theme', handleThemeEvent as EventListener);
   }, [isVSCode]);
 
   const updateBrowserChrome = useCallback((theme: Theme) => {
@@ -513,18 +513,18 @@ export function ThemeSystemProvider({ children, defaultThemeId }: ThemeSystemPro
     }
 
     const scopedWindow = window as unknown as {
-      __openchamberApplyThemeSync?: (payload: ThemeSyncPayload) => void;
+      __shipchamberApplyThemeSync?: (payload: ThemeSyncPayload) => void;
     };
 
-    scopedWindow.__openchamberApplyThemeSync = applyIncomingThemeSync;
+    scopedWindow.__shipchamberApplyThemeSync = applyIncomingThemeSync;
 
     if (receivesParentThemeSync && window.parent !== window) {
-      window.parent.postMessage({ type: 'openchamber:theme-sync-request' }, window.location.origin);
+      window.parent.postMessage({ type: 'shipchamber:theme-sync-request' }, window.location.origin);
     }
 
     return () => {
-      if (scopedWindow.__openchamberApplyThemeSync === applyIncomingThemeSync) {
-        delete scopedWindow.__openchamberApplyThemeSync;
+      if (scopedWindow.__shipchamberApplyThemeSync === applyIncomingThemeSync) {
+        delete scopedWindow.__shipchamberApplyThemeSync;
       }
     };
   }, [applyIncomingThemeSync, receivesParentThemeSync]);
@@ -544,7 +544,7 @@ export function ThemeSystemProvider({ children, defaultThemeId }: ThemeSystemPro
         payload?: ThemeSyncPayload;
       };
 
-      if (data?.type !== 'openchamber:theme-sync' || !data.payload) {
+      if (data?.type !== 'shipchamber:theme-sync' || !data.payload) {
         return;
       }
 
@@ -601,8 +601,8 @@ export function ThemeSystemProvider({ children, defaultThemeId }: ThemeSystemPro
       setPreferences((prev) => resolveThemePreferencesFromSettingsSync(detail, prev) ?? prev);
     };
 
-    window.addEventListener('openchamber:settings-synced', handleSettingsSynced);
-    return () => window.removeEventListener('openchamber:settings-synced', handleSettingsSynced);
+    window.addEventListener('shipchamber:settings-synced', handleSettingsSynced);
+    return () => window.removeEventListener('shipchamber:settings-synced', handleSettingsSynced);
   }, [receivesParentThemeSync]);
 
   const setTheme = useCallback(

@@ -1,33 +1,33 @@
 services:
-  openchamber:
+  shipchamber:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: openchamber
+    container_name: shipchamber
     ports:
       - "3000:3000"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ./data/openchamber:/home/openchamber/.config/openchamber
-      - ./data/opencode/share:/home/openchamber/.local/share/opencode
-      - ./data/opencode/state:/home/openchamber/.local/state/opencode
-      - ./data/opencode/config:/home/openchamber/.config/opencode
-      - ./data/ssh:/home/openchamber/.ssh
-      - ./workspaces:/home/openchamber/workspaces
+      - ./data/shipchamber:/home/shipchamber/.config/shipchamber
+      - ./data/opencode/share:/home/shipchamber/.local/share/opencode
+      - ./data/opencode/state:/home/shipchamber/.local/state/opencode
+      - ./data/opencode/config:/home/shipchamber/.config/opencode
+      - ./data/ssh:/home/shipchamber/.ssh
+      - ./workspaces:/home/shipchamber/workspaces
     environment:
-      # Docker binds OpenChamber to 0.0.0.0 for port mapping, so UI auth is required.
+      # Docker binds ShipChamber to 0.0.0.0 for port mapping, so UI auth is required.
       # Set this before starting, for example:
-      #   OPENCHAMBER_UI_PASSWORD="$(openssl rand -base64 24)" docker compose up -d
-      OPENCHAMBER_UI_PASSWORD: ${OPENCHAMBER_UI_PASSWORD:?Set OPENCHAMBER_UI_PASSWORD before exposing OpenChamber through Docker}
-    # OPENCHAMBER_HOST: 0.0.0.0  # Bind address (default in Docker entrypoint: 0.0.0.0)
-    # OPENCHAMBER_TUNNEL_PROVIDER: cloudflare
-    # OPENCHAMBER_TUNNEL_MODE: quick  # quick | managed-remote | managed-local
-    # OPENCHAMBER_TUNNEL_HOSTNAME: app.example.com  # required for managed-remote
-    # OPENCHAMBER_TUNNEL_TOKEN: your_cloudflare_token  # required for managed-remote
-    # OPENCHAMBER_TUNNEL_CONFIG: /home/openchamber/.cloudflared/config.yml  # optional for managed-local
+      #   SHIPCHAMBER_UI_PASSWORD="$(openssl rand -base64 24)" docker compose up -d
+      SHIPCHAMBER_UI_PASSWORD: ${SHIPCHAMBER_UI_PASSWORD:?Set SHIPCHAMBER_UI_PASSWORD before exposing ShipChamber through Docker}
+    # SHIPCHAMBER_HOST: 0.0.0.0  # Bind address (default in Docker entrypoint: 0.0.0.0)
+    # SHIPCHAMBER_TUNNEL_PROVIDER: cloudflare
+    # SHIPCHAMBER_TUNNEL_MODE: quick  # quick | managed-remote | managed-local
+    # SHIPCHAMBER_TUNNEL_HOSTNAME: app.example.com  # required for managed-remote
+    # SHIPCHAMBER_TUNNEL_TOKEN: your_cloudflare_token  # required for managed-remote
+    # SHIPCHAMBER_TUNNEL_CONFIG: /home/shipchamber/.cloudflared/config.yml  # optional for managed-local
     # OH_MY_OPENCODE: true # enable oh-my-opencode
     # OPENCODE_HOST: http://172.17.0.1:4096 # Connect to external OpenCode server
     # OPENCODE_SKIP_START: true # skip start opencode
-    # OPENCHAMBER_OPENCODE_HOSTNAME: 0.0.0.0 # Bind OpenCode to all interfaces
+    # SHIPCHAMBER_OPENCODE_HOSTNAME: 0.0.0.0 # Bind OpenCode to all interfaces
     restart: unless-stopped

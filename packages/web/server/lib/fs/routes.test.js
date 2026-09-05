@@ -116,7 +116,7 @@ const registerExec = ({ spawn }) => {
     resolveProjectDirectory: async () => ({ directory: '/repo' }),
     buildAugmentedPath: () => '/usr/bin',
     resolveGitBinaryForSpawn: () => 'git',
-    openchamberUserConfigRoot: '/home/user/.config',
+    shipchamberUserConfigRoot: '/home/user/.config',
   });
   return getRoute('POST', '/api/fs/exec');
 };
@@ -136,7 +136,7 @@ const registerWrite = (fsPromises) => {
     resolveProjectDirectory: async () => ({ directory: '/repo' }),
     buildAugmentedPath: () => '/usr/bin',
     resolveGitBinaryForSpawn: () => 'git',
-    openchamberUserConfigRoot: '/home/user/.config',
+    shipchamberUserConfigRoot: '/home/user/.config',
   });
   return getRoute('POST', '/api/fs/write');
 };
@@ -160,7 +160,7 @@ const registerUpload = (fsPromises) => {
     resolveProjectDirectory: async () => ({ directory: '/repo' }),
     buildAugmentedPath: () => '/usr/bin',
     resolveGitBinaryForSpawn: () => 'git',
-    openchamberUserConfigRoot: '/home/user/.config',
+    shipchamberUserConfigRoot: '/home/user/.config',
   });
   return getRoute('POST', '/api/fs/upload');
 };
@@ -180,7 +180,7 @@ const registerRead = (fsPromises, resolveProjectDirectory = async () => ({ direc
     resolveProjectDirectory,
     buildAugmentedPath: () => '/usr/bin',
     resolveGitBinaryForSpawn: () => 'git',
-    openchamberUserConfigRoot: '/home/user/.config',
+    shipchamberUserConfigRoot: '/home/user/.config',
   });
   return getRoute('GET', '/api/fs/read');
 };
@@ -200,7 +200,7 @@ const registerRaw = (fsPromises) => {
     resolveProjectDirectory: async () => ({ directory: '/repo' }),
     buildAugmentedPath: () => '/usr/bin',
     resolveGitBinaryForSpawn: () => 'git',
-    openchamberUserConfigRoot: '/home/user/.config',
+    shipchamberUserConfigRoot: '/home/user/.config',
   });
   return getRoute('GET', '/api/fs/raw');
 };
@@ -220,7 +220,7 @@ const registerMkdir = (fsPromises) => {
     resolveProjectDirectory: async () => ({ directory: '/repo' }),
     buildAugmentedPath: () => '/usr/bin',
     resolveGitBinaryForSpawn: () => 'git',
-    openchamberUserConfigRoot: '/home/user/.config',
+    shipchamberUserConfigRoot: '/home/user/.config',
   });
   return getRoute('POST', '/api/fs/mkdir');
 };
@@ -241,7 +241,7 @@ const registerReveal = ({ fsPromises, spawn, platform = 'linux' }) => {
     resolveProjectDirectory: async () => ({ directory: '/repo' }),
     buildAugmentedPath: () => '/usr/bin',
     resolveGitBinaryForSpawn: () => 'git',
-    openchamberUserConfigRoot: '/home/user/.config',
+    shipchamberUserConfigRoot: '/home/user/.config',
   });
   return getRoute('POST', '/api/fs/reveal');
 };
@@ -482,8 +482,8 @@ describe('fs upload', () => {
   });
 
   it('cleans up a partial temp file when the configured streaming limit is exceeded', async () => {
-    const previous = process.env.OPENCHAMBER_FS_UPLOAD_MAX_BYTES;
-    process.env.OPENCHAMBER_FS_UPLOAD_MAX_BYTES = '5';
+    const previous = process.env.SHIPCHAMBER_FS_UPLOAD_MAX_BYTES;
+    process.env.SHIPCHAMBER_FS_UPLOAD_MAX_BYTES = '5';
     const write = vi.fn(async (_buffer, _offset, length) => ({ bytesWritten: length }));
     const fsPromises = {
       open: vi.fn(async () => ({ write, close: vi.fn(async () => undefined) })),
@@ -504,14 +504,14 @@ describe('fs upload', () => {
       expect(fsPromises.link).not.toHaveBeenCalled();
       expect(fsPromises.unlink).toHaveBeenCalledWith(expect.stringMatching(/^\/repo\/file\.bin\.upload-/));
     } finally {
-      if (previous === undefined) delete process.env.OPENCHAMBER_FS_UPLOAD_MAX_BYTES;
-      else process.env.OPENCHAMBER_FS_UPLOAD_MAX_BYTES = previous;
+      if (previous === undefined) delete process.env.SHIPCHAMBER_FS_UPLOAD_MAX_BYTES;
+      else process.env.SHIPCHAMBER_FS_UPLOAD_MAX_BYTES = previous;
     }
   });
 
   it('rejects a declared oversized upload before opening a temp file', async () => {
-    const previous = process.env.OPENCHAMBER_FS_UPLOAD_MAX_BYTES;
-    process.env.OPENCHAMBER_FS_UPLOAD_MAX_BYTES = '5';
+    const previous = process.env.SHIPCHAMBER_FS_UPLOAD_MAX_BYTES;
+    process.env.SHIPCHAMBER_FS_UPLOAD_MAX_BYTES = '5';
     const fsPromises = {
       open: vi.fn(async () => ({ write: vi.fn(), close: vi.fn() })),
     };
@@ -523,8 +523,8 @@ describe('fs upload', () => {
       expect(res.body).toEqual({ error: 'File exceeds maximum size of 5 bytes' });
       expect(fsPromises.open).not.toHaveBeenCalled();
     } finally {
-      if (previous === undefined) delete process.env.OPENCHAMBER_FS_UPLOAD_MAX_BYTES;
-      else process.env.OPENCHAMBER_FS_UPLOAD_MAX_BYTES = previous;
+      if (previous === undefined) delete process.env.SHIPCHAMBER_FS_UPLOAD_MAX_BYTES;
+      else process.env.SHIPCHAMBER_FS_UPLOAD_MAX_BYTES = previous;
     }
   });
 
@@ -843,11 +843,11 @@ describe('fs reveal', () => {
 
 describe('fs exec git-read cache', () => {
   beforeEach(() => {
-    delete process.env.OPENCHAMBER_GIT_READ_CACHE_TTL_MS;
+    delete process.env.SHIPCHAMBER_GIT_READ_CACHE_TTL_MS;
   });
 
   afterEach(() => {
-    delete process.env.OPENCHAMBER_GIT_READ_CACHE_TTL_MS;
+    delete process.env.SHIPCHAMBER_GIT_READ_CACHE_TTL_MS;
   });
 
   it('rejects background command execution', async () => {
@@ -956,7 +956,7 @@ describe('fs exec git-read cache', () => {
   });
 
   it('disables caching when TTL is 0', async () => {
-    process.env.OPENCHAMBER_GIT_READ_CACHE_TTL_MS = '0';
+    process.env.SHIPCHAMBER_GIT_READ_CACHE_TTL_MS = '0';
     const command = 'git rev-parse --absolute-git-dir';
     const { spawn, calls } = createSpawn({ stdoutByCommand: { [command]: '/repo/.git\n' } });
     const handler = registerExec({ spawn });
@@ -1062,7 +1062,7 @@ describe('fs list symlink path space (issue 2627)', () => {
       resolveProjectDirectory: async () => ({ directory: '/workspace' }),
       buildAugmentedPath: () => '/usr/bin',
       resolveGitBinaryForSpawn: () => 'git',
-      openchamberUserConfigRoot: '/home/user/.config',
+      shipchamberUserConfigRoot: '/home/user/.config',
     });
     return getRoute('GET', '/api/fs/list');
   };
@@ -1162,7 +1162,7 @@ describe('fs git-dirs', () => {
       resolveProjectDirectory: async () => ({ directory: '/workspace' }),
       buildAugmentedPath: () => '/usr/bin',
       resolveGitBinaryForSpawn: () => 'git',
-      openchamberUserConfigRoot: '/home/user/.config',
+      shipchamberUserConfigRoot: '/home/user/.config',
     });
     return { handler: getRoute('GET', '/api/fs/git-dirs'), readdir };
   };
@@ -1393,7 +1393,7 @@ describe('fs stat directory scope (issue 3019)', () => {
       resolveProjectDirectory: projectDirectoryRuntime.resolveProjectDirectory,
       buildAugmentedPath: () => '/usr/bin',
       resolveGitBinaryForSpawn: () => 'git',
-      openchamberUserConfigRoot: '/home/user/.config',
+      shipchamberUserConfigRoot: '/home/user/.config',
     });
     return getRoute('GET', '/api/fs/stat');
   };
@@ -1447,7 +1447,7 @@ describe('fs managed chats root', () => {
       resolveProjectDirectory: async () => ({ directory: '/repo' }),
       buildAugmentedPath: () => '/usr/bin',
       resolveGitBinaryForSpawn: () => 'git',
-      openchamberUserConfigRoot: '/home/user/.config/openchamber',
+      shipchamberUserConfigRoot: '/home/user/.config/shipchamber',
       managedChatsRoot,
     });
     return {
@@ -1464,23 +1464,23 @@ describe('fs managed chats root', () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body.home).toBe('/home/user');
-    expect(res.body.chatsRoot).toBe('/home/user/.config/openchamber/chats');
+    expect(res.body.chatsRoot).toBe('/home/user/.config/shipchamber/chats');
   });
 
-  it('exposes a relocated chats root when OPENCHAMBER_CHATS_DIR is configured upstream', async () => {
-    const { home } = registerWithChatsRoot({ managedChatsRoot: '/srv/openchamber-chats' });
+  it('exposes a relocated chats root when SHIPCHAMBER_CHATS_DIR is configured upstream', async () => {
+    const { home } = registerWithChatsRoot({ managedChatsRoot: '/srv/shipchamber-chats' });
 
     const res = createMockResponse();
     await home(undefined, res);
 
     expect(res.statusCode).toBe(200);
-    expect(res.body.chatsRoot).toBe('/srv/openchamber-chats');
+    expect(res.body.chatsRoot).toBe('/srv/shipchamber-chats');
   });
 
   it('allows mkdir inside the relocated chats root outside the active workspace', async () => {
     const mkdirCalls = [];
     const { mkdir } = registerWithChatsRoot({
-      managedChatsRoot: '/srv/openchamber-chats',
+      managedChatsRoot: '/srv/shipchamber-chats',
       fsPromises: {
         mkdir: async (targetPath) => {
           mkdirCalls.push(targetPath);
@@ -1489,15 +1489,15 @@ describe('fs managed chats root', () => {
     });
 
     const res = createMockResponse();
-    await mkdir({ body: { path: '/srv/openchamber-chats/2026-08-25/session-a' } }, res);
+    await mkdir({ body: { path: '/srv/shipchamber-chats/2026-08-25/session-a' } }, res);
 
     expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
-    expect(mkdirCalls).toEqual(['/srv/openchamber-chats/2026-08-25/session-a']);
+    expect(mkdirCalls).toEqual(['/srv/shipchamber-chats/2026-08-25/session-a']);
   });
 
   it('still rejects mkdir outside the workspace and all managed roots', async () => {
-    const { mkdir } = registerWithChatsRoot({ managedChatsRoot: '/srv/openchamber-chats' });
+    const { mkdir } = registerWithChatsRoot({ managedChatsRoot: '/srv/shipchamber-chats' });
 
     const res = createMockResponse();
     await mkdir({ body: { path: '/etc/passwd-holder' } }, res);
