@@ -1,4 +1,4 @@
-const VERSION = '1.23.0';
+const VERSION = '1.23.1';
 
 const TARGETS = {
   'mac-arm64': `ShipChamber-${VERSION}-mac-arm64.dmg`,
