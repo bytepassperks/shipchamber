@@ -1,6 +1,6 @@
 {
   "name": "@shipchamber/ui",
-  "version": "1.23.0",
+  "version": "1.23.1",
   "private": true,
   "type": "module",
   "main": "src/main.tsx",
