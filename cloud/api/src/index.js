@@ -276,9 +276,9 @@ const updateCheck = async (request, env, ctx) => {
   return json({
     latestVersion,
     updateAvailable: currentVersion ? compareVersions(latestVersion, currentVersion) > 0 : true,
-    releaseNotes: typeof release.body === 'string' ? release.body : undefined,
-    releaseNotesUrl: release.html_url,
-    downloadUrl: release.html_url,
+    releaseNotes: `ShipChamber ${latestVersion} is available. See https://shipchamber.pages.dev/changelog for what changed.`,
+    releaseNotesUrl: 'https://shipchamber.pages.dev/changelog',
+    downloadUrl: 'https://shipchamber.pages.dev/download',
     nextSuggestedCheckInSec: 6 * 3600,
   });
 };

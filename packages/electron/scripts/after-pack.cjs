@@ -9,9 +9,7 @@ module.exports = (context) => {
 
   const sourceAssetsPath = path.join(__dirname, '..', 'resources', 'icons', 'Assets.car');
 
-  if (!fs.existsSync(sourceAssetsPath)) {
-    throw new Error(`Missing compiled app icon asset catalog at ${sourceAssetsPath}`);
-  }
+  if (!fs.existsSync(sourceAssetsPath)) return;
 
   fs.copyFileSync(sourceAssetsPath, path.join(resourcesPath, 'Assets.car'));
 };

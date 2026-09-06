@@ -1,6 +1,6 @@
 {
   "name": "@shipchamber/electron",
-  "version": "1.23.0",
+  "version": "1.23.1",
   "private": true,
   "description": "Electron desktop runtime for ShipChamber",
   "author": "ShipChamber",
@@ -91,9 +91,6 @@
       "category": "public.app-category.developer-tools",
       "icon": "resources/icons/icon.icns",
       "artifactName": "${productName}-${version}-mac-${arch}.${ext}",
-      "extendInfo": {
-        "CFBundleIconName": "AppIcon"
-      },
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "resources/entitlements.mac.plist",
