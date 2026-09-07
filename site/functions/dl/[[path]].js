@@ -1,4 +1,4 @@
-const VERSION = '1.23.1';
+const VERSION = '1.23.2';
 
 const TARGETS = {
   'mac-arm64': `ShipChamber-${VERSION}-mac-arm64.dmg`,
@@ -14,6 +14,8 @@ const TARGETS = {
 };
 
 const TYPES = {
+  yml: 'text/yaml',
+  blockmap: 'application/octet-stream',
   dmg: 'application/x-apple-diskimage',
   zip: 'application/zip',
   exe: 'application/vnd.microsoft.portable-executable',
@@ -29,9 +31,19 @@ export async function onRequestGet({ params, env }) {
       headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=300' },
     });
   }
-  const file = TARGETS[target];
+  // electron-updater generic feed: /dl/update/latest*.yml plus the files those manifests name.
+  const updateFile = target.startsWith('update/') ? decodeURIComponent(target.slice('update/'.length)) : null;
+  const file = updateFile
+    ? (/^[\w.@+-]+$/.test(updateFile) && (updateFile.endsWith('.yml') || Object.values(TARGETS).includes(updateFile) || updateFile.endsWith('.blockmap')) ? updateFile : null)
+    : TARGETS[target];
   if (!file) return new Response('Not found', { status: 404 });
   const object = await env.DOWNLOADS.get(`v${VERSION}/${file}`);
+  if (updateFile && file.endsWith('.yml')) {
+    if (!object) return new Response('Not found', { status: 404 });
+    return new Response(object.body, {
+      headers: { 'content-type': 'text/yaml', 'cache-control': 'public, max-age=300' },
+    });
+  }
   if (!object) return new Response('Build not available yet', { status: 404 });
   const ext = file.split('.').pop();
   return new Response(object.body, {

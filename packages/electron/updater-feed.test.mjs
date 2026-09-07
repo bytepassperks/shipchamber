@@ -12,12 +12,12 @@ const overrideEnvironment = {
   SHIPCHAMBER_UPDATER_E2E_URL: 'http://127.0.0.1:49152/updates/',
 };
 
-test('production updater feed is immutable GitHub configuration', () => {
+test('production updater feed is immutable site feed configuration', () => {
   assert.equal(Object.isFrozen(PRODUCTION_UPDATER_FEED), true);
   assert.deepEqual(PRODUCTION_UPDATER_FEED, {
-    provider: 'github',
-    owner: 'shipchamber',
-    repo: 'shipchamber',
+    provider: 'generic',
+    url: 'https://shipchamber.pages.dev/dl/update/',
+    useMultipleRangeRequest: false,
   });
 });
 

@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 
 export const PRODUCTION_UPDATER_FEED = Object.freeze({
-  provider: 'github',
-  owner: 'shipchamber',
-  repo: 'shipchamber',
+  provider: 'generic',
+  url: 'https://shipchamber.pages.dev/dl/update/',
+  useMultipleRangeRequest: false,
 });
 
 const isLoopbackHostname = (hostname) => {

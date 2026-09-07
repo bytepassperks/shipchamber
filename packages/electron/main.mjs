@@ -203,7 +203,8 @@ const readAppMetadata = () => {
     try {
       const raw = fs.readFileSync(candidate, 'utf8');
       const parsed = JSON.parse(raw);
-      if (parsed?.name === '@shipchamber/electron' && typeof parsed.version === 'string') {
+      if ((parsed?.name === '@shipchamber/electron' || parsed?.name === 'shipchamber')
+        && typeof parsed.version === 'string') {
         return { name: parsed.name, version: parsed.version };
       }
     } catch {
@@ -3109,9 +3110,7 @@ const setupAutoUpdater = () => {
   const testBuild = typeof __SHIPCHAMBER_UPDATER_E2E_BUILD__ !== 'undefined'
     && __SHIPCHAMBER_UPDATER_E2E_BUILD__ === true;
   const feed = resolveUpdaterFeed({ testBuild });
-  const updaterChannel = feed.provider === 'github'
-    ? resolveUpdaterChannel({ platform: process.platform, architecture: process.arch })
-    : null;
+  const updaterChannel = resolveUpdaterChannel({ platform: process.platform, architecture: process.arch });
   if (updaterChannel) {
     autoUpdater.channel = updaterChannel;
   }

@@ -1,6 +1,6 @@
 {
   "name": "@shipchamber/electron",
-  "version": "1.23.1",
+  "version": "1.23.2",
   "private": true,
   "description": "Electron desktop runtime for ShipChamber",
   "author": "ShipChamber",
@@ -54,6 +54,9 @@
   "build": {
     "appId": "dev.shipchamber.desktop",
     "productName": "ShipChamber",
+    "extraMetadata": {
+      "name": "shipchamber"
+    },
     "files": [
       "dist-bundle/main.mjs",
       "preload.mjs"
@@ -127,8 +130,15 @@
       }
     },
     "nsis": {
-      "oneClick": true,
+      "oneClick": false,
       "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "ShipChamber",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
       "installerIcon": "resources/icons/icon.ico",
       "uninstallerIcon": "resources/icons/icon.ico",
       "installerHeaderIcon": "resources/icons/icon.ico"
@@ -158,9 +168,8 @@
       ]
     },
     "publish": {
-      "provider": "github",
-      "owner": "shipchamber",
-      "repo": "shipchamber"
+      "provider": "generic",
+      "url": "https://shipchamber.pages.dev/dl/update/"
     }
   }
 }
