@@ -1,6 +1,6 @@
 {
   "name": "@shipchamber/electron",
-  "version": "1.23.3",
+  "version": "1.23.4",
   "private": true,
   "description": "Electron desktop runtime for ShipChamber",
   "author": "ShipChamber",
@@ -142,7 +142,8 @@
       "deleteAppDataOnUninstall": false,
       "installerIcon": "resources/icons/icon.ico",
       "uninstallerIcon": "resources/icons/icon.ico",
-      "installerHeaderIcon": "resources/icons/icon.ico"
+      "installerHeaderIcon": "resources/icons/icon.ico",
+      "include": "resources/installer.nsh"
     },
     "dmg": {
       "sign": true,
