@@ -1,4 +1,4 @@
-const VERSION = '1.23.2';
+const VERSION = '1.23.3';
 
 const TARGETS = {
   'mac-arm64': `ShipChamber-${VERSION}-mac-arm64.dmg`,
@@ -7,6 +7,8 @@ const TARGETS = {
   'mac-x64-zip': `ShipChamber-${VERSION}-mac-x64.zip`,
   'win-x64': `ShipChamber-${VERSION}-win-x64.exe`,
   'win-arm64': `ShipChamber-${VERSION}-win-arm64.exe`,
+  'win-x64-zip': `ShipChamber-${VERSION}-win-x64.zip`,
+  'win-arm64-zip': `ShipChamber-${VERSION}-win-arm64.zip`,
   'linux-x64': `ShipChamber-${VERSION}-linux-x86_64.AppImage`,
   'linux-arm64': `ShipChamber-${VERSION}-linux-arm64.AppImage`,
   'vscode': `shipchamber-${VERSION}.vsix`,

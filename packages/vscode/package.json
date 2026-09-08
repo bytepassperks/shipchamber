@@ -2,7 +2,7 @@
   "name": "shipchamber",
   "displayName": "ShipChamber",
   "description": "%extension.description%",
-  "version": "1.23.2",
+  "version": "1.23.3",
   "publisher": "bytepassperks",
   "private": true,
   "repository": {

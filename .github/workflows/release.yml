@@ -375,6 +375,7 @@ jobs:
           tag_name: v${{ needs.create-release.outputs.version }}
           files: |
             packages/electron/dist/*.exe
+            packages/electron/dist/*-win-*.zip
             packages/electron/dist/*.blockmap
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,6 +1,6 @@
 {
   "name": "@shipchamber/electron",
-  "version": "1.23.2",
+  "version": "1.23.3",
   "private": true,
   "description": "Electron desktop runtime for ShipChamber",
   "author": "ShipChamber",
@@ -107,7 +107,8 @@
     "win": {
       "icon": "resources/icons/icon.ico",
       "target": [
-        "nsis"
+        "nsis",
+        "zip"
       ],
       "verifyUpdateCodeSignature": false,
       "artifactName": "${productName}-${version}-win-${arch}.${ext}"

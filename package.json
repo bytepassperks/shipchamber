@@ -1,6 +1,6 @@
 {
   "name": "shipchamber-monorepo",
-  "version": "1.23.2",
+  "version": "1.23.3",
   "description": "ShipChamber monorepo workspace for web, ui, and desktop runtimes",
   "private": true,
   "type": "module",
