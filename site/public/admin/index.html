@@ -140,7 +140,7 @@ dialog{border:1px solid var(--line);border-radius:14px;background:var(--panel);c
 <div class="toast" id="toast"></div>
 
 <script>
-const API = 'https://shipchamber-api.getlaunchpod.workers.dev/v1/admin';
+const API = 'https://api.shipchamber.com/v1/admin';
 const $ = (s, r = document) => r.querySelector(s);
 const esc = (v) => String(v ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const when = (ms) => (ms ? new Date(ms).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : '—');
