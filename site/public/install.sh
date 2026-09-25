@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # ShipChamber install script
-# Usage: curl -fsSL https://shipchamber.pages.dev/install.sh | bash
+# Usage: curl -fsSL https://shipchamber.com/install.sh | bash
 
 set -euo pipefail
 
-PACKAGE_NAME="https://shipchamber.pages.dev/dl/web"
+PACKAGE_NAME="https://shipchamber.com/dl/web"
 BIN_NAME="shipchamber"
 MIN_NODE_VERSION=22
 

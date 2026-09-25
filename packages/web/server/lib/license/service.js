@@ -14,7 +14,7 @@
 
 import express from 'express';
 
-const DEFAULT_LICENSE_API_URL = 'https://shipchamber-api.getlaunchpod.workers.dev';
+const DEFAULT_LICENSE_API_URL = 'https://api.shipchamber.com';
 const LICENSE_TIERS = Object.freeze({ FREE: 'free', LIFETIME: 'lifetime' });
 const LIFETIME_FEATURES = Object.freeze(['relay', 'multiRun', 'sessionGoals', 'walkthrough']);
 
