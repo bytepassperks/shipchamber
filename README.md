@@ -157,3 +157,10 @@ Special thanks to:
 ## License
 
 MIT
+
+
+---
+
+## About the builder
+
+ShipChamber is built by [Sayan Roy Chowdhury](https://bytesherlock.com), who also runs [Byte Sherlock](https://bytesherlock.com) — a licensed mobile, laptop and computer repair service in Barrackpore, Kolkata.
